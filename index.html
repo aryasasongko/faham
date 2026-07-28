@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Faham">
+<meta name="theme-color" content="#fcfcfb">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Faham — understand what you pray</title>
+<style>
+:root{
+  color-scheme: light;
+  --surface:#fcfcfb; --plane:#f9f9f7;
+  --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --line:#e1e0d9; --rule:#c3c2b7;
+  --accent:#2a78d6; --accent-soft:#cde2fb; --accent-deep:#184f95;
+  --id-accent:#1baf7a; --id-soft:#d7f3e8; --id-deep:#0f6b4a;
+  --good:#0ca30c; --warn:#fab219;
+  --border:rgba(11,11,11,.10);
+  --shadow:0 1px 2px rgba(11,11,11,.04), 0 6px 20px rgba(11,11,11,.05);
+  --font:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --surface:#1a1a19; --plane:#0d0d0d;
+    --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+    --line:#2c2c2a; --rule:#383835;
+    --accent:#3987e5; --accent-soft:#184f95; --accent-deep:#86b6ef;
+    --id-accent:#199e70; --id-soft:#0f4a35; --id-deep:#7fd9b8;
+    --border:rgba(255,255,255,.10); --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:118px}
+body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding:0 16px calc(72px + env(safe-area-inset-bottom))}
+.wrap{max-width:760px;margin:0 auto}
+
+/* ---- top bar ---- */
+.bar{position:sticky;top:0;z-index:40;background:var(--plane);
+  padding:calc(10px + env(safe-area-inset-top)) 0 8px;border-bottom:1px solid var(--line);margin:0 -16px 0;
+  padding-left:16px;padding-right:16px}
+.bar-in{max-width:760px;margin:0 auto}
+.brand{display:flex;align-items:baseline;gap:9px;margin-bottom:9px}
+.brand b{font-size:17px;letter-spacing:-.01em;font-weight:650}
+.brand span{font-size:12px;color:var(--muted)}
+.search{width:100%;font-family:inherit;font-size:15px;padding:9px 13px;border-radius:10px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);margin-bottom:9px}
+.search::placeholder{color:var(--muted)}
+.search:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;font-size:13px;font-weight:560;text-decoration:none;color:var(--ink2);
+  padding:6px 12px;border-radius:999px;border:1px solid var(--border);white-space:nowrap}
+nav a:hover,nav a.on{background:var(--accent-soft);color:var(--accent-deep);border-color:transparent}
+
+/* ---- sections ---- */
+section{padding-top:34px}
+.sec-h{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
+  font-weight:620;margin:0 0 8px}
+h2{font-size:26px;letter-spacing:-.02em;margin:0 0 8px;font-weight:650;line-height:1.2}
+.sec-lede{font-size:15.5px;color:var(--ink2);margin:0 0 20px;max-width:60ch}
+h3{font-size:18px;margin:0;font-weight:625;letter-spacing:-.01em}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:13px;
+  padding:18px 19px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.step-n{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);
+  font-weight:640;margin:0 0 3px}
+.pos{font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* ---- arabic block ---- */
+.ar{font-size:25px;line-height:2.05;text-align:right;direction:rtl;margin:14px 0 10px;font-weight:500}
+.tl{font-size:15.5px;font-style:italic;margin:0 0 9px;color:var(--ink)}
+.en{font-size:15px;color:var(--ink2);margin:0}
+.times{display:inline-block;font-size:11.5px;font-weight:620;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--accent-deep);background:var(--accent-soft);padding:2px 8px;border-radius:999px;margin-left:8px}
+
+/* ---- indonesian reveal ---- */
+.id-btn{margin-top:10px;font-family:inherit;font-size:12.5px;font-weight:600;letter-spacing:.03em;
+  padding:5px 11px;border-radius:999px;border:1px solid var(--id-accent);
+  background:transparent;color:var(--id-deep);cursor:pointer}
+.id-btn:hover{background:var(--id-soft)}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .id-btn{color:var(--id-deep)}}
+.id-txt{display:none;margin-top:10px;padding:11px 13px;border-left:3px solid var(--id-accent);
+  background:var(--plane);border-radius:0 9px 9px 0}
+.id-txt.show{display:block}
+.id-txt .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--id-deep);
+  font-weight:650;display:block;margin-bottom:3px}
+.id-txt p{font-size:15px;color:var(--ink2);margin:0}
+.id-txt p + p{margin-top:11px}
+
+/* ---- why note ---- */
+.why{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.why .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-weight:650;display:block;margin-bottom:4px}
+.why p{font-size:14.5px;color:var(--ink2);margin:0}
+.more{margin-top:9px}
+.more summary{font-size:13px;font-weight:580;color:var(--accent);cursor:pointer;list-style:none;
+  padding:3px 0;user-select:none}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{content:"＋ ";font-weight:500}
+.more[open] summary::before{content:"− "}
+.more[open] summary{margin-bottom:7px}
+.more-body p{font-size:14.5px;color:var(--ink2);margin:0 0 10px}
+.more-body p:last-child{margin-bottom:0}
+
+/* ---- rakaat picker ---- */
+.picker{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.picker button{font-family:inherit;font-size:14px;font-weight:580;padding:9px 15px;border-radius:10px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
+.picker button:hover{border-color:var(--accent)}
+.picker button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.picker button small{display:block;font-size:11px;font-weight:500;opacity:.72;margin-top:1px}
+
+.rk{background:var(--surface);border:1px solid var(--border);border-radius:13px;
+  padding:0 19px 6px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
+.rk-h{margin:0 -19px 0;padding:13px 19px;background:var(--accent-soft);
+  color:var(--accent-deep);font-size:13px;font-weight:660;letter-spacing:.04em;text-transform:uppercase}
+.rk-h em{font-style:normal;font-weight:500;text-transform:none;letter-spacing:0;opacity:.85;font-size:12.5px}
+ol.seq{list-style:none;counter-reset:s;margin:6px 0 0;padding:0}
+ol.seq li{counter-increment:s;display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--line)}
+ol.seq li:last-child{border-bottom:0}
+ol.seq li::before{content:counter(s);flex:0 0 22px;height:22px;border-radius:50%;
+  background:var(--plane);border:1px solid var(--border);color:var(--muted);
+  font-size:11px;font-weight:640;display:flex;align-items:center;justify-content:center;margin-top:2px;
+  font-variant-numeric:tabular-nums}
+.seq-b{flex:1;min-width:0}
+.seq-t{font-size:15px;font-weight:580;margin:0}
+.seq-t a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+.seq-d{font-size:13.5px;color:var(--ink2);margin:2px 0 0}
+.seq-say{font-size:13.5px;font-style:italic;color:var(--ink);margin:3px 0 0}
+.flag{display:inline-block;font-size:10.5px;font-weight:640;letter-spacing:.05em;text-transform:uppercase;
+  padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:1px}
+.flag.aloud{background:var(--accent-soft);color:var(--accent-deep)}
+.flag.silent{background:var(--line);color:var(--ink2)}
+.flag.only{background:var(--id-soft);color:var(--id-deep)}
+
+/* ---- prayer table ---- */
+.tbl{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);
+  border-radius:13px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;font-size:14.5px}
+.tbl th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  font-weight:620;padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{font-weight:600}
+.tbl .n{font-variant-numeric:tabular-nums;text-align:center;font-weight:640;color:var(--accent)}
+
+/* ---- vocab ---- */
+.vocab{display:grid;grid-template-columns:1fr;gap:9px}
+.word{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px 15px;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);cursor:pointer}
+.word:hover{border-color:var(--accent)}
+.word .w-ar{font-size:22px;direction:rtl;flex:0 0 auto;min-width:76px;text-align:right}
+.word .w-b{flex:1;min-width:0}
+.word .w-tl{font-size:14px;font-style:italic;margin:0}
+.word .w-en{font-size:14.5px;font-weight:560;margin:1px 0 0}
+.word .w-id{font-size:13.5px;color:var(--id-deep);margin:2px 0 0;display:none}
+.word.open .w-id{display:block}
+.word .w-note{font-size:13px;color:var(--ink2);margin:5px 0 0;display:none}
+.word.open .w-note{display:block}
+
+/* ---- pose figures ---- */
+.pose-box{flex:0 0 auto;background:var(--plane);border-radius:11px;padding:5px;overflow:hidden}
+svg.pose{display:block}
+.pose .fig{fill:none;stroke:var(--ink);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.pose .halo{fill:none;stroke:var(--surface);stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+.pose circle.fig{fill:none}
+.pose circle.halo{fill:var(--surface)}
+.pose .ground{stroke:var(--rule);stroke-width:2;stroke-linecap:round}
+.pose .turn{fill:none;stroke:var(--accent);stroke-width:3.5;stroke-linecap:round}
+.pose .turn-head{fill:var(--accent);stroke:none}
+.pose-box .halo{stroke:var(--plane)}
+.pose-box circle.halo{fill:var(--plane)}
+.card-top{display:flex;gap:14px;align-items:flex-start}
+.card-txt{flex:1;min-width:0}
+
+/* cycle strip */
+.cycle{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 6px;margin-bottom:14px}
+.cycle::-webkit-scrollbar{display:none}
+.cyc{flex:0 0 auto;background:var(--surface);border:1px solid var(--border);border-radius:11px;
+  padding:6px 8px 9px;text-align:center;box-shadow:var(--shadow);width:104px}
+.cyc b{display:block;font-size:11.5px;font-weight:620;margin-top:1px}
+.cyc i{display:block;font-style:normal;font-size:10.5px;color:var(--muted);margin-top:1px}
+.cyc .n{font-size:10px;letter-spacing:.08em;color:var(--accent);font-weight:660}
+
+/* ---- stories ---- */
+.story-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:15px 17px;margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer;display:flex;gap:14px;align-items:flex-start}
+.story-row:hover{border-color:var(--accent)}
+.story-row .mins{flex:0 0 auto;font-size:11px;font-weight:660;letter-spacing:.04em;color:var(--accent-deep);
+  background:var(--accent-soft);padding:3px 9px;border-radius:999px;margin-top:2px;white-space:nowrap}
+.story-row .st{flex:1;min-width:0}
+.story-row .st h4{font-size:16.5px;font-weight:625;margin:0;letter-spacing:-.01em}
+.story-row .st p{font-size:14px;color:var(--ink2);margin:3px 0 0}
+.story-row .st .ref{font-size:12px;color:var(--muted);margin:4px 0 0}
+
+.back{font-family:inherit;font-size:13.5px;font-weight:580;padding:7px 14px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;margin-bottom:16px}
+.back:hover{background:var(--accent-soft);border-color:transparent;color:var(--accent-deep)}
+.read{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:24px 24px 22px;box-shadow:var(--shadow)}
+.read h3{font-size:25px;letter-spacing:-.02em;line-height:1.2;margin:0 0 5px}
+.read .meta{font-size:12.5px;color:var(--muted);margin:0 0 18px}
+.prose p{font-size:16.5px;line-height:1.72;color:var(--ink);margin:0 0 15px}
+.prose p:last-child{margin-bottom:0}
+.prose p.lead::first-letter{font-size:2.6em;float:left;line-height:.86;padding:3px 9px 0 0;font-weight:600}
+.anchor{margin:22px 0 0;padding:17px 0 0;border-top:1px solid var(--line)}
+.anchor .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-weight:650;display:block;margin-bottom:2px}
+.anchor .vref{font-size:12.5px;color:var(--accent);font-weight:580;margin:0 0 2px}
+.read .ar{font-size:24px}
+
+/* ---- callouts ---- */
+.callout{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--warn);
+  border-radius:0 12px 12px 0;padding:15px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.callout b{display:block;font-size:14.5px;margin-bottom:3px}
+.callout span{font-size:14.5px;color:var(--ink2)}
+.callout.blue{border-left-color:var(--accent)}
+.callout.green{border-left-color:var(--id-accent)}
+
+.hit-none{color:var(--muted);font-size:15px;padding:20px 0}
+footer{margin-top:46px;padding:20px 0 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer p{margin:0 0 8px}
+.hidden{display:none !important}
+@media (min-width:640px){ .vocab{grid-template-columns:1fr 1fr} }
+/* stack the prayer table into cards on narrow screens */
+@media (max-width:639px){
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{padding:14px 15px;border-bottom:1px solid var(--line)}
+  .tbl tr:last-child{border-bottom:0}
+  .tbl td{border:0;padding:0}
+  .tbl td:first-child{font-size:17px;font-weight:640;margin-bottom:2px}
+  .tbl td.n{text-align:left;font-size:13px;color:var(--accent);font-weight:640;margin-bottom:6px}
+  .tbl td.n::after{content:" rakaat"}
+  .tbl td:nth-child(3){display:inline-block;width:auto;font-size:11px;font-weight:640;letter-spacing:.05em;
+    text-transform:uppercase;background:var(--accent-soft);color:var(--accent-deep);
+    padding:2px 9px;border-radius:999px;margin-bottom:8px}
+  .tbl td:nth-child(4){font-size:14px;color:var(--ink2)}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="brand"><b>Faham</b><span>understand what you pray</span></div>
+    <input class="search" id="q" type="search" placeholder="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…" aria-label="Search">
+    <nav id="nav">
+      <a href="#why" class="on">Start here</a>
+      <a href="#stories">Stories</a>
+      <a href="#rakaat">Rakaat</a>
+      <a href="#words">In the prayer</a>
+      <a href="#surah">Surahs</a>
+      <a href="#wudhu">Wudhu</a>
+      <a href="#kata">Vocabulary</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="results"></div>
+
+  <section id="why">
+    <p class="sec-h">Start here</p>
+    <h2>Before the Arabic</h2>
+    <p class="sec-lede">You said memorising Arabic doesn't make you understand Islam. That's correct, and it's the reason this app exists. Read these five first — they're the frame everything else hangs on.</p>
+    <div id="concepts"></div>
+  </section>
+
+  <section id="stories">
+    <p class="sec-h">Stories</p>
+    <h2>When the technical part is too much</h2>
+    <p class="sec-lede">Ten stories, sorted shortest first. Each one is told in plain prose — read it in English, tap for Indonesian — with two or three verses given in full Arabic where the story turns. No memorising, no sequence to get right. Pick one by how much energy you have.</p>
+    <div id="storyIndex"></div>
+    <div id="reader" class="hidden"></div>
+  </section>
+
+  <section id="rakaat">
+    <p class="sec-h">Rakaat</p>
+    <h2>How many, and what changes</h2>
+    <p class="sec-lede">A rakaat is one full cycle: stand, bow, prostrate twice, and you're back. Prayers are just that cycle repeated a set number of times. Almost every beginner's confusion is about what changes between one cycle and the next — so here it is, spelled out.</p>
+
+    <table class="tbl">
+      <thead><tr><th>Prayer</th><th class="n">Rakaat</th><th>Voice</th><th>What's different</th></tr></thead>
+      <tbody id="prayerTable"></tbody>
+    </table>
+
+    <div class="callout blue">
+      <b>The three rules that explain everything</b>
+      <span>1. Al-Fatihah is recited in <em>every rakaat</em> — in the Shafi'i school this holds even when you are following an imam. 2. The extra short surah is added <em>only in rakaat 1 and 2</em> — never in the 3rd or 4th. 3. You sit for a middle tashahhud after rakaat 2 whenever the prayer has more than two rakaat. Learn those three and you can work out any prayer yourself.</span>
+    </div>
+
+    <div class="callout green">
+      <b>Three things that only apply behind an imam</b>
+      <span>The walkthroughs below assume you are praying alone, which is where you'll start. In congregation: you always recite <em>silently</em>, even in the prayers marked aloud — the "aloud" applies to the imam. You don't add a short surah in the loud prayers; you listen to his instead. And if you arrive late and catch the imam already bowing, that rakaat still counts for you and you are not required to complete Al-Fatihah for it.</span>
+    </div>
+
+    <div class="callout">
+      <b>Two exceptions to the counts above</b>
+      <span>On Friday, Jumat prayer replaces Dzuhur and is 2 rakaat rather than 4, preceded by the khutbah. And when travelling, the 4-rakaat prayers may be shortened to 2 (qasr). Neither is something to worry about yet — but the table isn't the whole picture, and it's better to know that now than to be confused in a mosque later.</span>
+    </div>
+
+    <p class="sec-h" style="margin-top:30px">One rakaat, in pictures</p>
+    <div class="cycle" id="cycle"></div>
+
+    <p class="sec-h" style="margin-top:30px">Walk me through one</p>
+    <div class="picker" id="picker"></div>
+    <div id="walk"></div>
+  </section>
+
+  <section id="words">
+    <p class="sec-h">In the prayer</p>
+    <h2>Everything you say, and what it means</h2>
+    <p class="sec-lede">In order, from the opening takbir to the closing salam. Tap <b>Bahasa Indonesia</b> on any line for the Indonesian meaning; open <b>Go deeper</b> when you want the reasoning rather than the summary.</p>
+    <div id="parts"></div>
+  </section>
+
+  <section id="surah">
+    <p class="sec-h">Surahs</p>
+    <h2>Al-Fatihah and the short ones</h2>
+    <p class="sec-lede">You already have Al-Fatihah memorised — so read it here for meaning, not for memorising. The four after it are the ones that cover you for rakaat 1 and 2 of any prayer.</p>
+    <div id="surahs"></div>
+  </section>
+
+  <section id="wudhu">
+    <p class="sec-h">Wudhu</p>
+    <h2>Washing, in order</h2>
+    <p class="sec-lede">Six obligatory acts in a fixed sequence, plus the sunnah ones most people do around them. It stays valid until something breaks it — sleep, using the toilet, passing wind.</p>
+    <div id="wudhuList"></div>
+  </section>
+
+  <section id="kata">
+    <p class="sec-h">Vocabulary</p>
+    <h2>The 30 words that are 80% of your prayer</h2>
+    <p class="sec-lede">This is the shortcut nobody tells beginners. The prayer is not a wall of foreign sound — it's a small vocabulary repeated constantly. Learn these thirty and most of what you say each day stops being noise. Tap any word.</p>
+    <div class="vocab" id="vocabList"></div>
+  </section>
+
+  <footer>
+    <p><b>How to keep this on your phone.</b> Android: download the file, open your Files app, tap it and choose <em>Open with Chrome</em>, then Chrome's ⋮ menu → <em>Add to Home screen</em>. iPhone is different: Safari will not add a local file to the home screen, so either save it to the Files app and open it from there, or put the file at a web address — once it has a real URL, Share → <em>Add to Home Screen</em> gives you a proper app icon on both phones. Either way it works with no internet once loaded.</p>
+    <p><b>What has been checked, and what hasn't.</b> Every Quranic verse in this file — all of Al-Fatihah, the four short surahs, and the anchor verses in the stories — has been compared word by word against the Uthmani text from Quran.com, and matches. The recitations of the prayer itself are a different matter: the iftitah, tashahhud and salawat come from hadith rather than the Quran, they have several valid narrations, and I have <em>not</em> been able to verify them against a primary source. Read those alongside Step By Step Salah or your teacher before memorising, and if their wording differs from mine, use theirs.</p>
+    <p><b>Where schools differ, I've said so.</b> The fiqh here follows the Shafi'i school. Points where Indonesian practice itself is split — qunut in Subuh, saying the intention aloud — are marked rather than settled, because both positions have established backing and your mosque will have its own custom.</p>
+    <p><b>The translations are mine.</b> Plain English and plain Indonesian renderings written for clarity, not copies of Kemenag's or any published translation. They aim to convey the sense; they carry no authority of their own.</p>
+    <p>Shafi'i practice, as followed in Indonesia. Built 28 July 2026.</p>
+  </footer>
+</div>
+
+<script>
+/* ============================ DATA ============================ */
+
+var CONCEPTS = [
+ {t:"Memorising is not understanding — and you already know this",
+  s:"Most Quran teaching starts with decoding: making the right sounds in the right order. That's a real skill, but it's the vehicle, not the destination. Someone can recite beautifully and still not be able to say what Al-Fatihah is asking for.",
+  sid:"Kebanyakan pengajaran Quran dimulai dari cara membaca: melafalkan bunyi yang benar dalam urutan yang benar. Itu keterampilan nyata, tapi itu kendaraannya, bukan tujuannya. Seseorang bisa membaca dengan indah dan tetap tidak bisa menjelaskan apa yang sebenarnya diminta dalam Al-Fatihah.",
+  l:["Your instinct to be uneasy about this is sound. The Quran itself repeatedly criticises people who carry scripture without understanding it, and describes itself as a book to be reflected on rather than merely recited.",
+     "The practical order that follows: learn what a phrase means before you drill the sound of it. Then when you say it in prayer, you're saying something rather than performing something. The memorising still has to happen — it just stops being the whole job."],
+  lid:["Kegelisahanmu soal ini masuk akal. Al-Quran sendiri berulang kali mengkritik orang yang membawa kitab tanpa memahaminya, dan menyebut dirinya sebagai kitab untuk direnungkan, bukan sekadar dilafalkan.",
+     "Urutan praktisnya: pahami arti sebuah kalimat sebelum melatih bunyinya. Dengan begitu, saat kamu mengucapkannya dalam sholat, kamu sedang mengatakan sesuatu — bukan sekadar menampilkan sesuatu. Hafalan tetap perlu, hanya saja ia berhenti menjadi satu-satunya pekerjaan."]},
+
+ {t:"Why Arabic at all, if I don't speak it",
+  s:"Because the prayer is a shared script. A Muslim from Jakarta, Cairo or Bosnia stands in the same row saying the same words — no translation drift, no version that says something slightly different, no one left out because the imam speaks another language.",
+  sid:"Karena sholat adalah naskah bersama. Muslim dari Jakarta, Kairo, atau Bosnia berdiri di saf yang sama dengan kata-kata yang sama — tanpa pergeseran terjemahan, tanpa versi yang artinya sedikit berbeda, tanpa ada yang tersisih karena imamnya berbahasa lain.",
+  l:["There's a second reason that matters more once you've felt it. Translation always chooses. Every English rendering of the Quran is one reading among several defensible ones, and the choices get baked in invisibly. Keeping the original in the prayer keeps the source fixed while the understanding grows.",
+     "But none of that argues for reciting without comprehension. The historical norm was that people understood roughly what they were saying, because they spoke the language. You're rebuilding that comprehension from the other direction — which is more work, and entirely the right instinct."],
+  lid:["Ada alasan kedua yang lebih terasa setelah kamu mengalaminya. Terjemahan selalu memilih. Setiap terjemahan Quran adalah satu pembacaan dari beberapa yang sama-sama bisa dipertahankan, dan pilihan itu ikut tertanam tanpa terlihat. Mempertahankan teks asli dalam sholat membuat sumbernya tetap, sementara pemahamanmu terus tumbuh.",
+     "Tapi itu semua bukan alasan untuk membaca tanpa mengerti. Yang normal secara sejarah adalah orang memahami kurang lebih apa yang mereka ucapkan, karena mereka memang berbahasa itu. Kamu sedang membangun ulang pemahaman itu dari arah sebaliknya — lebih berat, dan justru naluri yang benar."]},
+
+ {t:"Why five times, spread across the day",
+  s:"The spacing is the point. Five short interruptions placed at dawn, midday, afternoon, sunset and night mean no stretch of your waking life goes more than a few hours without a deliberate pause. It's a rhythm, not five separate errands.",
+  sid:"Jaraknya itulah intinya. Lima jeda pendek di waktu subuh, tengah hari, sore, matahari terbenam, dan malam berarti tidak ada bagian hidupmu yang terjaga lebih dari beberapa jam tanpa jeda yang disengaja. Ini ritme, bukan lima urusan terpisah.",
+  l:["Notice where they fall: at the boundaries of the day's natural segments. Waking. The peak of work. The tiring stretch after it. The end of the working day. Before sleep. Each is a hinge where attention tends to drift, and each gets a few minutes that belong to something other than what you were just doing.",
+     "This is also why doing one prayer consistently beats doing five sporadically at the start. The rhythm is what changes you; a burst of effort that collapses in week three doesn't."],
+  lid:["Perhatikan letaknya: di batas-batas alami segmen hari. Bangun tidur. Puncak kerja. Waktu lelah setelahnya. Akhir jam kerja. Sebelum tidur. Masing-masing adalah engsel di mana perhatian mudah melayang, dan masing-masing mendapat beberapa menit yang bukan milik apa yang baru saja kamu kerjakan.",
+     "Ini juga sebabnya satu sholat yang konsisten lebih baik daripada lima yang sesekali di awal. Ritmelah yang mengubahmu; ledakan usaha yang runtuh di minggu ketiga tidak."]},
+
+ {t:"What the postures are actually saying",
+  s:"The prayer is an argument made with the body. You stand upright and address God directly; you bow to acknowledge rank; you put your forehead — the highest, proudest part of you — on the floor. The sequence descends, then returns you to standing.",
+  sid:"Sholat adalah pernyataan yang disampaikan dengan tubuh. Kamu berdiri tegak dan berbicara langsung; kamu rukuk untuk mengakui kedudukan; kamu meletakkan dahi — bagian dirimu yang paling tinggi dan paling angkuh — di lantai. Urutannya menurun, lalu mengembalikanmu berdiri.",
+  l:["Read the words attached to each position and the logic becomes obvious. Standing carries Al-Fatihah — a request for guidance. Bowing carries 'glory to my Lord, the Magnificent'. Prostration carries 'glory to my Lord, the Most High', said at the lowest point you can physically reach. The words and the body say the same thing twice, in two languages.",
+     "That's also the answer to feeling mechanical. If the movements feel empty, it's usually because they've been separated from the sentences they're carrying. Put them back together and the shape stops being choreography."],
+  lid:["Baca kata-kata yang menyertai setiap posisi dan logikanya menjadi jelas. Berdiri membawa Al-Fatihah — permohonan petunjuk. Rukuk membawa 'Maha Suci Tuhanku Yang Maha Agung'. Sujud membawa 'Maha Suci Tuhanku Yang Maha Tinggi', diucapkan di titik terendah yang bisa dicapai tubuhmu. Kata dan tubuh mengatakan hal yang sama dua kali, dalam dua bahasa.",
+     "Itu juga jawaban atas rasa mekanis. Kalau gerakan terasa kosong, biasanya karena ia terpisah dari kalimat yang dibawanya. Satukan kembali, dan bentuknya berhenti menjadi koreografi."]},
+
+ {t:"Where an app stops being enough",
+  s:"This file can give you meaning, structure and vocabulary. It cannot hear your pronunciation, see your posture, or answer the question you haven't thought to ask yet. Those need a person — and one hour with one early beats fifty hours of self-study later.",
+  sid:"File ini bisa memberimu makna, struktur, dan kosakata. Ia tidak bisa mendengar pelafalanmu, melihat posturmu, atau menjawab pertanyaan yang belum terpikir olehmu. Itu butuh manusia — dan satu jam bersama seorang guru di awal lebih berharga daripada lima puluh jam belajar sendiri di kemudian hari.",
+  l:["Concretely: ask at the nearest masjid whether there's a majelis taklim or pengajian for beginners, or find one person you trust enough to send basic questions to without embarrassment. Both are more available than they feel from the outside.",
+     "The thing you're guarding against is spending months rehearsing a small error until it's permanent — a mispronounced letter that changes a word, a posture that's slightly off. Those are trivial to fix in month one and stubborn by month twelve."],
+  lid:["Konkretnya: tanyakan di masjid terdekat apakah ada majelis taklim atau pengajian untuk pemula, atau cari satu orang yang cukup kamu percaya untuk ditanyai hal-hal mendasar tanpa rasa malu. Keduanya lebih tersedia daripada yang terasa dari luar.",
+     "Yang sedang kamu hindari adalah berbulan-bulan melatih kesalahan kecil sampai jadi permanen — huruf yang salah lafal sehingga mengubah arti kata, atau posisi tubuh yang meleset sedikit. Hal seperti itu mudah diperbaiki di bulan pertama, dan keras kepala di bulan kedua belas."]}
+];
+
+var PRAYERS = [
+ {id:"subuh", name:"Subuh", time:"Dawn", rak:2, aloud:"Aloud",
+  diff:"Shortest prayer. Qunut is said standing after the bow in rakaat 2 — sunnah in the Shafi'i school, and the usual practice in NU-affiliated mosques. Muhammadiyah generally does not read it, and Hanafi and Hanbali hold there is no qunut in Subuh at all. Both are established positions. No middle tashahhud — only two rakaat, so you sit once, at the end."},
+ {id:"dzuhur", name:"Dzuhur", time:"Midday", rak:4, aloud:"Silent",
+  diff:"Recited silently — even Al-Fatihah. Middle tashahhud after rakaat 2. Rakaat 3 and 4 are Al-Fatihah only, no extra surah."},
+ {id:"ashar", name:"Ashar", time:"Afternoon", rak:4, aloud:"Silent",
+  diff:"Identical in structure to Dzuhur. Silent throughout, middle tashahhud after rakaat 2, no extra surah in rakaat 3 and 4."},
+ {id:"maghrib", name:"Maghrib", time:"Just after sunset", rak:3, aloud:"Aloud in 1–2",
+  diff:"The only prayer with an odd three rakaat. Aloud in rakaat 1 and 2, silent in rakaat 3. Middle tashahhud after rakaat 2, then a single rakaat with Al-Fatihah only."},
+ {id:"isya", name:"Isya", time:"Night", rak:4, aloud:"Aloud in 1–2",
+  diff:"Aloud in rakaat 1 and 2, silent in 3 and 4. Middle tashahhud after rakaat 2. Rakaat 3 and 4 are Al-Fatihah only."}
+];
+
+/* parts of the prayer — the reference section */
+var PARTS = [
+ {id:"niat", fig:"qiyam", pos:"Standing", n:"Before you begin", t:"Niat — the intention",
+  ar:"", tl:"", times:"",
+  en:"The intention is formed in the heart: which prayer you are about to pray, and that you are praying it for God. Many Indonesians also say it aloud in Arabic beforehand; that spoken form is a customary aid, not the intention itself.",
+  id:"Niat dibentuk di dalam hati: sholat apa yang akan kamu kerjakan, dan bahwa kamu mengerjakannya karena Allah. Banyak orang Indonesia juga melafalkannya dalam bahasa Arab sebelum takbir; lafal itu adalah alat bantu yang lazim, bukan niat itu sendiri.",
+  why:"This is the line between an act of worship and a set of movements. Standing, bending and touching your head to the floor is exercise until intention makes it a prayer — which is why it comes first.",
+  whyid:"Inilah garis antara ibadah dan sekadar gerakan. Berdiri, membungkuk, dan menyentuhkan kepala ke lantai hanyalah olahraga sampai niat menjadikannya sholat — karena itu ia datang lebih dulu.",
+  more:["You do not need to say anything out loud for the intention to be valid, and you do not need to compose a formula in your head. Knowing, as you raise your hands, that this is Maghrib and that it is for God — that is the intention.","Scrupulosity here is a known trap. People repeat the intention over and over, restart prayers, and work themselves into anxiety. The tradition treats that as an illness to be resisted, not as extra care."],
+  moreid:["Kamu tidak perlu mengucapkan apa pun dengan suara untuk niat yang sah, dan tidak perlu menyusun rumusan di kepala. Mengetahui, saat mengangkat tangan, bahwa ini Maghrib dan ini karena Allah — itulah niatnya.","Berlebihan di titik ini adalah jebakan yang dikenal. Orang mengulang-ulang niat, membatalkan sholat, dan membuat dirinya cemas. Tradisi memperlakukan itu sebagai penyakit yang harus dilawan, bukan sebagai kehati-hatian tambahan."]},
+
+ {id:"takbir", fig:"takbir", pos:"Standing", n:"Step 1", t:"Takbiratul Ihram — the opening",
+  ar:"اللَّهُ أَكْبَرُ", tl:"Allāhu akbar", times:"Once",
+  en:"God is greater.",
+  id:"Allah Maha Besar.",
+  why:"Not 'greatest' — 'greater'. The sentence is deliberately left open: greater than whatever you walked in carrying. The unanswered email, the argument, the thing you're anxious about. You name none of them, and it covers all of them.",
+  whyid:"Bukan 'terbesar' — tapi 'lebih besar'. Kalimatnya sengaja dibiarkan terbuka: lebih besar daripada apa pun yang kamu bawa masuk. Email yang belum dibalas, pertengkaran, hal yang membuatmu cemas. Kamu tidak menyebut satu pun, dan ia mencakup semuanya.",
+  more:["The word ihram in the name means to make something forbidden. From this moment, things that were perfectly fine a second ago — talking, eating, turning around — are closed off until you say the salam. You have stepped inside a boundary.","Raising the hands to the shoulders as you say it is the oldest gesture in the prayer, and it reads as both surrender and setting-aside: palms open, nothing held."],
+  moreid:["Kata ihram dalam namanya berarti mengharamkan sesuatu. Sejak saat ini, hal-hal yang sedetik lalu biasa saja — berbicara, makan, menoleh — menjadi tertutup sampai kamu mengucapkan salam. Kamu telah melangkah ke dalam sebuah batas.","Mengangkat tangan setinggi bahu saat mengucapkannya adalah gerakan tertua dalam sholat, dan ia terbaca sebagai penyerahan sekaligus pengesampingan: telapak terbuka, tidak menggenggam apa pun."]},
+
+ {id:"iftitah", fig:"qiyam", pos:"Standing", n:"Step 2", t:"Doa Iftitah — the opening supplication",
+  ar:"اللَّهُ أَكْبَرُ كَبِيرًا وَالْحَمْدُ لِلَّهِ كَثِيرًا وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلًا ۝ إِنِّي وَجَّهْتُ وَجْهِيَ لِلَّذِي فَطَرَ السَّمَاوَاتِ وَالْأَرْضَ حَنِيفًا مُسْلِمًا وَمَا أَنَا مِنَ الْمُشْرِكِينَ ۝ إِنَّ صَلَاتِي وَنُسُكِي وَمَحْيَايَ وَمَمَاتِي لِلَّهِ رَبِّ الْعَالَمِينَ ۝ لَا شَرِيكَ لَهُ وَبِذَٰلِكَ أُمِرْتُ وَأَنَا مِنَ الْمُسْلِمِينَ",
+  tl:"Allāhu akbar kabīrā, walḥamdu lillāhi kaṡīrā, wa subḥānallāhi bukratan wa aṣīlā. Innī wajjahtu wajhiya lillażī faṭaras-samāwāti wal-arḍa ḥanīfam muslimāw wa mā ana minal-musyrikīn. Inna ṣalātī wa nusukī wa maḥyāya wa mamātī lillāhi rabbil-'ālamīn. Lā syarīka lahu wa biżālika umirtu wa ana minal-muslimīn.",
+  times:"Rakaat 1 only",
+  en:"God is greater, greatly so; abundant praise belongs to God; glory to God morning and evening. I have turned my face toward the One who brought the heavens and the earth into being, inclining to truth, in submission — and I am not among those who associate others with Him. My prayer, my devotion, my living and my dying belong to God, Lord of all the worlds. He has no partner. With this I was commanded, and I am among those who submit.",
+  id:"Allah Maha Besar dengan segala kebesaran-Nya; segala puji yang banyak bagi Allah; Maha Suci Allah di waktu pagi dan petang. Aku hadapkan wajahku kepada Dzat yang menciptakan langit dan bumi, dengan lurus dan berserah diri — dan aku bukan termasuk orang yang menyekutukan-Nya. Sungguh sholatku, ibadahku, hidupku, dan matiku adalah milik Allah, Tuhan semesta alam. Tiada sekutu bagi-Nya. Dengan itu aku diperintahkan, dan aku termasuk orang-orang yang berserah diri.",
+  why:"Read what you just committed to: your prayer, your worship, your life and your death. It is the widest statement in the whole prayer, and it is made before you ask for a single thing. Sunnah, not obligatory — but skipping it removes the frame.",
+  whyid:"Bacalah apa yang baru saja kamu ikrarkan: sholatmu, ibadahmu, hidupmu, dan matimu. Ini pernyataan terluas dalam seluruh sholat, dan diucapkan sebelum kamu meminta satu hal pun. Hukumnya sunnah, bukan wajib — tapi meninggalkannya menghilangkan bingkainya.",
+  more:["It's said silently, only in the first rakaat, in the gap between the opening takbir and Al-Fatihah. If you're praying behind an imam you say it then too, quietly to yourself.","There are several accepted wordings; this is the one most common in Indonesia. Others are shorter. If your teacher gives you a different version, use theirs — it is not a correction, just a different valid narration."],
+  moreid:["Dibaca pelan, hanya di rakaat pertama, di sela antara takbiratul ihram dan Al-Fatihah. Kalau kamu bermakmum, tetap dibaca sendiri dengan lirih.","Ada beberapa lafal yang diterima; ini yang paling umum di Indonesia. Yang lain lebih pendek. Kalau gurumu memberi versi berbeda, pakai versi beliau — itu bukan koreksi, hanya riwayat sah yang lain."]},
+
+ {id:"fatihah-ref", fig:"qiyam", pos:"Standing", n:"Step 3", t:"Al-Fatihah",
+  ar:"", tl:"", times:"Every rakaat",
+  en:"Recited in every rakaat of every prayer — seventeen rakaat a day, so seventeen times. Because you already have it memorised, it's in the Surahs section below with the meaning of each verse rather than repeated here.",
+  id:"Dibaca di setiap rakaat dari setiap sholat — sekitar tujuh belas kali sehari. Karena kamu sudah hafal, teks lengkapnya ada di bagian Surahs di bawah, lengkap dengan makna tiap ayatnya.",
+  why:"It is the one recitation the prayer cannot do without. Everything else in this list can be shortened, substituted or dropped in some circumstance; Al-Fatihah cannot — the single exception being a latecomer who catches the imam already bowing.",
+  whyid:"Inilah satu-satunya bacaan yang tidak bisa ditinggalkan dalam sholat. Semua yang lain dalam daftar ini bisa diringkas, diganti, atau gugur dalam keadaan tertentu; Al-Fatihah tidak — kecuali bagi makmum masbuk yang mendapati imam sudah rukuk.",
+  more:["Worth noticing what kind of text it is: six of its seven verses are addressed to God directly, and the central request is not for wealth, safety or relief. It asks for guidance. That is the thing the prayer decides is most worth asking for, seventeen times a day."],
+  moreid:["Perhatikan jenis teksnya: enam dari tujuh ayatnya ditujukan langsung kepada Allah, dan permintaan intinya bukan harta, keselamatan, atau kelegaan. Yang diminta adalah petunjuk. Itulah yang dianggap paling layak diminta oleh sholat, tujuh belas kali sehari."]},
+
+ {id:"surah-ref", fig:"qiyam", pos:"Standing", n:"Step 4", t:"A short surah",
+  ar:"", tl:"", times:"Rakaat 1 &amp; 2",
+  en:"After Al-Fatihah, a passage from anywhere in the Quran is added — in practice, usually one of the short surahs near the end. This happens in the first two rakaat only.",
+  id:"Setelah Al-Fatihah, ditambahkan bacaan dari Quran — dalam praktiknya biasanya salah satu surah pendek di bagian akhir. Ini hanya dilakukan di dua rakaat pertama.",
+  why:"This is where the prayer stops being fixed. Al-Fatihah never changes; this slot is yours. As you learn more surahs, your own prayer gradually acquires a range it didn't have before.",
+  whyid:"Di sinilah sholat berhenti menjadi sesuatu yang tetap. Al-Fatihah tidak pernah berubah; bagian ini milikmu. Seiring kamu menghafal lebih banyak surah, sholatmu perlahan punya keluasan yang sebelumnya tidak ada.",
+  more:["Beginners almost always use Al-Ikhlas, Al-Falaq and An-Nas, because they are short and near the back of the mushaf. That's a perfectly ordinary place to stay for a year.","Sunnah, not obligatory: if you forget it, the prayer is still valid and you do not restart."],
+  moreid:["Pemula hampir selalu memakai Al-Ikhlas, Al-Falaq, dan An-Nas, karena pendek dan ada di bagian belakang mushaf. Bertahan di situ selama setahun sama sekali biasa.","Hukumnya sunnah, bukan wajib: kalau lupa, sholatmu tetap sah dan tidak perlu diulang."]},
+
+ {id:"ruku", fig:"ruku", pos:"Bowing", n:"Step 5", t:"Ruku' — the bow",
+  ar:"سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ",
+  tl:"Subḥāna rabbiyal-'aẓīmi wa biḥamdih", times:"3×",
+  en:"Glory to my Lord, the Magnificent, and all praise is His.",
+  id:"Maha Suci Tuhanku Yang Maha Agung, dan segala puji bagi-Nya.",
+  why:"Subḥāna is hard to translate: it means to declare something free of every flaw and every unworthy thing said about it. Paired with 'the Magnificent', while your back is level and your eyes are on the floor — the body is making the same claim about rank that the words are.",
+  whyid:"Subḥāna sulit diterjemahkan: artinya menyatakan sesuatu bersih dari segala cacat dan dari segala hal tak pantas yang dikatakan tentangnya. Dipasangkan dengan 'Yang Maha Agung', sementara punggungmu rata dan pandanganmu ke lantai — tubuh sedang menyatakan hal yang sama tentang kedudukan seperti yang dinyatakan kata-katanya.",
+  more:["Three times is the common practice, not a hard minimum; saying it once is enough. Worth knowing what is actually obligatory here: it is the bowing itself plus <b>tuma'ninah</b> — a moment of genuine stillness — not the words. Beginners usually assume the opposite.","Back flat, head neither raised nor dropped, hands on the knees. If the position is uncomfortable, that is usually a sign the back is arched rather than level."],
+  moreid:["Tiga kali adalah praktik yang umum, bukan batas minimum; sekali sudah cukup. Perlu diketahui apa yang sebenarnya wajib di sini: rukuknya itu sendiri beserta <b>tuma'ninah</b> — diam sejenak dengan tenang — bukan bacaannya. Pemula biasanya mengira sebaliknya.","Punggung rata, kepala tidak terangkat dan tidak menunduk, tangan di lutut. Kalau posisinya terasa tidak nyaman, biasanya itu tanda punggung melengkung, bukan datar."]},
+
+ {id:"itidal", fig:"itidal", pos:"Standing again", n:"Step 6", t:"I'tidal — rising",
+  ar:"سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ ۝ رَبَّنَا لَكَ الْحَمْدُ مِلْءُ السَّمَاوَاتِ وَمِلْءُ الْأَرْضِ وَمِلْءُ مَا شِئْتَ مِنْ شَيْءٍ بَعْدُ",
+  tl:"Sami'allāhu liman ḥamidah — Rabbanā lakal-ḥamdu mil'us-samāwāti wa mil'ul-arḍi wa mil'u mā syi'ta min syai'in ba'du",
+  times:"Once",
+  en:"God hears the one who praises Him. Our Lord, to You belongs all praise — filling the heavens, filling the earth, and filling whatever else You wish beyond them.",
+  id:"Allah mendengar orang yang memuji-Nya. Ya Tuhan kami, bagi-Mu segala puji — sepenuh langit, sepenuh bumi, dan sepenuh apa pun yang Engkau kehendaki setelahnya.",
+  why:"The first sentence is a statement that you were heard. It is said in the act of standing back up — so the answer arrives before you have finished rising. Then the praise is measured in volume: the sky's worth, the earth's worth, and more.",
+  whyid:"Kalimat pertama adalah pernyataan bahwa kamu didengar. Ia diucapkan saat bangkit berdiri — jadi jawabannya tiba sebelum kamu selesai bangun. Lalu pujian itu diukur dengan takaran isi: sepenuh langit, sepenuh bumi, dan lebih dari itu.",
+  more:["Praying alone, you say both parts yourself. Behind an imam, he says the first and you answer with the second — one of the few places where the prayer is audibly a conversation between two parties.","In Subuh, this is the standing position where qunut is added in the second rakaat."],
+  moreid:["Kalau sholat sendiri, kamu membaca keduanya. Kalau bermakmum, imam mengucapkan yang pertama dan kamu menjawab dengan yang kedua — salah satu dari sedikit tempat di mana sholat terdengar seperti percakapan dua pihak.","Di sholat Subuh, di posisi berdiri inilah qunut ditambahkan pada rakaat kedua."]},
+
+ {id:"sujud", fig:"sujud", pos:"Prostration", n:"Step 7", t:"Sujud — prostration",
+  ar:"سُبْحَانَ رَبِّيَ الْأَعْلَىٰ وَبِحَمْدِهِ",
+  tl:"Subḥāna rabbiyal-a'lā wa biḥamdih", times:"3× · twice a rakaat",
+  en:"Glory to my Lord, the Most High, and all praise is His.",
+  id:"Maha Suci Tuhanku Yang Maha Tinggi, dan segala puji bagi-Nya.",
+  why:"Compare it to the bow: there the word was 'the Magnificent', here it is 'the Most High' — and it is said at the lowest point your body can reach, forehead on the ground. The maximum distance between the two positions is the whole meaning of the sentence.",
+  whyid:"Bandingkan dengan rukuk: di sana katanya 'Yang Maha Agung', di sini 'Yang Maha Tinggi' — dan diucapkan di titik terendah yang bisa dicapai tubuhmu, dahi di tanah. Jarak maksimum antara dua posisi itulah seluruh makna kalimatnya.",
+  more:["Seven parts touch the ground: forehead with nose, both palms, both knees, the toes of both feet. Not the forearms — they stay off the floor, elbows away from the sides.","This is described in the hadith literature as the position in which a person is closest to God, and the one where personal supplication is most encouraged. Once the required words are said, you may ask for anything, in any language, silently."],
+  moreid:["Tujuh anggota menyentuh lantai: dahi beserta hidung, kedua telapak tangan, kedua lutut, dan ujung jari kedua kaki. Bukan lengan bawah — lengan tidak menempel di lantai, siku direnggangkan dari badan.","Dalam literatur hadis, inilah posisi seorang hamba paling dekat dengan Tuhannya, dan posisi yang paling dianjurkan untuk berdoa. Setelah bacaan wajibnya selesai, kamu boleh meminta apa saja, dalam bahasa apa saja, dalam hati."]},
+
+ {id:"duduk", fig:"duduk", pos:"Sitting", n:"Step 8", t:"Between the two prostrations",
+  ar:"رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي وَارْفَعْنِي وَارْزُقْنِي وَاهْدِنِي وَعَافِنِي وَاعْفُ عَنِّي",
+  tl:"Rabbighfir lī warḥamnī wajburnī warfa'nī warzuqnī wahdinī wa 'āfinī wa'fu 'annī",
+  times:"Each time you sit",
+  en:"My Lord, forgive me, have mercy on me, mend what is broken in me, raise me, provide for me, guide me, give me wellbeing, and pardon me.",
+  id:"Ya Tuhanku, ampunilah aku, sayangilah aku, perbaikilah yang rusak dalam diriku, angkatlah derajatku, berilah aku rezeki, tunjukilah aku, berilah aku kesehatan, dan maafkanlah aku.",
+  why:"Eight requests in one short breath, and they cover almost everything a person needs. If you only learn the meaning of one line in the whole prayer, this is a strong candidate — it is the most nakedly human sentence in it.",
+  whyid:"Delapan permintaan dalam satu tarikan napas pendek, dan hampir semuanya mencakup kebutuhan manusia. Kalau kamu hanya sempat memahami arti satu baris dalam seluruh sholat, ini kandidat kuat — kalimat paling telanjang manusiawi di dalamnya.",
+  more:["Wajburnī is the interesting one. The root is used for setting a broken bone — so it isn't 'improve me', it's closer to 'splint me back together'. It assumes something is already fractured.","This sitting is brief and easy to rush. Slowing it down by three seconds is one of the cheapest improvements available to your prayer."],
+  moreid:["Wajburnī adalah yang menarik. Akar katanya dipakai untuk menyambung tulang yang patah — jadi bukan 'perbaiki aku', tapi lebih dekat ke 'sambungkan kembali yang patah dalam diriku'. Ia mengandaikan ada yang sudah retak.","Duduk ini singkat dan mudah diburu-buru. Memperlambatnya tiga detik saja adalah perbaikan termurah yang tersedia untuk sholatmu."]},
+
+ {id:"tasyahud", fig:"tashahhud", pos:"Sitting", n:"Step 9", t:"Tashahhud — the testimony",
+  ar:"التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ ۝ السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ ۝ السَّلَامُ عَلَيْنَا وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ ۝ أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ",
+  tl:"At-taḥiyyātul-mubārakātuṣ-ṣalawātuṭ-ṭayyibātu lillāh. As-salāmu 'alaika ayyuhan-nabiyyu wa raḥmatullāhi wa barakātuh. As-salāmu 'alainā wa 'alā 'ibādillāhiṣ-ṣāliḥīn. Asyhadu allā ilāha illallāh, wa asyhadu anna Muḥammadar rasūlullāh.",
+  times:"After rakaat 2 &amp; at the end",
+  en:"All greetings, blessings, prayers and good things belong to God. Peace be upon you, O Prophet, and the mercy of God and His blessings. Peace be upon us and upon the righteous servants of God. I bear witness that there is no god but God, and I bear witness that Muhammad is the Messenger of God.",
+  id:"Segala penghormatan, keberkahan, sholawat, dan kebaikan adalah milik Allah. Semoga keselamatan atasmu, wahai Nabi, beserta rahmat Allah dan berkah-Nya. Semoga keselamatan atas kami dan atas hamba-hamba Allah yang saleh. Aku bersaksi bahwa tiada tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah.",
+  why:"The shahadah — the sentence that makes someone a Muslim — sits inside every prayer, at the end. Whatever else the prayer contained that day, it closes by restating the thing the whole religion rests on.",
+  whyid:"Syahadat — kalimat yang menjadikan seseorang muslim — berada di dalam setiap sholat, di bagian akhir. Apa pun isi sholatmu hari itu, ia ditutup dengan menegaskan kembali hal yang menjadi dasar seluruh agama ini.",
+  more:["Notice the order of the greetings: to the Prophet, then to us, then to all righteous servants of God — outward in widening circles, and only then the testimony. Peace is distributed before the claim is made.","The index finger is raised when you reach 'illallāh'. There are differences in exactly how; any of the described ways is fine, and none of them affect validity."],
+  moreid:["Perhatikan urutan salamnya: kepada Nabi, lalu kepada kami, lalu kepada seluruh hamba Allah yang saleh — melebar ke luar dalam lingkaran yang makin besar, dan baru setelah itu syahadat. Keselamatan dibagikan lebih dulu sebelum pernyataan diucapkan.","Jari telunjuk diangkat saat sampai pada 'illallāh'. Ada perbedaan mengenai caranya; cara mana pun yang diriwayatkan boleh, dan tidak ada yang memengaruhi sahnya sholat."]},
+
+ {id:"salawat", fig:"tashahhud", pos:"Sitting", n:"Step 10", t:"Salawat — blessings on the Prophet",
+  ar:"اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ ۝ كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ ۝ وَبَارِكْ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ ۝ كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ ۝ فِي الْعَالَمِينَ إِنَّكَ حَمِيدٌ مَجِيدٌ",
+  tl:"Allāhumma ṣalli 'alā Muḥammad wa 'alā āli Muḥammad, kamā ṣallaita 'alā Ibrāhīm wa 'alā āli Ibrāhīm, wa bārik 'alā Muḥammad wa 'alā āli Muḥammad, kamā bārakta 'alā Ibrāhīm wa 'alā āli Ibrāhīm, fil-'ālamīna innaka ḥamīdum majīd.",
+  times:"Final sitting only",
+  en:"O God, send blessings upon Muhammad and the family of Muhammad, as You sent blessings upon Abraham and the family of Abraham. And bestow favour upon Muhammad and the family of Muhammad, as You bestowed favour upon Abraham and the family of Abraham, among all the worlds. You are truly Praiseworthy, Glorious.",
+  id:"Ya Allah, limpahkanlah sholawat kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau limpahkan sholawat kepada Ibrahim dan keluarga Ibrahim. Limpahkanlah keberkahan kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau limpahkan keberkahan kepada Ibrahim dan keluarga Ibrahim, di seluruh alam. Sungguh Engkau Maha Terpuji lagi Maha Mulia.",
+  why:"Abraham appears in the middle of a Muslim's prayer, five times a day. That is the clearest signal in the whole liturgy that this is not presented as a new religion but as the continuation of an older line.",
+  whyid:"Ibrahim muncul di tengah sholat seorang muslim, lima kali sehari. Itulah isyarat paling jelas dalam seluruh rangkaian ini bahwa Islam tidak menampilkan dirinya sebagai agama baru, melainkan kelanjutan dari garis yang lebih tua.",
+  more:["In the middle sitting after rakaat 2, the short form — 'Allāhumma ṣalli 'alā Muḥammad' — is what most people say before standing again. The full version above belongs to the final sitting.","In the last sitting, after this, there is room for personal supplication before the salam. Anything, in any language. Most people never use it, which is a shame."],
+  moreid:["Pada duduk pertengahan setelah rakaat kedua, kebanyakan orang cukup membaca bentuk pendeknya — 'Allāhumma ṣalli 'alā Muḥammad' — sebelum berdiri lagi. Versi lengkap di atas untuk duduk terakhir.","Di duduk terakhir, setelah bacaan ini, ada ruang untuk doa pribadi sebelum salam. Apa saja, dalam bahasa apa saja. Kebanyakan orang tidak pernah memakainya, dan itu sayang sekali."]},
+
+ {id:"salam", fig:"salam", pos:"Sitting", n:"Step 11", t:"Salam — the closing",
+  ar:"السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ",
+  tl:"As-salāmu 'alaikum wa raḥmatullāh", times:"Twice · right, left",
+  en:"Peace be upon you, and the mercy of God.",
+  id:"Semoga keselamatan dan rahmat Allah atas kalian.",
+  why:"The prayer ends by turning outward and greeting people. You spent the last several minutes entirely vertical — addressing God — and the exit is horizontal: to the person on your right, the person on your left, whether or not anyone is there.",
+  whyid:"Sholat berakhir dengan menoleh ke luar dan memberi salam kepada orang lain. Beberapa menit terakhir sepenuhnya vertikal — berbicara kepada Allah — dan pintu keluarnya horizontal: kepada orang di kananmu, orang di kirimu, ada atau tidak ada orang di sana.",
+  more:["This is what releases you from the boundary the opening takbir created. After the salam, everything that was closed off is open again.","A precision worth knowing: in the Shafi'i school only the <b>first</b> salam is a rukn. The second is sunnah, and a prayer with just one is still valid. Say both — but if you forget the second, nothing is broken.","The design is worth sitting with: a private act of worship is not allowed to end privately. It ends by wishing peace on whoever is beside you."],
+  moreid:["Inilah yang melepaskanmu dari batas yang diciptakan takbiratul ihram. Setelah salam, semua yang tadi tertutup kembali terbuka.","Satu ketelitian yang perlu diketahui: dalam mazhab Syafi'i hanya salam <b>pertama</b> yang merupakan rukun. Salam kedua hukumnya sunnah, dan sholat dengan satu salam saja tetap sah. Ucapkan keduanya — tapi kalau lupa yang kedua, tidak ada yang rusak.","Rancangan ini layak direnungkan: ibadah yang bersifat pribadi tidak dibiarkan berakhir secara pribadi. Ia berakhir dengan mendoakan keselamatan bagi siapa pun yang ada di sebelahmu."]}
+];
+
+var SURAHS = [
+ {name:"Al-Fatihah", meta:"The Opening · 7 verses · every rakaat",
+  intro:"You know this one. Read it for what it asks rather than how it sounds.",
+  introid:"Kamu sudah hafal yang ini. Bacalah untuk memahami apa yang dimintanya, bukan bagaimana bunyinya.",
+  v:[
+   {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", tl:"Bismillāhir-raḥmānir-raḥīm",
+    en:"In the name of God, the Most Compassionate, the Most Merciful.",
+    id:"Dengan nama Allah, Yang Maha Pengasih, Yang Maha Penyayang."},
+   {ar:"الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", tl:"Al-ḥamdu lillāhi rabbil-'ālamīn",
+    en:"All praise belongs to God, Lord of all the worlds.",
+    id:"Segala puji bagi Allah, Tuhan semesta alam."},
+   {ar:"الرَّحْمَٰنِ الرَّحِيمِ", tl:"Ar-raḥmānir-raḥīm",
+    en:"The Most Compassionate, the Most Merciful.",
+    id:"Yang Maha Pengasih, Yang Maha Penyayang."},
+   {ar:"مَالِكِ يَوْمِ الدِّينِ", tl:"Māliki yawmid-dīn",
+    en:"Master of the Day of Judgement.",
+    id:"Pemilik hari pembalasan."},
+   {ar:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", tl:"Iyyāka na'budu wa iyyāka nasta'īn",
+    en:"You alone we worship, and You alone we ask for help.",
+    id:"Hanya kepada-Mu kami menyembah, dan hanya kepada-Mu kami memohon pertolongan."},
+   {ar:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", tl:"Ihdinaṣ-ṣirāṭal-mustaqīm",
+    en:"Guide us along the straight path.",
+    id:"Tunjukilah kami jalan yang lurus."},
+   {ar:"صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+    tl:"Ṣirāṭal-lażīna an'amta 'alayhim, ghayril-maghḍūbi 'alayhim wa laḍ-ḍāllīn",
+    en:"The path of those You have blessed — not of those who have earned anger, nor of those who have gone astray.",
+    id:"Jalan orang-orang yang telah Engkau beri nikmat — bukan jalan mereka yang dimurkai, dan bukan pula jalan mereka yang sesat."}],
+  why:"Look at the structure. Three verses of praise, one hinge verse where it turns to 'we', then the request. The asking is placed last and it asks for guidance, not relief. Also notice the shift from 'He' to 'You' at verse 5 — the surah stops describing God and starts speaking to Him.",
+  whyid:"Perhatikan strukturnya. Tiga ayat pujian, satu ayat engsel yang beralih ke 'kami', lalu permohonan. Permintaan diletakkan paling akhir, dan yang diminta adalah petunjuk, bukan kelegaan. Perhatikan juga peralihan dari 'Dia' ke 'Engkau' di ayat kelima — surah ini berhenti menggambarkan Allah dan mulai berbicara kepada-Nya."},
+
+ {name:"Al-Ikhlas", meta:"Sincerity · 4 verses · surah 112",
+  intro:"The shortest one people learn first, and the densest theologically.",
+  introid:"Surah terpendek yang biasanya dihafal pertama, dan paling padat secara teologis.",
+  v:[
+   {ar:"قُلْ هُوَ اللَّهُ أَحَدٌ", tl:"Qul huwallāhu aḥad",
+    en:"Say: He is God, One.", id:"Katakanlah: Dialah Allah, Yang Maha Esa."},
+   {ar:"اللَّهُ الصَّمَدُ", tl:"Allāhuṣ-ṣamad",
+    en:"God, the Eternal Refuge — depended upon by all, dependent on none.",
+    id:"Allah tempat bergantung segala sesuatu — bergantung kepada-Nya semua, dan Dia tidak bergantung kepada siapa pun."},
+   {ar:"لَمْ يَلِدْ وَلَمْ يُولَدْ", tl:"Lam yalid wa lam yūlad",
+    en:"He does not beget, nor was He begotten.",
+    id:"Dia tidak beranak dan tidak pula diperanakkan."},
+   {ar:"وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ", tl:"Wa lam yakul lahū kufuwan aḥad",
+    en:"And there is nothing comparable to Him.",
+    id:"Dan tidak ada sesuatu pun yang setara dengan Dia."}],
+  why:"Four lines defining God entirely by negation — not born, does not give birth, has no equal. It answers 'what is God?' by removing every category you might try to file Him under. This is the doctrine of tawhid in its most compressed form.",
+  whyid:"Empat baris yang mendefinisikan Tuhan sepenuhnya lewat penafian — tidak dilahirkan, tidak melahirkan, tidak ada yang setara. Ia menjawab 'siapa Tuhan?' dengan menyingkirkan setiap kategori yang mungkin kamu pakai untuk menempatkan-Nya. Inilah tauhid dalam bentuk paling padat."},
+
+ {name:"Al-Falaq", meta:"The Daybreak · 5 verses · surah 113",
+  intro:"A request for protection. Paired with An-Nas, which follows it.",
+  introid:"Permohonan perlindungan. Berpasangan dengan An-Nas yang mengikutinya.",
+  v:[
+   {ar:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ", tl:"Qul a'ūżu birabbil-falaq",
+    en:"Say: I take refuge with the Lord of the daybreak,",
+    id:"Katakanlah: Aku berlindung kepada Tuhan yang menguasai subuh,"},
+   {ar:"مِنْ شَرِّ مَا خَلَقَ", tl:"Min syarri mā khalaq",
+    en:"from the harm in what He has created,",
+    id:"dari kejahatan yang ada pada makhluk-Nya,"},
+   {ar:"وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ", tl:"Wa min syarri ghāsiqin iżā waqab",
+    en:"from the harm of darkness when it settles,",
+    id:"dan dari kejahatan malam apabila telah gelap gulita,"},
+   {ar:"وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ", tl:"Wa min syarrin-naffāṡāti fil-'uqad",
+    en:"from the harm of those who blow on knots,",
+    id:"dan dari kejahatan orang-orang yang meniup pada buhul-buhul,"},
+   {ar:"وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ", tl:"Wa min syarri ḥāsidin iżā ḥasad",
+    en:"and from the harm of an envier when he envies.",
+    id:"dan dari kejahatan orang yang dengki apabila ia dengki."}],
+  why:"The named threats are specific and escalating: creation in general, then night, then deliberate harm, then envy. It ends on envy — the only one that lives in another person's heart and needs no action to reach you.",
+  whyid:"Ancaman yang disebut bersifat spesifik dan menaik: makhluk secara umum, lalu malam, lalu kejahatan yang disengaja, lalu kedengkian. Ia berakhir pada kedengkian — satu-satunya yang hidup di dalam hati orang lain dan tak perlu perbuatan untuk sampai kepadamu."},
+
+ {name:"An-Nas", meta:"Mankind · 6 verses · surah 114",
+  intro:"The last surah in the Quran, and the natural partner to Al-Falaq.",
+  introid:"Surah terakhir dalam Quran, dan pasangan alami Al-Falaq.",
+  v:[
+   {ar:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ", tl:"Qul a'ūżu birabbin-nās",
+    en:"Say: I take refuge with the Lord of mankind,", id:"Katakanlah: Aku berlindung kepada Tuhan manusia,"},
+   {ar:"مَلِكِ النَّاسِ", tl:"Malikin-nās", en:"the King of mankind,", id:"Raja manusia,"},
+   {ar:"إِلَٰهِ النَّاسِ", tl:"Ilāhin-nās", en:"the God of mankind,", id:"Sembahan manusia,"},
+   {ar:"مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ", tl:"Min syarril-waswāsil-khannās",
+    en:"from the harm of the whisperer who withdraws,",
+    id:"dari kejahatan bisikan setan yang bersembunyi,"},
+   {ar:"الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ", tl:"Allażī yuwaswisu fī ṣudūrin-nās",
+    en:"who whispers into the hearts of mankind,", id:"yang membisikkan ke dalam dada manusia,"},
+   {ar:"مِنَ الْجِنَّةِ وَالنَّاسِ", tl:"Minal-jinnati wan-nās",
+    en:"whether from among jinn or from among people.", id:"dari golongan jin dan manusia."}],
+  why:"Where Al-Falaq asks protection from external harm, this one asks protection from an internal one — a whisper in the chest. And it ends by noting the whisperer may be a human being, which lands differently than expected.",
+  whyid:"Kalau Al-Falaq memohon perlindungan dari bahaya di luar, surah ini memohon perlindungan dari bahaya di dalam — bisikan di dalam dada. Dan ia ditutup dengan catatan bahwa pembisik itu bisa jadi manusia, yang terasa berbeda dari dugaan."},
+
+ {name:"Al-'Asr", meta:"Time · 3 verses · surah 103",
+  intro:"Three lines. Often described as a summary of the entire message.",
+  introid:"Tiga baris. Sering disebut sebagai ringkasan seluruh ajaran.",
+  v:[
+   {ar:"وَالْعَصْرِ", tl:"Wal-'aṣr", en:"By time —", id:"Demi masa —"},
+   {ar:"إِنَّ الْإِنْسَانَ لَفِي خُسْرٍ", tl:"Innal-insāna lafī khusr",
+    en:"humanity is surely at a loss,", id:"sungguh manusia berada dalam kerugian,"},
+   {ar:"إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ",
+    tl:"Illallażīna āmanū wa 'amiluṣ-ṣāliḥāti wa tawāṣau bil-ḥaqqi wa tawāṣau biṣ-ṣabr",
+    en:"except those who believe, do good, and counsel one another to truth and to patience.",
+    id:"kecuali orang-orang yang beriman, mengerjakan kebajikan, serta saling menasihati dalam kebenaran dan kesabaran."}],
+  why:"An accounting metaphor: time is spent, everyone is running at a loss, and four things put you in the black — believing, doing good, telling each other the truth, and holding steady. Note that two of the four are things you cannot do alone.",
+  whyid:"Metafora pembukuan: waktu terus terpakai, semua orang merugi, dan empat hal membuatmu kembali surplus — beriman, berbuat baik, saling mengatakan kebenaran, dan bertahan sabar. Perhatikan bahwa dua dari empat hal itu tidak bisa kamu lakukan sendirian."}
+];
+
+var WUDHU = [
+ {t:"Intention", d:"Formed in the heart as you begin — that this washing is for purification before worship.",
+  id:"Dibentuk dalam hati saat memulai — bahwa bersuci ini untuk ibadah.", ob:true},
+ {t:"Wash both hands to the wrists", d:"Three times. Sunnah, and the natural first move.",
+  id:"Tiga kali. Sunnah, dan gerakan pembuka yang wajar.", ob:false},
+ {t:"Rinse the mouth and nose", d:"Three times each. Sunnah; water taken into the mouth and lightly into the nose, then expelled.",
+  id:"Masing-masing tiga kali. Sunnah; berkumur dan memasukkan air ke hidung dengan ringan, lalu dikeluarkan.", ob:false},
+ {t:"Wash the face", d:"Three times, from the hairline to below the chin, ear to ear. Obligatory.",
+  id:"Tiga kali, dari batas rambut sampai bawah dagu, dari telinga ke telinga. Wajib.", ob:true},
+ {t:"Wash both arms to the elbows", d:"Three times, right then left, including the elbows. Obligatory.",
+  id:"Tiga kali, kanan lalu kiri, termasuk sikunya. Wajib.", ob:true},
+ {t:"Wipe part of the head", d:"With wet hands. Obligatory — in Shafi'i (and Hanafi) practice wiping any part suffices, though most wipe the whole head. Maliki and Hanbali require the whole head.",
+  id:"Dengan tangan basah. Wajib — dalam mazhab Syafi'i (dan Hanafi) mengusap sebagian saja sudah cukup, meski umumnya diusap seluruhnya. Maliki dan Hanbali mewajibkan seluruh kepala.", ob:true},
+ {t:"Wipe the ears", d:"Inside and out, with wet hands. Sunnah.",
+  id:"Bagian dalam dan luar, dengan tangan basah. Sunnah.", ob:false},
+ {t:"Wash both feet to the ankles", d:"Three times, right then left, between the toes. Obligatory.",
+  id:"Tiga kali, kanan lalu kiri, termasuk sela-sela jari. Wajib.", ob:true},
+ {t:"In order (tartib)", d:"The obligatory acts must follow this sequence. Obligatory — and note that the intention must be present at the moment you begin washing the face, not merely beforehand.",
+  id:"Rukun-rukun wajib harus dilakukan berurutan. Wajib — dan niat harus hadir pada saat mulai membasuh wajah, bukan sekadar sebelumnya.", ob:true},
+ {t:"Without long gaps (muwalat)", d:"Doing it continuously, so one limb has not dried before the next is washed. In the Shafi'i school this is sunnah, not obligatory — your wudhu is still valid if you were interrupted. Maliki and Hanbali hold it obligatory.",
+  id:"Melakukannya berkesinambungan, sehingga satu anggota belum kering sebelum yang berikutnya dibasuh. Dalam mazhab Syafi'i ini sunnah, bukan wajib — wudhumu tetap sah meski sempat terputus. Maliki dan Hanbali mewajibkannya.", ob:false}
+];
+
+var VOCAB = [
+ {ar:"اللّٰه", tl:"Allāh", en:"God", id:"Allah", note:"Not a personal name among many — the word is simply 'the God', with the definite article built in."},
+ {ar:"أَكْبَر", tl:"akbar", en:"greater", id:"lebih besar", note:"Comparative, not superlative. Greater than — with the object deliberately left unsaid."},
+ {ar:"الْحَمْد", tl:"al-ḥamd", en:"all praise", id:"segala puji", note:"Praise combined with gratitude — admiring something and being thankful for it at once."},
+ {ar:"رَبّ", tl:"rabb", en:"Lord, sustainer", id:"Tuhan, pemelihara", note:"Carries raising and nurturing, not just authority. Closer to 'the one who brings a thing to completion'."},
+ {ar:"الْعَالَمِين", tl:"al-'ālamīn", en:"all the worlds", id:"semesta alam", note:"Plural and deliberately vague — every world, every realm, everything there is."},
+ {ar:"الرَّحْمٰن", tl:"ar-raḥmān", en:"the Most Compassionate", id:"Yang Maha Pengasih", note:"From a root meaning womb. Mercy as something enveloping, given before it is earned."},
+ {ar:"الرَّحِيم", tl:"ar-raḥīm", en:"the Most Merciful", id:"Yang Maha Penyayang", note:"Same root, different form — mercy as continuous action rather than as a nature."},
+ {ar:"مَالِك", tl:"mālik", en:"master, owner", id:"pemilik", note:"Ownership rather than rule — the one to whom the thing belongs."},
+ {ar:"يَوْم", tl:"yawm", en:"day", id:"hari", note:"Also a period or era, not strictly twenty-four hours."},
+ {ar:"الدِّين", tl:"ad-dīn", en:"judgement, recompense", id:"pembalasan, agama", note:"The same word means religion and reckoning — a debt being settled."},
+ {ar:"إِيَّاكَ", tl:"iyyāka", en:"You alone", id:"hanya kepada-Mu", note:"Placed first in the sentence for emphasis. The word order itself carries the 'alone'."},
+ {ar:"نَعْبُد", tl:"na'budu", en:"we worship", id:"kami menyembah", note:"Root means to serve. And note 'we' — you are never praying purely alone."},
+ {ar:"نَسْتَعِين", tl:"nasta'īn", en:"we seek help", id:"kami mohon pertolongan", note:"Asking for aid in doing something, not for it to be done for you."},
+ {ar:"اهْدِنَا", tl:"ihdinā", en:"guide us", id:"tunjukilah kami", note:"The central request of the whole prayer — and it is a request for direction, not rescue."},
+ {ar:"الصِّرَاط", tl:"aṣ-ṣirāṭ", en:"the path", id:"jalan", note:"A wide, clear, paved road — not a narrow track."},
+ {ar:"الْمُسْتَقِيم", tl:"al-mustaqīm", en:"straight", id:"yang lurus", note:"Straight in the sense of upright and without deviation."},
+ {ar:"سُبْحَانَ", tl:"subḥāna", en:"glory be to", id:"Maha Suci", note:"Declaring something free of every defect and every unworthy thing said of it."},
+ {ar:"الْعَظِيم", tl:"al-'aẓīm", en:"the Magnificent", id:"Yang Maha Agung", note:"Said in the bow — greatness of stature."},
+ {ar:"الْأَعْلَى", tl:"al-a'lā", en:"the Most High", id:"Yang Maha Tinggi", note:"Said in prostration, at your lowest physical point. The contrast is the meaning."},
+ {ar:"سَمِعَ", tl:"sami'a", en:"heard", id:"mendengar", note:"Past tense. Said while rising — the hearing has already happened."},
+ {ar:"اغْفِرْ لِي", tl:"ighfir lī", en:"forgive me", id:"ampunilah aku", note:"Root means to cover — to conceal a fault rather than to erase it."},
+ {ar:"ارْحَمْنِي", tl:"irḥamnī", en:"have mercy on me", id:"sayangilah aku", note:"Same root as ar-raḥmān. You are asking for the quality you named at the start."},
+ {ar:"ارْزُقْنِي", tl:"irzuqnī", en:"provide for me", id:"berilah aku rezeki", note:"Rizq is any provision — money, health, knowledge, company."},
+ {ar:"السَّلَام", tl:"as-salām", en:"peace", id:"keselamatan", note:"Also safety and wholeness. Shares its root with the word Islam."},
+ {ar:"عَلَيْكُم", tl:"'alaikum", en:"upon you (plural)", id:"atas kalian", note:"Plural even when you are alone at the closing salam."},
+ {ar:"رَحْمَة", tl:"raḥmah", en:"mercy", id:"rahmat", note:"The noun form of the root behind ar-raḥmān and irḥamnī."},
+ {ar:"بَرَكَات", tl:"barakāt", en:"blessings", id:"berkah", note:"Increase that is settled and lasting rather than sudden."},
+ {ar:"أَشْهَد", tl:"ashhadu", en:"I bear witness", id:"aku bersaksi", note:"Testimony from direct knowledge, not opinion — a legal weight to the word."},
+ {ar:"لَا إِلٰهَ إِلَّا اللّٰه", tl:"lā ilāha illallāh", en:"there is no god but God", id:"tiada tuhan selain Allah", note:"A denial followed by an exception. It clears the ground first, then affirms."},
+ {ar:"رَسُول", tl:"rasūl", en:"messenger", id:"utusan", note:"One sent carrying a message — the emphasis is on the sending, not the rank."},
+ {ar:"صَلِّ", tl:"ṣalli", en:"send blessings", id:"limpahkanlah sholawat", note:"Same root as ṣalāh, the word for the prayer itself."}
+];
+
+/* ============================ POSE FIGURES ============================ */
+// Pose library — side profile, facing RIGHT (qibla to the right).
+// viewBox 0 0 200 200, ground at y=182.
+// Limbs are drawn back-to-front; each gets a surface-coloured halo first so
+// overlapping strokes read as "in front of" rather than merging into a blob.
+var POSES = {
+
+ takbir: { label:"Takbiratul Ihram", head:{cx:100,cy:44,r:13}, headAfter:3,
+   limbs:[
+     [96,118, 94,150, 92,181],
+     [100,62, 100,118],
+     [104,118, 105,150, 107,181],
+     [97,68, 78,90, 74,58],               // far arm: elbow low, hand up beside ear
+     [103,68, 122,90, 126,58]             // near arm
+   ]},
+
+ qiyam: { label:"Standing", head:{cx:100,cy:44,r:13},
+   limbs:[
+     [96,118, 94,150, 92,181],
+     [100,62, 100,118],
+     [104,118, 105,150, 107,181],
+     [103,68, 119,100, 96,92]             // one arm, folded across the body
+   ]},
+
+ ruku: { label:"Bowing", head:{cx:168,cy:104,r:13},
+   limbs:[
+     [96,117, 95,150, 93,181],
+     [100,114, 148,108],
+     [106,119, 107,150, 109,181],
+     [148,111, 110,144]
+   ]},
+
+ itidal: { label:"Standing again", head:{cx:100,cy:44,r:13},
+   limbs:[
+     [96,118, 94,150, 92,181],
+     [100,62, 100,118],
+     [104,118, 105,150, 107,181],
+     [94,69, 82,98, 84,122],              // far arm, held clear of the body
+     [106,69, 118,98, 116,122]            // near arm
+   ]},
+
+ sujud: { label:"Prostration", head:{cx:157,cy:167,r:12},
+   limbs:[
+     [70,181, 98,178],
+     [98,178, 106,133],
+     [106,133, 138,155],
+     [138,155, 152,133, 178,176]          // arm: raised elbow, forearm passing behind the head, palm on the ground
+   ]},
+
+ duduk: { label:"Sitting", head:{cx:105,cy:84,r:13},
+   limbs:[
+     [96,158, 74,178],
+     [96,158, 102,100],
+     [96,158, 136,162],
+     [136,162, 140,181],
+     [103,105, 113,133, 131,158]
+   ]},
+
+ tashahhud: { label:"Tashahhud", head:{cx:105,cy:84,r:13},
+   limbs:[
+     [96,158, 74,178],
+     [96,158, 102,100],
+     [96,158, 136,162],
+     [136,162, 140,181],
+     [103,105, 113,132, 129,153],
+     [129,153, 143,140]
+   ]},
+
+ salam: { label:"Salam", head:{cx:105,cy:84,r:13},
+   limbs:[
+     [96,158, 74,178],
+     [96,158, 102,100],
+     [96,158, 136,162],
+     [136,162, 140,181],
+     [103,105, 113,133, 131,158]
+   ], turn:true }
+};
+
+function poseSVG(key, size){
+  var p = POSES[key]; if(!p) return '';
+  var s = size || 92;
+  // normalise: fit the viewBox to this pose's own bounding box so every
+  // figure fills its frame instead of floating in a fixed 200x200 field
+  var xs=[], ys=[];
+  p.limbs.forEach(function(l){ for(var i=0;i<l.length;i+=2){ xs.push(l[i]); ys.push(l[i+1]); } });
+  xs.push(p.head.cx-p.head.r, p.head.cx+p.head.r);
+  ys.push(p.head.cy-p.head.r, p.head.cy+p.head.r);
+  var pad=14;
+  var x0=Math.min.apply(null,xs)-pad, x1=Math.max.apply(null,xs)+pad;
+  var y0=Math.min.apply(null,ys)-pad, y1=Math.max.apply(null,ys)+pad;
+  if(y1 < 190) y1 = 190;                       // always show the ground line
+  var w=x1-x0, h=y1-y0, side=Math.max(w,h);
+  x0 -= (side-w)/2; y0 -= (side-h)/2;           // square, centred
+  var vb = x0.toFixed(1)+' '+y0.toFixed(1)+' '+side.toFixed(1)+' '+side.toFixed(1);
+
+  function head(){
+    return '<circle class="halo" cx="'+p.head.cx+'" cy="'+p.head.cy+'" r="'+p.head.r+'"/>'+
+           '<circle class="fig" cx="'+p.head.cx+'" cy="'+p.head.cy+'" r="'+p.head.r+'"/>';
+  }
+  var out = '<svg class="pose" viewBox="'+vb+'" width="'+s+'" height="'+s+'" role="img" aria-label="'+p.label+' position">';
+  out += '<line class="ground" x1="'+(x0+4).toFixed(1)+'" y1="182" x2="'+(x0+side-4).toFixed(1)+'" y2="182"/>';
+  var hi = (typeof p.headAfter === 'number') ? p.headAfter : p.limbs.length;
+  p.limbs.forEach(function(l,i){
+    if(i === hi) out += head();
+    var pts=[]; for(var j=0;j<l.length;j+=2) pts.push(l[j]+','+l[j+1]);
+    out += '<polyline class="halo" points="'+pts.join(' ')+'"/>';
+    out += '<polyline class="fig" points="'+pts.join(' ')+'"/>';
+  });
+  if(hi >= p.limbs.length) out += head();
+  if(p.turn){
+    out += '<path class="turn" d="M126 70 q14 -4 22 6"/>'+
+           '<path class="turn-head" d="M150 68 l1 12 l-11 -3 z"/>';
+  }
+  out += '</svg>';
+  return out;
+}
+
+
+/* ============================ STORIES ============================ */
+var STORIES = [
+{
+ t:"The army of the elephant", mins:"2 min", ref:"Surah Al-Fil (105) · complete in 5 verses",
+ hook:"An empire marches on Mecca with a war elephant, and is undone by birds.",
+ p:["In the year the Prophet Muhammad was born, according to the traditional accounts, a governor named Abraha marched on Mecca from Yemen with an army and at least one war elephant — an animal the Arabs had barely seen. He had built a great cathedral in Sana'a and wanted to destroy the Kaaba so that the pilgrimage traffic would come to him instead.",
+   "Abraha's men seized two hundred camels belonging to Abdul-Muttalib, the custodian of the Kaaba and the Prophet's grandfather. Abdul-Muttalib went to the camp to negotiate. Abraha, expecting a plea for the sanctuary, was startled when the old man asked only for his camels back. He said so. Abdul-Muttalib's reply became famous: I am the owner of the camels; the House has an Owner who will defend it.",
+   "The elephant, the accounts say, refused to advance on Mecca. It knelt whenever it was turned toward the city and rose willingly in every other direction. Then flocks of birds came, carrying small stones, and the army was destroyed — struck down and left, in the surah's image, like chewed-up straw.",
+   "The Quran spends five verses on this, and every one of them is a question or a statement addressed to the listener rather than a narration of events. It assumes you already know what happened. It was living memory."],
+ pid:["Pada tahun kelahiran Nabi Muhammad, menurut riwayat yang masyhur, seorang gubernur bernama Abrahah bergerak dari Yaman menuju Mekah dengan pasukan dan setidaknya seekor gajah perang — hewan yang hampir tak pernah dilihat orang Arab. Ia telah membangun katedral megah di Sana'a dan ingin menghancurkan Ka'bah agar arus jamaah berpindah kepadanya.",
+   "Pasukan Abrahah merampas dua ratus unta milik Abdul-Muttalib, penjaga Ka'bah dan kakek Nabi. Abdul-Muttalib datang ke perkemahan untuk berunding. Abrahah, yang mengira ia akan memohon demi keselamatan Ka'bah, terkejut ketika orang tua itu hanya meminta untanya kembali. Abrahah menegurnya. Jawaban Abdul-Muttalib menjadi termasyhur: aku pemilik unta-unta itu; adapun Rumah itu punya Pemilik yang akan menjaganya.",
+   "Gajah itu, kata riwayat, menolak melangkah ke arah Mekah. Ia menderum setiap kali dihadapkan ke kota itu, dan bangkit dengan patuh ke arah mana pun yang lain. Lalu datanglah kawanan burung membawa batu-batu kecil, dan pasukan itu hancur — dijadikan, dalam gambaran surah ini, seperti daun-daun yang dimakan ulat.",
+   "Al-Quran hanya memberi lima ayat untuk peristiwa ini, dan setiap ayatnya berupa pertanyaan atau pernyataan kepada pendengar, bukan penceritaan kejadian. Ia mengandaikan kamu sudah tahu apa yang terjadi. Peristiwa itu masih hidup dalam ingatan orang."],
+ v:[{ref:"Al-Fil 105:1–2",
+     ar:"أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ ۝ أَلَمْ يَجْعَلْ كَيْدَهُمْ فِي تَضْلِيلٍ",
+     tl:"A-lam tara kaifa fa'ala rabbuka bi-aṣḥābil-fīl. A-lam yaj'al kaidahum fī taḍlīl.",
+     en:"Have you not seen what your Lord did with the companions of the elephant? Did He not turn their scheme astray?",
+     id:"Tidakkah kamu melihat bagaimana Tuhanmu memperlakukan pasukan bergajah? Bukankah Dia menjadikan tipu daya mereka sia-sia?"}],
+ why:"Notice that the Quran never narrates the battle. It asks whether you've seen it — twice — and then moves straight to the aftermath. The story is treated as evidence, not entertainment: an argument that a plan can be enormous, well-funded and backed by an elephant, and still not be the thing that decides the outcome.",
+ whyid:"Perhatikan bahwa Al-Quran sama sekali tidak menceritakan jalannya pertempuran. Ia bertanya apakah kamu melihatnya — dua kali — lalu langsung beralih ke akibatnya. Kisah ini diperlakukan sebagai bukti, bukan hiburan: sebuah argumen bahwa sebuah rencana bisa saja besar, berdana kuat, dan didukung gajah, namun tetap bukan itu yang menentukan hasilnya."
+},
+{
+ t:"Sulaiman and the ant", mins:"2 min", ref:"Surah An-Naml (27) · verses 18–19",
+ hook:"A king with an army of jinn and birds stops for a single insect's warning.",
+ p:["Sulaiman — Solomon — is described in the Quran as having been given something no one else was: command over the wind, over jinn, and the ability to understand the speech of birds and animals. He is a prophet-king at the height of worldly power, marching with an army arranged in ranks.",
+   "The column reaches a valley of ants. One ant sees them coming and calls out a warning to the others: get into your homes, or Sulaiman and his troops will crush you without noticing.",
+   "That last clause is the hinge of the story. The ant does not accuse them of cruelty. She assumes they mean no harm and simply will not see what they are stepping on.",
+   "Sulaiman hears it, and the Quran says he smiled, amused at her words. Then he prays — not for victory or for more power, but to be made grateful for what he has been given, and to be enabled to do good that pleases God. A king overhears an insect and it turns him toward gratitude."],
+ pid:["Sulaiman digambarkan dalam Al-Quran sebagai orang yang diberi sesuatu yang tak diberikan kepada siapa pun: kuasa atas angin, atas jin, dan kemampuan memahami bahasa burung dan binatang. Ia seorang nabi sekaligus raja di puncak kekuasaan duniawi, berjalan bersama pasukan yang tersusun rapi.",
+   "Rombongan itu sampai di sebuah lembah semut. Seekor semut melihat mereka datang dan berseru memperingatkan yang lain: masuklah ke tempat tinggal kalian, agar Sulaiman dan bala tentaranya tidak menginjak kalian.",
+   "Anak kalimat terakhir itulah engsel kisahnya. Semut itu tidak menuduh mereka kejam. Ia justru mengandaikan mereka tidak bermaksud jahat, hanya saja tidak akan melihat apa yang mereka injak.",
+   "Sulaiman mendengarnya, dan Al-Quran mengatakan ia tersenyum, tertawa karena ucapan semut itu. Lalu ia berdoa — bukan meminta kemenangan atau kekuasaan yang lebih besar, tapi agar dijadikan orang yang bersyukur atas apa yang telah diberikan kepadanya, dan agar dimampukan berbuat kebaikan yang diridhai. Seorang raja tak sengaja mendengar seekor serangga, dan itu memalingkannya kepada rasa syukur."],
+ v:[{ref:"An-Naml 27:18",
+     ar:"حَتَّىٰ إِذَا أَتَوْا عَلَىٰ وَادِ النَّمْلِ قَالَتْ نَمْلَةٌ يَا أَيُّهَا النَّمْلُ ادْخُلُوا مَسَاكِنَكُمْ لَا يَحْطِمَنَّكُمْ سُلَيْمَانُ وَجُنُودُهُ وَهُمْ لَا يَشْعُرُونَ",
+     tl:"Ḥattā iżā atau 'alā wādin-namli qālat namlatun yā ayyuhan-namludkhulū masākinakum lā yaḥṭimannakum Sulaimānu wa junūduhū wa hum lā yasy'urūn",
+     en:"Until, when they came upon the valley of the ants, an ant said: O ants, enter your dwellings, lest Sulaiman and his troops crush you without realising it.",
+     id:"Hingga ketika mereka sampai di lembah semut, seekor semut berkata: Wahai para semut, masuklah ke dalam tempat tinggalmu, agar kamu tidak diinjak oleh Sulaiman dan bala tentaranya sedang mereka tidak menyadarinya."},
+    {ref:"An-Naml 27:19",
+     ar:"فَتَبَسَّمَ ضَاحِكًا مِنْ قَوْلِهَا",
+     tl:"Fatabassama ḍāḥikam min qaulihā",
+     en:"So he smiled, amused at her words.",
+     id:"Maka dia tersenyum, tertawa karena perkataan semut itu."}],
+ why:"The Quran gives a named prophet-king and an unnamed ant roughly equal weight in the scene, and gives the ant the longer line. It is a story about scale — and about the fact that being powerful and being careless are very easy to combine without noticing.",
+ whyid:"Al-Quran memberi porsi yang kurang lebih sama kepada seorang nabi-raja yang disebut namanya dan seekor semut tanpa nama, dan justru semut itu yang mendapat kalimat lebih panjang. Ini kisah tentang skala — dan tentang kenyataan bahwa menjadi berkuasa dan menjadi lalai sangat mudah bergabung tanpa disadari."
+},
+{
+ t:"Luqman's advice to his son", mins:"3 min", ref:"Surah Luqman (31) · verses 12–19",
+ hook:"Not a prophet, not a king — a wise man, quoted at length telling his son how to live.",
+ p:["Luqman is unusual in the Quran. He is not a prophet and no miracle is attributed to him. Tradition describes him as a dark-skinned man, possibly Ethiopian, possibly a former slave, known for wisdom. He is given a surah named after him because of what he said to his son.",
+   "The advice begins with the largest thing: do not associate anything with God — and the reason given is not that it is forbidden, but that it is a great wrong, an injustice. Then, immediately, a passage about parents: be grateful to them, care for them, keep good company with them in this world, even if they push you toward a belief you cannot accept.",
+   "Then it gets small and practical in a way that surprises most first-time readers. Establish the prayer. Tell people to do what is right and discourage what is wrong. Be patient with what happens to you. Do not turn your cheek away from people in scorn. Do not walk on the earth with arrogance.",
+   "And then two lines about how to physically carry yourself: be moderate in your walking, and lower your voice — because the most unpleasant of voices is the braying of a donkey. A book that has just discussed the nature of God spends a verse on people who talk too loudly."],
+ pid:["Luqman adalah sosok yang tidak biasa dalam Al-Quran. Ia bukan nabi dan tidak ada mukjizat yang dinisbatkan kepadanya. Riwayat menggambarkannya sebagai lelaki berkulit gelap, mungkin dari Habasyah, mungkin bekas budak, yang dikenal karena hikmahnya. Ia mendapat surah yang dinamai dengan namanya karena apa yang ia katakan kepada anaknya.",
+   "Nasihatnya dimulai dari hal terbesar: jangan menyekutukan Allah — dan alasannya bukan sekadar karena itu dilarang, melainkan karena itu kezaliman yang besar. Lalu, langsung sesudahnya, sebuah bagian tentang orang tua: bersyukurlah kepada mereka, rawatlah mereka, pergaulilah mereka dengan baik di dunia ini, bahkan jika mereka mendesakmu pada keyakinan yang tak bisa kamu terima.",
+   "Kemudian nasihat itu menjadi kecil dan praktis dengan cara yang mengejutkan kebanyakan pembaca baru. Dirikan sholat. Ajaklah kepada kebaikan dan cegahlah kemungkaran. Bersabarlah atas apa yang menimpamu. Jangan memalingkan wajahmu dari manusia karena sombong. Jangan berjalan di bumi dengan angkuh.",
+   "Lalu dua baris tentang cara membawa diri secara fisik: sederhanalah dalam berjalan, dan lunakkanlah suaramu — karena seburuk-buruk suara adalah suara keledai. Sebuah kitab yang baru saja membicarakan hakikat Tuhan menyediakan satu ayat untuk orang yang bicara terlalu keras."],
+ v:[{ref:"Luqman 31:13",
+     ar:"وَإِذْ قَالَ لُقْمَانُ لِابْنِهِ وَهُوَ يَعِظُهُ يَا بُنَيَّ لَا تُشْرِكْ بِاللَّهِ إِنَّ الشِّرْكَ لَظُلْمٌ عَظِيمٌ",
+     tl:"Wa iż qāla Luqmānu libnihī wa huwa ya'iẓuhū yā bunayya lā tusyrik billāh, innasy-syirka laẓulmun 'aẓīm",
+     en:"And when Luqman said to his son, while advising him: My dear son, do not associate anything with God — associating others with Him is a terrible wrong.",
+     id:"Dan ketika Luqman berkata kepada anaknya, saat ia menasihatinya: Wahai anakku, janganlah menyekutukan Allah — sesungguhnya menyekutukan Allah adalah kezaliman yang besar."},
+    {ref:"Luqman 31:19",
+     ar:"وَاقْصِدْ فِي مَشْيِكَ وَاغْضُضْ مِنْ صَوْتِكَ إِنَّ أَنْكَرَ الْأَصْوَاتِ لَصَوْتُ الْحَمِيرِ",
+     tl:"Waqṣid fī masyika waghḍuḍ min ṣautik, inna ankaral-aṣwāti laṣautul-ḥamīr",
+     en:"Be moderate in your walk and lower your voice — for the most unpleasant of voices is the braying of donkeys.",
+     id:"Sederhanakanlah dalam berjalan dan lunakkanlah suaramu — sesungguhnya seburuk-buruk suara adalah suara keledai."}],
+ why:"This is the clearest answer in the Quran to the idea that religion is only about belief. The passage moves without a break from the nature of God, to how you treat your parents, to your posture and your volume — as if these are the same subject. In this telling, they are.",
+ whyid:"Inilah jawaban paling jelas dalam Al-Quran terhadap anggapan bahwa agama hanya soal keyakinan. Bagian ini berpindah tanpa jeda dari hakikat Tuhan, ke cara memperlakukan orang tua, lalu ke sikap tubuh dan volume suaramu — seolah semuanya satu pembahasan. Dalam penuturan ini, memang begitu."
+},
+{
+ t:"Yunus and the fish", mins:"3 min", ref:"Al-Anbiya 21:87–88 · As-Saffat 37:139–148",
+ hook:"A prophet walks out on his job, and prays the most famous prayer of despair in the Quran.",
+ p:["Yunus — Jonah — was sent to a city, and they refused him. He left in anger. The Quran's phrasing is careful and unusual: he went off angry, thinking that We would not constrain him. He did not renounce anything. He simply left before he had been released from the task.",
+   "He boarded a ship. A storm came, lots were drawn, and he was thrown into the sea, where a great fish swallowed him. And then the Quran gives the scene its defining image: he called out from within the darknesses — plural. The dark of the fish, the dark of the sea, the dark of the night, layered.",
+   "What he says from inside is three short clauses, and it is worth noticing what is not in them. He does not ask to be let out. He does not explain himself or bargain. He states that there is no god but God, declares God free of all fault, and says that he himself was among the wrongdoers.",
+   "He is answered and delivered. Later he is sent back, and the city — a hundred thousand people or more — believes. The task he abandoned was completed after he had failed at it and admitted so."],
+ pid:["Yunus diutus kepada sebuah kota, dan mereka menolaknya. Ia pergi dalam keadaan marah. Ungkapan Al-Quran di sini cermat dan tidak biasa: ia pergi dalam keadaan marah, dan mengira Kami tidak akan menyulitkannya. Ia tidak menanggalkan apa pun. Ia hanya pergi sebelum tugasnya dilepaskan darinya.",
+   "Ia naik ke sebuah kapal. Badai datang, undian dilakukan, dan ia dilemparkan ke laut, lalu seekor ikan besar menelannya. Dan di sinilah Al-Quran memberi adegan itu gambaran yang paling melekat: ia berseru dari dalam kegelapan-kegelapan — dalam bentuk jamak. Gelapnya perut ikan, gelapnya laut, gelapnya malam, berlapis-lapis.",
+   "Yang ia ucapkan dari dalam sana hanya tiga penggal kalimat pendek, dan yang tidak ada di dalamnya justru layak diperhatikan. Ia tidak meminta dikeluarkan. Ia tidak membela diri atau menawar. Ia menyatakan tiada tuhan selain Allah, menyucikan Allah dari segala cela, dan mengakui bahwa dirinya termasuk orang-orang yang zalim.",
+   "Ia dikabulkan dan diselamatkan. Kemudian ia diutus kembali, dan kota itu — seratus ribu orang atau lebih — beriman. Tugas yang ia tinggalkan justru tuntas setelah ia gagal dan mengakuinya."],
+ v:[{ref:"Al-Anbiya 21:87",
+     ar:"فَنَادَىٰ فِي الظُّلُمَاتِ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+     tl:"Fanādā fiẓ-ẓulumāti al lā ilāha illā anta subḥānaka innī kuntu minaẓ-ẓālimīn",
+     en:"So he called out from within the layers of darkness: There is no god but You. You are free of all fault. I have truly been among the wrongdoers.",
+     id:"Maka dia berseru dalam kegelapan yang berlapis-lapis: Tiada tuhan selain Engkau. Maha Suci Engkau. Sungguh aku termasuk orang-orang yang zalim."}],
+ why:"This prayer is widely recited by Muslims in distress, and the reason is its structure. Two thirds of it is about God, and the last third is an admission. There is no request anywhere in it. The tradition reads the deliverance that follows as a comment on what asking actually consists of.",
+ whyid:"Doa ini banyak dibaca kaum muslimin saat tertimpa kesulitan, dan sebabnya ada pada strukturnya. Dua pertiganya tentang Allah, dan sepertiga terakhirnya adalah pengakuan. Tidak ada permintaan sama sekali di dalamnya. Tradisi membaca keselamatan yang datang sesudahnya sebagai komentar tentang apa sebenarnya arti meminta."
+},
+{
+ t:"Ibrahim and the idols", mins:"4 min", ref:"Al-Anbiya 21:51–70",
+ hook:"A young man destroys his town's gods, leaves one standing, and tells everyone to ask it what happened.",
+ p:["Ibrahim — Abraham — grew up among people who carved and worshipped statues, and he could not accept it. He asked his father and his people directly what these figures were that they kept devoting themselves to. Their answer was the one that usually ends such conversations: we found our fathers doing this.",
+   "So he waited until they had gone out to a festival, went into the temple, and broke the idols to pieces. All of them but the largest. Then he hung the axe on the big one's shoulder and left.",
+   "When they came back and demanded to know whether he had done it, he pointed at the surviving statue and said: no, the big one did it — ask them, if they can speak. It is one of the few moments of open sarcasm in scripture, and it works. The Quran says they turned back to themselves and admitted, among themselves, that they were the ones in the wrong. Then, immediately, they reverted: you know perfectly well these do not speak.",
+   "That sentence is the whole point. His argument had already won. They conceded it out loud and then went on as before. They threw him into a fire; the fire was commanded to be cool and safe for him.",
+   "Ibrahim is the ancestral figure for Jews, Christians and Muslims alike. It is his name a Muslim says in every prayer, five times a day, in the salawat."],
+ pid:["Ibrahim tumbuh di tengah kaum yang memahat dan menyembah patung, dan ia tidak bisa menerimanya. Ia bertanya langsung kepada ayah dan kaumnya, patung-patung apa gerangan yang terus-menerus mereka sembah. Jawaban mereka adalah jawaban yang biasanya menutup percakapan semacam itu: kami mendapati nenek moyang kami berbuat demikian.",
+   "Maka ia menunggu sampai mereka pergi ke perayaan, masuk ke kuil, dan menghancurkan berhala-berhala itu berkeping-keping. Semuanya, kecuali yang terbesar. Lalu ia menggantungkan kapak di bahu berhala besar itu dan pergi.",
+   "Ketika mereka kembali dan menuntut pengakuan apakah ia pelakunya, ia menunjuk patung yang tersisa dan berkata: bukan, yang besar inilah yang melakukannya — tanyakan saja kepada mereka, jika mereka bisa bicara. Ini salah satu momen sindiran paling terbuka dalam kitab suci, dan ia berhasil. Al-Quran mengatakan mereka kembali kepada diri mereka sendiri dan mengakui, di antara mereka, bahwa merekalah yang zalim. Lalu, seketika itu juga, mereka berbalik lagi: kamu tahu betul patung-patung ini tidak bisa bicara.",
+   "Kalimat itulah intinya. Argumennya sudah menang. Mereka mengakuinya dengan suara keras, lalu melanjutkan hidup seperti sebelumnya. Mereka melemparkannya ke dalam api; api itu diperintahkan menjadi dingin dan menyelamatkan baginya.",
+   "Ibrahim adalah figur leluhur bagi Yahudi, Kristen, dan Islam sekaligus. Namanya itulah yang diucapkan seorang muslim dalam setiap sholat, lima kali sehari, dalam sholawat."],
+ v:[{ref:"Al-Anbiya 21:63",
+     ar:"قَالَ بَلْ فَعَلَهُ كَبِيرُهُمْ هَٰذَا فَاسْأَلُوهُمْ إِنْ كَانُوا يَنْطِقُونَ",
+     tl:"Qāla bal fa'alahū kabīruhum hāżā fas'alūhum in kānū yanṭiqūn",
+     en:"He said: Rather, it was this — the biggest of them. So ask them, if they can speak.",
+     id:"Dia berkata: Sebenarnya patung besar itulah yang melakukannya. Maka tanyakanlah kepada mereka, jika mereka dapat berbicara."},
+    {ref:"Al-Anbiya 21:69",
+     ar:"قُلْنَا يَا نَارُ كُونِي بَرْدًا وَسَلَامًا عَلَىٰ إِبْرَاهِيمَ",
+     tl:"Qulnā yā nāru kūnī bardaw wa salāman 'alā Ibrāhīm",
+     en:"We said: Fire, be coolness and peace for Ibrahim.",
+     id:"Kami berfirman: Wahai api, jadilah dingin dan keselamatan bagi Ibrahim."}],
+ why:"The story is not really about statues. It is about the moment his people admit he is right and then continue anyway — which the Quran treats as the actual obstacle. Being shown a good argument and conceding it changes less than people expect.",
+ whyid:"Kisah ini sebenarnya bukan tentang patung. Ia tentang saat kaumnya mengakui bahwa Ibrahim benar lalu tetap melanjutkan kebiasaan mereka — dan itulah yang diperlakukan Al-Quran sebagai penghalang yang sesungguhnya. Ditunjukkan argumen yang baik dan mengakuinya ternyata mengubah lebih sedikit daripada yang orang kira."
+},
+{
+ t:"Musa's mother and the river", mins:"4 min", ref:"Al-Qasas 28:7–13",
+ hook:"A mother is told to put her baby in the water. The Quran stays with her, not the baby.",
+ p:["Pharaoh was killing the infant boys of the Israelites. A woman gave birth to a son and hid him. Then she was given an instruction — the Quran uses the word for inspiration, something placed directly into her — with an unusual shape to it: nurse him, and when you fear for him, cast him into the river. Do not fear, and do not grieve. We will return him to you and make him one of the messengers.",
+   "Read the order of that sentence. The command to let him go arrives together with the promise that he will come back. She is asked to do the most frightening thing a mother could do, and told the ending in advance — and it still does not spare her what comes next.",
+   "Because the Quran then says something remarkable: the heart of Musa's mother became empty. Hollowed out. She almost gave him away — almost cried out who he was — and the Quran says God steadied her heart so that she would remain among those who trust.",
+   "The baby is pulled from the water by Pharaoh's household. His sister, sent to follow at a distance, watches. When the infant refuses every wet-nurse they bring, she steps forward and offers to show them a household that will nurse him well.",
+   "So he is returned to his mother — and she is paid to feed her own son, inside the palace of the man who was killing children like him."],
+ pid:["Fir'aun sedang membunuhi bayi-bayi lelaki Bani Israil. Seorang perempuan melahirkan anak lelaki dan menyembunyikannya. Lalu ia menerima sebuah perintah — Al-Quran memakai kata wahyu, sesuatu yang diletakkan langsung ke dalam dirinya — dengan bentuk yang tidak biasa: susuilah dia, dan apabila kamu khawatir terhadapnya, hanyutkanlah dia ke sungai. Jangan takut, dan jangan bersedih. Kami akan mengembalikannya kepadamu dan menjadikannya salah seorang rasul.",
+   "Perhatikan urutan kalimat itu. Perintah untuk melepaskan datang bersamaan dengan janji bahwa anak itu akan kembali. Ia diminta melakukan hal paling menakutkan yang bisa dilakukan seorang ibu, dan diberi tahu akhir ceritanya lebih dulu — dan itu pun tidak menyelamatkannya dari apa yang datang setelahnya.",
+   "Sebab Al-Quran kemudian mengatakan sesuatu yang luar biasa: hati ibu Musa menjadi kosong. Melompong. Nyaris ia menyatakan siapa anak itu — dan Al-Quran mengatakan Allah meneguhkan hatinya agar ia tetap termasuk orang-orang yang percaya.",
+   "Bayi itu diangkat dari air oleh keluarga Fir'aun. Kakak perempuannya, yang disuruh mengikuti dari kejauhan, mengamati. Ketika bayi itu menolak setiap ibu susu yang didatangkan, ia maju dan menawarkan untuk menunjukkan satu keluarga yang akan merawatnya dengan baik.",
+   "Maka bayi itu dikembalikan kepada ibunya — dan sang ibu dibayar untuk menyusui anaknya sendiri, di dalam istana orang yang sedang membunuhi anak-anak seperti dia."],
+ v:[{ref:"Al-Qasas 28:7",
+     ar:"وَأَوْحَيْنَا إِلَىٰ أُمِّ مُوسَىٰ أَنْ أَرْضِعِيهِ فَإِذَا خِفْتِ عَلَيْهِ فَأَلْقِيهِ فِي الْيَمِّ وَلَا تَخَافِي وَلَا تَحْزَنِي إِنَّا رَادُّوهُ إِلَيْكِ وَجَاعِلُوهُ مِنَ الْمُرْسَلِينَ",
+     tl:"Wa auḥainā ilā ummi Mūsā an arḍi'īh, fa iżā khifti 'alaihi fa alqīhi fil-yammi wa lā takhāfī wa lā taḥzanī, innā rāddūhu ilaiki wa jā'ilūhu minal-mursalīn",
+     en:"And We inspired the mother of Musa: nurse him, and when you fear for him, place him into the river. Do not fear and do not grieve — We will return him to you and make him one of the messengers.",
+     id:"Dan Kami ilhamkan kepada ibu Musa: susuilah dia, dan apabila engkau khawatir terhadapnya maka hanyutkanlah dia ke sungai. Jangan takut dan jangan bersedih — sesungguhnya Kami akan mengembalikannya kepadamu dan menjadikannya salah seorang rasul."},
+    {ref:"Al-Qasas 28:10",
+     ar:"وَأَصْبَحَ فُؤَادُ أُمِّ مُوسَىٰ فَارِغًا",
+     tl:"Wa aṣbaḥa fu'ādu ummi Mūsā fārighā",
+     en:"And the heart of Musa's mother became empty.",
+     id:"Dan hati ibu Musa menjadi kosong."}],
+ why:"Everyone remembers this as the story of baby Moses. The Quran tells it as the story of his mother — her instruction, her fear, her emptied heart, her steadying, her payment. Musa is an infant in it, and does nothing.",
+ whyid:"Semua orang mengingat ini sebagai kisah bayi Musa. Al-Quran menceritakannya sebagai kisah ibunya — perintah kepadanya, ketakutannya, hatinya yang kosong, peneguhan hatinya, dan upah yang diterimanya. Musa hanyalah bayi di dalamnya, dan tidak melakukan apa-apa."
+},
+{
+ t:"The People of the Cave", mins:"5 min", ref:"Surah Al-Kahf (18) · verses 9–26",
+ hook:"Young men hide in a cave from a tyrant and wake up three centuries later.",
+ p:["A group of young men lived under a ruler who would not tolerate their belief. The Quran does not say how many — deliberately, as we will see — or name the city or the century. It says they were youths who believed in their Lord, and that God increased them in guidance.",
+   "They withdrew to a cave, prayed for mercy and for their situation to be set right, and slept. Their dog lay at the entrance with its front legs stretched out. The Quran describes the sun moving past the cave mouth, and the sleepers being turned to the right and the left. Anyone looking in would have thought they were awake and fled from them in terror.",
+   "They slept, the Quran says, three hundred years, and nine more.",
+   "When they woke they assumed it had been a day, or part of one. They were hungry. One of them was sent into the city with an old silver coin to buy food quietly, so nobody would recognise them — and of course the coin was three centuries out of date, and the city that had persecuted them now believed what they believed.",
+   "Then the Quran does something odd. It pauses the story to report the arguments people later had about how many sleepers there were. Three, some say, and the fourth was their dog. Five, and the sixth was their dog. Seven, and the eighth was their dog. And it comments: they are guessing at the unseen. Say: my Lord knows best how many they were."],
+ pid:["Sekelompok pemuda hidup di bawah penguasa yang tidak menoleransi keyakinan mereka. Al-Quran tidak menyebut berapa jumlah mereka — dengan sengaja, seperti akan kita lihat — tidak pula menyebut nama kota atau abadnya. Ia mengatakan mereka pemuda-pemuda yang beriman kepada Tuhan mereka, dan Allah menambahkan petunjuk kepada mereka.",
+   "Mereka menyingkir ke sebuah gua, berdoa memohon rahmat dan agar urusan mereka diluruskan, lalu tertidur. Anjing mereka berbaring di mulut gua dengan kedua kaki depan terjulur. Al-Quran menggambarkan matahari yang bergeser melewati mulut gua, dan para penidur itu dibolak-balikkan ke kanan dan ke kiri. Siapa pun yang mengintip akan mengira mereka terjaga, dan lari ketakutan.",
+   "Mereka tertidur, kata Al-Quran, tiga ratus tahun, ditambah sembilan.",
+   "Ketika bangun, mereka mengira baru sehari, atau setengah hari. Mereka lapar. Salah seorang diutus ke kota membawa keping perak lama untuk membeli makanan diam-diam, supaya tak ada yang mengenali mereka — dan tentu saja koin itu sudah tiga abad ketinggalan zaman, dan kota yang dulu memburu mereka kini justru meyakini apa yang mereka yakini.",
+   "Lalu Al-Quran melakukan sesuatu yang ganjil. Ia menghentikan kisahnya untuk melaporkan perdebatan orang-orang belakangan tentang berapa jumlah penidur itu. Tiga, kata sebagian, yang keempat anjingnya. Lima, yang keenam anjingnya. Tujuh, yang kedelapan anjingnya. Dan Al-Quran mengomentari: mereka menerka-nerka yang gaib. Katakanlah: Tuhanku lebih tahu berapa jumlah mereka."],
+ v:[{ref:"Al-Kahf 18:13",
+     ar:"نَحْنُ نَقُصُّ عَلَيْكَ نَبَأَهُمْ بِالْحَقِّ إِنَّهُمْ فِتْيَةٌ آمَنُوا بِرَبِّهِمْ وَزِدْنَاهُمْ هُدًى",
+     tl:"Naḥnu naquṣṣu 'alaika naba'ahum bil-ḥaqq, innahum fityatun āmanū birabbihim wa zidnāhum hudā",
+     en:"We relate their account to you in truth: they were young men who believed in their Lord, and We increased them in guidance.",
+     id:"Kami ceritakan kepadamu kisah mereka dengan sebenarnya: mereka adalah pemuda-pemuda yang beriman kepada Tuhan mereka, dan Kami tambahkan petunjuk kepada mereka."},
+    {ref:"Al-Kahf 18:22",
+     ar:"قُلْ رَبِّي أَعْلَمُ بِعِدَّتِهِمْ مَا يَعْلَمُهُمْ إِلَّا قَلِيلٌ",
+     tl:"Qur rabbī a'lamu bi'iddatihim mā ya'lamuhum illā qalīl",
+     en:"Say: my Lord knows best how many they were. Only a few know of them.",
+     id:"Katakanlah: Tuhanku lebih mengetahui jumlah mereka. Tidak ada yang mengetahui mereka kecuali sedikit."}],
+ why:"That interruption is the most interesting thing in the surah. The Quran raises the question everyone wants answered — how many? — reports the competing counts, refuses to settle it, and tells the reader not to argue about it. The lesson is aimed at the audience, not the sleepers: you are chasing a detail that does not carry the meaning.",
+ whyid:"Penyelaan itu adalah bagian paling menarik dalam surah ini. Al-Quran memunculkan pertanyaan yang ingin dijawab semua orang — berapa jumlahnya? — melaporkan hitungan yang saling bersaing, menolak memutuskannya, dan menyuruh pembaca tidak memperdebatkannya. Pelajarannya ditujukan kepada pembaca, bukan kepada para penidur: kamu sedang mengejar detail yang tidak memuat maknanya."
+},
+{
+ t:"Maryam", mins:"5 min", ref:"Surah Maryam (19) · verses 16–35",
+ hook:"A young woman is told she will have a child, and later chooses silence over defending herself.",
+ p:["Maryam — Mary — is the only woman named in the Quran, and a surah carries her name. Other women appear throughout it — Musa's mother, Pharaoh's wife, the Queen of Sheba — but the text describes them rather than naming them; the names we use come from hadith and tafsir. She had withdrawn from her family to a place in the east and screened herself off. There a figure appeared to her in the form of a man. Her first words are a refusal: I seek refuge from you with the Most Merciful — if you have any fear of Him.",
+   "He tells her he is a messenger from her Lord, sent to give her a pure boy. She asks the obvious question: how can I have a child when no man has touched me, and I am not unchaste? The answer is that it is easy for God, and that the child will be a sign for humanity.",
+   "Then the birth, and this is where the surah becomes unlike any other account of it. The pains drove her to the trunk of a palm tree, and she said: I wish I had died before this, and been something forgotten, out of memory entirely.",
+   "A voice calls to her from below: do not grieve. A stream has been placed beneath her. And she is told to shake the trunk of the palm tree toward herself — a woman in labour, told to pull at a tree — and fresh ripe dates will fall.",
+   "She carries the baby back to her people, who accuse her immediately. She had been instructed to say nothing at all: to indicate that she had vowed a fast of silence. She does not defend herself. She points at the infant. They ask how they are supposed to talk to a child in the cradle — and the child speaks."],
+ pid:["Maryam adalah satu-satunya perempuan yang disebut namanya dalam Al-Quran, dan sebuah surah memakai namanya. Perempuan lain hadir di sepanjang kitab ini — ibu Musa, istri Fir'aun, Ratu Saba — tetapi teksnya menggambarkan mereka tanpa menyebut nama; nama-nama yang kita pakai berasal dari hadis dan tafsir. Ia menyingkir dari keluarganya ke suatu tempat di sebelah timur dan memasang tabir. Di sana sesosok makhluk menampakkan diri kepadanya dalam wujud manusia. Kalimat pertamanya adalah penolakan: aku berlindung darimu kepada Yang Maha Pengasih — jika engkau seorang yang bertakwa.",
+   "Sosok itu memberitahunya bahwa ia utusan Tuhannya, diutus untuk memberinya seorang anak lelaki yang suci. Maryam bertanya dengan wajar: bagaimana aku bisa punya anak padahal tidak ada laki-laki yang menyentuhku, dan aku bukan perempuan pezina? Jawabannya: hal itu mudah bagi Allah, dan anak itu akan menjadi tanda bagi manusia.",
+   "Lalu tibalah kelahiran, dan di sinilah surah ini menjadi tidak seperti penuturan mana pun tentang peristiwa itu. Rasa sakit memaksanya bersandar ke pangkal pohon kurma, dan ia berkata: alangkah baiknya aku mati sebelum ini, dan menjadi sesuatu yang tak berarti, yang dilupakan sama sekali.",
+   "Sebuah suara memanggilnya dari bawah: janganlah bersedih. Sebuah anak sungai telah disediakan di bawahnya. Dan ia disuruh menggoyangkan pangkal pohon kurma ke arahnya — seorang perempuan yang sedang melahirkan, disuruh menarik sebatang pohon — maka akan berjatuhan kurma masak yang segar.",
+   "Ia membawa bayinya kembali kepada kaumnya, yang langsung menuduhnya. Ia telah diperintahkan untuk tidak berkata apa pun: cukup memberi isyarat bahwa ia bernazar berpuasa dari bicara. Ia tidak membela dirinya. Ia menunjuk kepada bayi itu. Mereka bertanya bagaimana mungkin berbicara dengan anak yang masih dalam ayunan — dan anak itu berbicara."],
+ v:[{ref:"Maryam 19:23",
+     ar:"فَأَجَاءَهَا الْمَخَاضُ إِلَىٰ جِذْعِ النَّخْلَةِ قَالَتْ يَا لَيْتَنِي مِتُّ قَبْلَ هَٰذَا وَكُنْتُ نَسْيًا مَنْسِيًّا",
+     tl:"Fa ajā'ahal-makhāḍu ilā jiż'in-nakhlah, qālat yā laitanī mittu qabla hāżā wa kuntu nasyam mansiyyā",
+     en:"The pains of labour drove her to the trunk of a palm tree. She said: I wish I had died before this and been forgotten, entirely out of memory.",
+     id:"Rasa sakit melahirkan memaksanya bersandar ke pangkal pohon kurma. Dia berkata: Alangkah baiknya aku mati sebelum ini, dan menjadi sesuatu yang dilupakan, tak diingat sama sekali."},
+    {ref:"Maryam 19:25",
+     ar:"وَهُزِّي إِلَيْكِ بِجِذْعِ النَّخْلَةِ تُسَاقِطْ عَلَيْكِ رُطَبًا جَنِيًّا",
+     tl:"Wa huzzī ilaiki bijiż'in-nakhlati tusāqiṭ 'alaiki ruṭaban janiyyā",
+     en:"And shake the trunk of the palm tree toward you — it will drop fresh, ripe dates upon you.",
+     id:"Dan goyanglah pangkal pohon kurma itu ke arahmu — niscaya pohon itu akan menjatuhkan kurma masak yang segar kepadamu."}],
+ why:"The detail people find hardest to place is the instruction to shake the tree. She is at her weakest and is not simply handed the food; she is asked to pull. And her wish to have died is left in the text uncorrected — the Quran does not tidy away the despair of the woman it honours most.",
+ whyid:"Detail yang paling sulit ditempatkan orang adalah perintah menggoyang pohon. Ia berada di titik terlemahnya dan tidak sekadar diberi makanan; ia diminta menarik. Dan keinginannya untuk mati dibiarkan begitu saja dalam teks tanpa dikoreksi — Al-Quran tidak merapikan keputusasaan perempuan yang paling dimuliakannya."
+},
+{
+ t:"Musa and Khidr", mins:"6 min", ref:"Surah Al-Kahf (18) · verses 60–82",
+ hook:"A prophet asks to be taught by a stranger, and cannot stop objecting to what he sees.",
+ p:["Musa set out to find a servant of God who had been given knowledge from God's own presence — a kind of knowledge Musa did not have. He travelled with a young companion and a fish for provisions, looking for the place where two seas meet. The fish, when they reached it, slipped away into the water, and that was the sign.",
+   "He found the man, whom tradition calls Khidr, and asked to follow him and be taught. Khidr's reply is the frame for everything after: you will not be able to have patience with me. How can you be patient about something you do not encompass in your knowledge? Musa promised patience anyway. Khidr set one condition — ask me nothing until I mention it to you myself.",
+   "They boarded a boat, and Khidr made a hole in it. Musa objected: have you made a hole in it to drown its people? Khidr reminded him of the condition. Musa apologised.",
+   "They met a boy, and Khidr killed him. Musa objected far more strongly — an innocent life, a terrible thing. Reminded again. One more time, Musa said, and you may leave me.",
+   "They came to a town that refused them hospitality, and there Khidr rebuilt a wall that was about to collapse. Musa could not help it: you could at least have taken payment for that.",
+   "So they parted, and Khidr explained. The boat belonged to poor men who worked the sea, and a king ahead was seizing every sound vessel; damaged, it was worthless to him and it stayed theirs. The boy's parents were believers, and he would have brought them to ruin; a better child was given. And under the wall was buried treasure belonging to two orphans in the town, whose father had been righteous — had it fallen, the treasure would have been exposed and taken before they were old enough to claim it."],
+ pid:["Musa berangkat mencari seorang hamba Allah yang telah diberi ilmu dari sisi-Nya — jenis ilmu yang tidak dimiliki Musa. Ia berjalan bersama seorang pemuda dan membawa seekor ikan sebagai bekal, mencari tempat bertemunya dua laut. Ikan itu, ketika mereka sampai di sana, meluncur lepas ke air, dan itulah tandanya.",
+   "Ia menemukan lelaki itu, yang dalam tradisi disebut Khidr, dan meminta izin mengikutinya untuk diajari. Jawaban Khidr menjadi bingkai bagi semua yang terjadi sesudahnya: engkau tidak akan sanggup bersabar bersamaku. Bagaimana engkau bisa bersabar atas sesuatu yang tidak engkau ketahui seluk-beluknya? Musa tetap berjanji akan bersabar. Khidr menetapkan satu syarat — jangan bertanya apa pun sampai aku sendiri yang menjelaskannya.",
+   "Mereka naik perahu, dan Khidr melubanginya. Musa memprotes: apakah kau melubanginya untuk menenggelamkan penumpangnya? Khidr mengingatkan syaratnya. Musa meminta maaf.",
+   "Mereka bertemu seorang anak, dan Khidr membunuhnya. Musa memprotes jauh lebih keras — jiwa yang tak berdosa, perbuatan yang mungkar. Diingatkan lagi. Sekali lagi, kata Musa, dan engkau boleh meninggalkanku.",
+   "Mereka tiba di sebuah negeri yang menolak menjamu mereka, dan di sana Khidr menegakkan kembali dinding yang hampir roboh. Musa tak tahan: setidaknya engkau bisa meminta upah untuk itu.",
+   "Maka mereka berpisah, dan Khidr menjelaskan. Perahu itu milik orang-orang miskin yang bekerja di laut, sementara di depan ada raja yang merampas setiap perahu yang utuh; dalam keadaan rusak, perahu itu tak berharga baginya dan tetap menjadi milik mereka. Kedua orang tua anak itu beriman, dan anak itu akan menyeret mereka pada kebinasaan; diberikan ganti yang lebih baik. Dan di bawah dinding itu terpendam harta milik dua anak yatim di kota tersebut, yang ayahnya seorang saleh — seandainya dinding itu roboh, harta itu akan tersingkap dan diambil sebelum keduanya cukup umur untuk mengambilnya."],
+ v:[{ref:"Al-Kahf 18:66",
+     ar:"قَالَ لَهُ مُوسَىٰ هَلْ أَتَّبِعُكَ عَلَىٰ أَنْ تُعَلِّمَنِ مِمَّا عُلِّمْتَ رُشْدًا",
+     tl:"Qāla lahū Mūsā hal attabi'uka 'alā an tu'allimani mimmā 'ullimta rusydā",
+     en:"Musa said to him: May I follow you, so that you might teach me some of the right guidance you have been taught?",
+     id:"Musa berkata kepadanya: Bolehkah aku mengikutimu agar engkau mengajarkan kepadaku sebagian dari petunjuk yang telah diajarkan kepadamu?"},
+    {ref:"Al-Kahf 18:68",
+     ar:"وَكَيْفَ تَصْبِرُ عَلَىٰ مَا لَمْ تُحِطْ بِهِ خُبْرًا",
+     tl:"Wa kaifa taṣbiru 'alā mā lam tuḥiṭ bihī khubrā",
+     en:"And how can you be patient about something you do not encompass in knowledge?",
+     id:"Dan bagaimana engkau akan bersabar atas sesuatu yang belum engkau ketahui seluk-beluknya?"}],
+ why:"Musa is a prophet, and he is wrong three times in a row — not morally wrong, but wrong because he is judging on partial information, which is the only kind anyone has. The story is the Quran's most direct treatment of why things that look unjust may not be, and it is careful never to suggest you could work out the reasons yourself.",
+ whyid:"Musa seorang nabi, dan ia keliru tiga kali berturut-turut — bukan keliru secara moral, tetapi keliru karena menilai dengan informasi yang sepotong, dan hanya informasi semacam itulah yang dimiliki siapa pun. Kisah ini adalah pembahasan Al-Quran yang paling langsung tentang mengapa hal yang tampak tidak adil bisa jadi tidak demikian, dan ia berhati-hati untuk tidak pernah menyiratkan bahwa kamu bisa menyimpulkan sebabnya sendiri."
+},
+{
+ t:"Yusuf", mins:"12 min", ref:"Surah Yusuf (12) · the whole surah",
+ hook:"The one complete story in the Quran, told start to finish, and called the most beautiful of narrations.",
+ p:["This is the only sustained narrative in the Quran — one story, one surah, beginning to end, and it opens by calling itself the most beautiful of narrations. Everything else is told in fragments. This is not.",
+   "Yusuf, a boy, tells his father Ya'qub about a dream: eleven stars, the sun and the moon, bowing to him. His father tells him not to repeat it to his brothers. The brothers already resent him — our father loves him more than us, and we are a strong group. They throw him into a well and come back at nightfall weeping, with his shirt and false blood on it.",
+   "Ya'qub does not believe them. His response is not rage but a strange, restrained line: beautiful patience, and God is the one whose help is sought against what you describe.",
+   "A caravan draws Yusuf out and sells him in Egypt for a trifling price. He is bought into a powerful household, grows into a strikingly handsome man, and the wife of the house tries to seduce him. He refuses. She accuses him. His shirt, torn from behind rather than the front, proves he was fleeing — and he is imprisoned anyway, for the household's convenience.",
+   "In prison he interprets two fellow prisoners' dreams and asks the one who will be freed to mention him to the king. The man forgets, and Yusuf stays for years. Then the king has a dream nobody can read — seven fat cows eaten by seven lean, seven green ears of grain and seven dry — and the prisoner finally remembers.",
+   "Yusuf reads it: seven years of abundance, then seven of famine. Store the grain in its ear. He is brought out, and refuses to leave the prison until his name is cleared first. It is. He is put in charge of the storehouses of Egypt.",
+   "The famine comes, and his brothers arrive to buy grain, not recognising the official in front of them. What follows is long and deliberate — a hidden cup, a demanded younger brother, Ya'qub's eyes turning white from grief, a father who says only: I complain of my anguish and sorrow to God alone.",
+   "When Yusuf finally reveals himself, his brothers are entirely at his mercy. He is the second most powerful man in Egypt and they are begging for food. He says: no blame upon you today. God forgives you, and He is the most merciful of the merciful.",
+   "Then he sends his shirt to be cast over his father's face, and Ya'qub's sight returns. The family comes to Egypt, and his parents are raised to the throne beside him, and they bow — and Yusuf says: my father, this is the meaning of my dream from long ago; my Lord has made it true."],
+ pid:["Inilah satu-satunya kisah utuh dalam Al-Quran — satu cerita, satu surah, dari awal sampai akhir, dan ia dibuka dengan menyebut dirinya sebaik-baik kisah. Semua kisah lain diceritakan berkeping-keping. Yang ini tidak.",
+   "Yusuf, seorang anak, menceritakan mimpinya kepada ayahnya Ya'qub: sebelas bintang, matahari, dan bulan bersujud kepadanya. Ayahnya berpesan agar ia tidak menceritakannya kepada saudara-saudaranya. Mereka memang sudah iri — ayah lebih mencintainya daripada kita, padahal kita golongan yang kuat. Mereka melemparkannya ke dalam sumur dan pulang di waktu senja sambil menangis, membawa bajunya berlumur darah palsu.",
+   "Ya'qub tidak percaya. Tanggapannya bukan amarah, melainkan kalimat yang aneh dan tertahan: maka kesabaran yang indah, dan Allah sajalah yang dimintai pertolongan atas apa yang kalian ceritakan.",
+   "Sebuah kafilah mengangkat Yusuf dari sumur dan menjualnya di Mesir dengan harga yang murah. Ia dibeli oleh sebuah keluarga berkuasa, tumbuh menjadi lelaki yang sangat rupawan, dan istri tuan rumah berusaha merayunya. Ia menolak. Perempuan itu menuduhnya. Bajunya, yang robek di bagian belakang dan bukan di depan, membuktikan bahwa ia sedang melarikan diri — dan ia tetap dipenjara, demi nama baik keluarga itu.",
+   "Di penjara ia menakwilkan mimpi dua tahanan dan meminta salah satunya, yang akan dibebaskan, untuk menyebut namanya kepada raja. Orang itu lupa, dan Yusuf tinggal bertahun-tahun. Lalu raja bermimpi dan tak seorang pun bisa menakwilkannya — tujuh sapi gemuk dimakan tujuh sapi kurus, tujuh tangkai gandum hijau dan tujuh yang kering — dan tahanan itu akhirnya teringat.",
+   "Yusuf menakwilkannya: tujuh tahun kemakmuran, lalu tujuh tahun paceklik. Simpanlah gandum dalam tangkainya. Ia dipanggil keluar, dan menolak meninggalkan penjara sebelum namanya dibersihkan lebih dulu. Namanya dibersihkan. Ia diangkat menjadi penanggung jawab perbendaharaan Mesir.",
+   "Paceklik datang, dan saudara-saudaranya datang membeli gandum, tanpa mengenali pejabat di hadapan mereka. Yang terjadi sesudahnya panjang dan disengaja — piala yang disembunyikan, adik bungsu yang diminta, mata Ya'qub yang memutih karena duka, seorang ayah yang hanya berkata: aku mengadukan kesusahan dan kesedihanku hanya kepada Allah.",
+   "Ketika Yusuf akhirnya membuka jati dirinya, saudara-saudaranya sepenuhnya berada dalam genggamannya. Ia orang kedua terkuat di Mesir dan mereka sedang meminta makanan. Ia berkata: tidak ada cercaan atas kalian hari ini. Semoga Allah mengampuni kalian, dan Dia Maha Penyayang di antara para penyayang.",
+   "Lalu ia mengirimkan bajunya untuk diusapkan ke wajah ayahnya, dan penglihatan Ya'qub kembali. Keluarga itu datang ke Mesir, kedua orang tuanya didudukkan di singgasana di sisinya, dan mereka bersujud — dan Yusuf berkata: wahai ayahku, inilah takwil mimpiku dahulu; Tuhanku telah menjadikannya kenyataan."],
+ v:[{ref:"Yusuf 12:18",
+     ar:"فَصَبْرٌ جَمِيلٌ وَاللَّهُ الْمُسْتَعَانُ عَلَىٰ مَا تَصِفُونَ",
+     tl:"Fa ṣabrun jamīl, wallāhul-musta'ānu 'alā mā taṣifūn",
+     en:"So: beautiful patience. And God is the one whose help is sought against what you describe.",
+     id:"Maka kesabaran yang indah itulah. Dan Allah sajalah yang dimohonkan pertolongan-Nya atas apa yang kalian ceritakan."},
+    {ref:"Yusuf 12:53",
+     ar:"إِنَّ النَّفْسَ لَأَمَّارَةٌ بِالسُّوءِ إِلَّا مَا رَحِمَ رَبِّي",
+     tl:"Innan-nafsa la'ammāratum bis-sū'i illā mā raḥima rabbī",
+     en:"The self is certainly prone to command evil — except when my Lord shows mercy.",
+     id:"Sesungguhnya nafsu itu selalu mendorong kepada kejahatan — kecuali yang dirahmati Tuhanku."},
+    {ref:"Yusuf 12:92",
+     ar:"قَالَ لَا تَثْرِيبَ عَلَيْكُمُ الْيَوْمَ يَغْفِرُ اللَّهُ لَكُمْ وَهُوَ أَرْحَمُ الرَّاحِمِينَ",
+     tl:"Qāla lā taṡrība 'alaikumul-yaum, yaghfirullāhu lakum wa huwa arḥamur-rāḥimīn",
+     en:"He said: No blame upon you today. May God forgive you — and He is the most merciful of the merciful.",
+     id:"Dia berkata: Tidak ada cercaan atas kalian hari ini. Semoga Allah mengampuni kalian — dan Dia Maha Penyayang di antara para penyayang."}],
+ why:"Read the ending against the beginning. The dream showed eleven stars bowing to him, and everyone assumed it meant power. It does end with his family bowing — but the scene the story has been building toward is the sentence before it, where he holds absolute power over the men who tried to kill him and lets it go. Ya'qub's 'beautiful patience' at the start and Yusuf's 'no blame upon you today' at the end are the same posture, thirty years apart.",
+ whyid:"Bacalah bagian akhirnya berhadapan dengan awalnya. Mimpi itu menunjukkan sebelas bintang bersujud kepadanya, dan semua orang mengira itu berarti kekuasaan. Kisahnya memang berakhir dengan keluarganya bersujud — tetapi adegan yang sesungguhnya dituju oleh seluruh cerita adalah kalimat sebelum itu, ketika ia memegang kuasa mutlak atas orang-orang yang dulu hendak membunuhnya, lalu melepaskannya. 'Kesabaran yang indah' milik Ya'qub di awal dan 'tidak ada cercaan atas kalian hari ini' milik Yusuf di akhir adalah sikap yang sama, terpisah tiga puluh tahun."
+}
+];
+
+/* ===================== RAKAAT WALKTHROUGH ENGINE ===================== */
+function buildWalk(p){
+  var out=[], aloudFirstTwo = (p.aloud !== "Silent");
+  for(var r=1; r<=p.rak; r++){
+    var steps=[], last = (r===p.rak), first=(r===1), firstTwo=(r<=2);
+    var voice = (firstTwo && aloudFirstTwo) ? '<span class="flag aloud">aloud</span>' : '<span class="flag silent">silent</span>';
+
+    if(first){
+      steps.push({t:'Niat, then <a href="#words">Takbiratul Ihram</a>', d:'Hands to the shoulders. From here you are inside the prayer.', say:'Allāhu akbar'});
+      steps.push({t:'<a href="#words">Doa Iftitah</a>', d:'Silently, first rakaat only. Sunnah — skipping it does not invalidate anything.', say:'Allāhu akbar kabīrā…'});
+    } else {
+      steps.push({t:'Stand for rakaat ' + r, d:'Said as you rise into the standing position.', say:'Allāhu akbar'});
+    }
+
+    steps.push({t:'<a href="#surah">Al-Fatihah</a> ' + voice, d:'Every rakaat, without exception. Praying alone you recite it aloud where marked; behind an imam you always recite silently.', say:'Al-ḥamdu lillāhi rabbil-'+"'"+'ālamīn…'});
+
+    if(firstTwo){
+      steps.push({t:'A short surah <span class="flag only">rakaat 1–2 only</span>', d:'Al-Ikhlas, Al-Falaq or An-Nas is the usual beginner choice.', say:'Qul huwallāhu aḥad…'});
+    } else {
+      steps.push({t:'No extra surah', d:'From rakaat 3 onward it is Al-Fatihah alone. This is the single most common point of confusion.', say:''});
+    }
+
+    steps.push({t:'<a href="#words">Ruku\'</a> — bow', d:'Takbir as you go down, then the words three times.', say:'Subḥāna rabbiyal-'+"'"+'aẓīmi wa biḥamdih ×3'});
+
+    if(p.id==="subuh" && r===2){
+      steps.push({t:'<a href="#words">I\'tidal</a>, then <b>qunut</b> <span class="flag only">Subuh only</span>', d:'Stand up, then the qunut supplication is added here in the second rakaat. Sunnah in the Shafi\'i school and standard in NU mosques; Muhammadiyah generally omits it. Follow whichever mosque you pray in.', say:'Sami'+"'"+'allāhu liman ḥamidah… then qunut'});
+    } else {
+      steps.push({t:'<a href="#words">I\'tidal</a> — stand up straight', d:'Fully upright and still before going down again.', say:'Sami'+"'"+'allāhu liman ḥamidah — Rabbanā lakal-ḥamd…'});
+    }
+
+    steps.push({t:'<a href="#words">Sujud</a> — first prostration', d:'Seven parts on the ground. The words three times.', say:'Subḥāna rabbiyal-a'+"'"+'lā wa biḥamdih ×3'});
+    steps.push({t:'<a href="#words">Sit between the two prostrations</a>', d:'Brief, but it holds eight requests. Do not rush it.', say:'Rabbighfir lī warḥamnī…'});
+    steps.push({t:'<a href="#words">Sujud</a> — second prostration', d:'Identical to the first. This completes the rakaat.', say:'Subḥāna rabbiyal-a'+"'"+'lā wa biḥamdih ×3'});
+
+    if(r===2 && !last){
+      steps.push({t:'Sit for the <b>middle tashahhud</b> <span class="flag only">3 & 4 rakaat prayers</span>', d:'Because this prayer has more than two rakaat, you sit here, recite the tashahhud and the short salawat, then stand again for rakaat 3.', say:'At-taḥiyyātul-mubārakāt… Allāhumma ṣalli \'alā Muḥammad'});
+    }
+    if(last){
+      steps.push({t:'Sit for the <b>final tashahhud</b>', d:'The full tashahhud, then the full salawat including Abraham. Personal supplication belongs here, before the salam.', say:'At-taḥiyyāt… Allāhumma ṣalli \'alā Muḥammad wa \'alā āli Muḥammad…'});
+      steps.push({t:'<a href="#words">Salam</a> — right, then left', d:'Turn the head to the right, then the left. The prayer is finished.', say:'As-salāmu \'alaikum wa raḥmatullāh ×2'});
+    }
+
+    out.push({r:r, last:last, steps:steps,
+      note: first ? 'Opening rakaat' : (last ? 'Final rakaat' : 'Rakaat ' + r)});
+  }
+  return out;
+}
+
+/* ============================ RENDER ============================ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function idBlock(text){
+  return '<button class="id-btn" type="button">Bahasa Indonesia</button>'+
+         '<div class="id-txt"><span class="lbl">Bahasa Indonesia</span><p>'+text+'</p></div>';
+}
+
+/* concepts */
+document.getElementById('concepts').innerHTML = CONCEPTS.map(function(c){
+  var more = c.l.map(function(p,i){ return '<p>'+p+'</p>'; }).join('');
+  var moreId = c.lid.map(function(p){ return '<p>'+p+'</p>'; }).join('');
+  return '<div class="card srch"><div class="card-h"><h3>'+c.t+'</h3></div>'+
+    '<p class="en" style="margin-top:9px">'+c.s+'</p>'+ idBlock(c.sid) +
+    '<details class="more"><summary>Go deeper</summary><div class="more-body">'+more+
+      '<div class="id-txt show" style="margin-top:4px"><span class="lbl">Bahasa Indonesia</span>'+moreId+'</div>'+
+    '</div></details></div>';
+}).join('');
+
+/* stories */
+var storyIndex = document.getElementById('storyIndex');
+var reader = document.getElementById('reader');
+storyIndex.innerHTML = STORIES.map(function(s,i){
+  return '<div class="story-row srch" data-i="'+i+'"><span class="mins">'+s.mins+'</span>'+
+    '<div class="st"><h4>'+s.t+'</h4><p>'+s.hook+'</p><p class="ref">'+s.ref+'</p></div></div>';
+}).join('');
+
+function openStory(i){
+  var s = STORIES[i];
+  var prose = s.p.map(function(par,k){ return '<p'+(k===0?' class="lead"':'')+'>'+par+'</p>'; }).join('');
+  var proseId = s.pid.map(function(par){ return '<p>'+par+'</p>'; }).join('');
+  var verses = s.v.map(function(v){
+    return '<div class="anchor"><span class="lbl">In the Quran\'s own words</span>'+
+      '<p class="vref">'+v.ref+'</p><p class="ar">'+v.ar+'</p><p class="tl">'+v.tl+'</p>'+
+      '<p class="en">'+v.en+'</p>'+ idBlock(v.id) +'</div>';
+  }).join('');
+  reader.innerHTML = '<button class="back" type="button" id="backBtn">← All stories</button>'+
+    '<div class="read"><h3>'+s.t+'</h3><p class="meta">'+s.mins+' · '+s.ref+'</p>'+
+    '<div class="prose">'+prose+'</div>'+ idBlock(proseId.replace(/<\/?p>/g,function(m){return m==='<p>'?'':'';})) +
+    verses +
+    '<div class="why"><span class="lbl">How the Quran tells it</span><p>'+s.why+'</p>'+idBlock(s.whyid)+'</div>'+
+    '</div>';
+  /* replace the single-paragraph Indonesian block with the full multi-paragraph version */
+  var idbox = reader.querySelector('.prose').nextElementSibling.nextElementSibling;
+  if(idbox && idbox.classList.contains('id-txt')){
+    idbox.innerHTML = '<span class="lbl">Bahasa Indonesia</span>'+proseId;
+  }
+  storyIndex.classList.add('hidden');
+  reader.classList.remove('hidden');
+  document.getElementById('stories').scrollIntoView();
+  document.getElementById('backBtn').addEventListener('click', function(){
+    reader.classList.add('hidden'); reader.innerHTML='';
+    storyIndex.classList.remove('hidden');
+    document.getElementById('stories').scrollIntoView();
+  });
+}
+storyIndex.addEventListener('click', function(e){
+  var row = e.target.closest('.story-row'); if(row) openStory(+row.dataset.i);
+});
+
+/* cycle strip */
+var CYCLE = [
+ {k:"qiyam", t:"Stand", d:"Al-Fatihah"},
+ {k:"ruku", t:"Bow", d:"Subhana rabbiyal-'azim"},
+ {k:"itidal", t:"Stand up", d:"Sami'allahu liman hamidah"},
+ {k:"sujud", t:"Prostrate", d:"Subhana rabbiyal-a'la"},
+ {k:"duduk", t:"Sit", d:"Rabbighfir li"},
+ {k:"sujud", t:"Prostrate", d:"Again — rakaat complete"}
+];
+document.getElementById('cycle').innerHTML = CYCLE.map(function(c,i){
+  return '<div class="cyc"><span class="n">'+(i+1)+'</span>'+poseSVG(c.k,88)+
+    '<b>'+c.t+'</b><i>'+c.d+'</i></div>';
+}).join('');
+
+/* prayer table */
+document.getElementById('prayerTable').innerHTML = PRAYERS.map(function(p){
+  return '<tr class="srch"><td>'+p.name+'<div style="font-size:12.5px;color:var(--muted);font-weight:400">'+p.time+'</div></td>'+
+    '<td class="n">'+p.rak+'</td><td style="font-size:13.5px">'+p.aloud+'</td>'+
+    '<td style="font-size:13.5px;color:var(--ink2)">'+p.diff+'</td></tr>';
+}).join('');
+
+/* picker */
+var picker = document.getElementById('picker');
+picker.innerHTML = PRAYERS.map(function(p,i){
+  return '<button type="button" data-i="'+i+'"'+(i===3?' class="on"':'')+'>'+p.name+'<small>'+p.rak+' rakaat</small></button>';
+}).join('');
+
+function renderWalk(i){
+  var p = PRAYERS[i], w = buildWalk(p);
+  var html = '<div class="callout green"><b>'+p.name+' — '+p.rak+' rakaat, '+p.aloud.toLowerCase()+'</b><span>'+p.diff+'</span></div>';
+  html += w.map(function(rk){
+    return '<div class="rk"><div class="rk-h">Rakaat '+rk.r+' <em>— '+rk.note+'</em></div><ol class="seq">'+
+      rk.steps.map(function(s){
+        return '<li><div class="seq-b"><p class="seq-t">'+s.t+'</p>'+
+          (s.d?'<p class="seq-d">'+s.d+'</p>':'')+
+          (s.say?'<p class="seq-say">'+s.say+'</p>':'')+'</div></li>';
+      }).join('')+'</ol></div>';
+  }).join('');
+  document.getElementById('walk').innerHTML = html;
+}
+picker.addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  Array.prototype.forEach.call(picker.children, function(c){ c.classList.remove('on'); });
+  b.classList.add('on');
+  renderWalk(+b.dataset.i);
+});
+renderWalk(3);
+
+/* parts */
+document.getElementById('parts').innerHTML = PARTS.map(function(p){
+  var body = '';
+  if(p.ar) body += '<p class="ar">'+p.ar+'</p>';
+  if(p.tl) body += '<p class="tl">'+p.tl+'</p>';
+  body += '<p class="en">'+p.en+'</p>';
+  body += idBlock(p.id);
+  body += '<div class="why"><span class="lbl">Why it is there</span><p>'+p.why+'</p>'+
+          idBlock(p.whyid);
+  if(p.more && p.more.length){
+    body += '<details class="more"><summary>Go deeper</summary><div class="more-body">'+
+      p.more.map(function(x){return '<p>'+x+'</p>';}).join('')+
+      '<div class="id-txt show"><span class="lbl">Bahasa Indonesia</span>'+
+      p.moreid.map(function(x){return '<p>'+x+'</p>';}).join('')+'</div>'+
+      '</div></details>';
+  }
+  body += '</div>';
+  var figure = p.fig ? '<div class="pose-box">'+poseSVG(p.fig,86)+'</div>' : '';
+  return '<div class="card srch"><div class="card-top"><div class="card-txt">'+
+    '<p class="step-n">'+p.n+'</p><div class="card-h"><h3>'+p.t+
+    (p.times?'<span class="times">'+p.times+'</span>':'')+'</h3><span class="pos">'+p.pos+'</span></div>'+
+    '</div>'+figure+'</div>'+body+'</div>';
+}).join('');
+
+/* surahs */
+document.getElementById('surahs').innerHTML = SURAHS.map(function(s){
+  var verses = s.v.map(function(v,i){
+    return '<div style="padding:15px 0;border-bottom:1px solid var(--line)">'+
+      '<p class="ar">'+v.ar+'</p><p class="tl"><span style="font-size:11px;color:var(--muted);margin-right:7px">'+(i+1)+'</span>'+v.tl+'</p>'+
+      '<p class="en">'+v.en+'</p>'+ idBlock(v.id) +'</div>';
+  }).join('');
+  return '<div class="card srch"><div class="card-h"><h3>'+s.name+'</h3><span class="pos">'+s.meta+'</span></div>'+
+    '<p class="en" style="margin-top:7px">'+s.intro+'</p>'+ idBlock(s.introid) + verses +
+    '<div class="why"><span class="lbl">What it is doing</span><p>'+s.why+'</p>'+idBlock(s.whyid)+'</div></div>';
+}).join('');
+
+/* wudhu */
+document.getElementById('wudhuList').innerHTML = WUDHU.map(function(w,i){
+  return '<div class="card srch" style="padding:15px 18px"><div class="card-h"><h3 style="font-size:16.5px">'+(i+1)+'. '+w.t+
+    '<span class="times" style="background:'+(w.ob?'var(--accent-soft)':'var(--line)')+';color:'+(w.ob?'var(--accent-deep)':'var(--ink2)')+'">'+
+    (w.ob?'Obligatory':'Sunnah')+'</span></h3></div><p class="en" style="margin-top:6px">'+w.d+'</p>'+idBlock(w.id)+'</div>';
+}).join('');
+
+/* vocab */
+document.getElementById('vocabList').innerHTML = VOCAB.map(function(v){
+  return '<div class="word srch"><div class="w-ar">'+v.ar+'</div><div class="w-b">'+
+    '<p class="w-tl">'+v.tl+'</p><p class="w-en">'+v.en+'</p>'+
+    '<p class="w-id">'+v.id+'</p><p class="w-note">'+v.note+'</p></div></div>';
+}).join('');
+
+/* ============================ BEHAVIOUR ============================ */
+document.addEventListener('click', function(e){
+  var b = e.target.closest('.id-btn');
+  if(b){ var t = b.nextElementSibling; t.classList.toggle('show');
+    b.textContent = t.classList.contains('show') ? 'Hide Indonesian' : 'Bahasa Indonesia'; return; }
+  var w = e.target.closest('.word');
+  if(w){ w.classList.toggle('open'); }
+});
+
+/* search */
+var q = document.getElementById('q');
+var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+q.addEventListener('input', function(){
+  var term = q.value.trim().toLowerCase();
+  var items = Array.prototype.slice.call(document.querySelectorAll('.srch'));
+  if(!term){
+    items.forEach(function(el){ el.classList.remove('hidden'); });
+    sections.forEach(function(s){ s.classList.remove('hidden'); });
+    document.getElementById('results').innerHTML = '';
+    return;
+  }
+  var hits = 0;
+  items.forEach(function(el){
+    var match = el.textContent.toLowerCase().indexOf(term) > -1;
+    el.classList.toggle('hidden', !match);
+    if(match) hits++;
+  });
+  sections.forEach(function(s){
+    var any = s.querySelectorAll('.srch:not(.hidden)').length;
+    s.classList.toggle('hidden', any === 0);
+  });
+  document.getElementById('results').innerHTML =
+    '<div class="callout blue" style="margin-top:20px"><b>'+hits+' match'+(hits===1?'':'es')+' for “'+esc(q.value)+'”</b>'+
+    '<span>Clear the search box to see everything again.</span></div>';
+});
+
+/* nav highlight */
+var navLinks = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+window.addEventListener('scroll', function(){
+  var y = window.scrollY + 150, cur = navLinks[0];
+  sections.forEach(function(s){ if(s.offsetTop <= y){
+    var m = navLinks.filter(function(a){ return a.getAttribute('href') === '#'+s.id; });
+    if(m.length) cur = m[0];
+  }});
+  navLinks.forEach(function(a){ a.classList.toggle('on', a===cur); });
+}, {passive:true});
+</script>
+<script>
+/* Offline support. Only runs on a real http(s) origin — opening this file
+   directly from disk simply skips it, with no error. */
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
