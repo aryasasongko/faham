@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Faham — understand what you pray. A step-by-step prayer guide in English and Bahasa Indonesia, for four schools of jurisprudence.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Faham">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#fcfcfb">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+<title>Faham — understand what you pray</title>
+</head>
+<body>
+
+<a class="skip" href="#today">Skip to content</a>
+
+<!-- Polite announcements: location results, tracker confirmations, audio errors. -->
+<div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
+
+<!-- First run. Hidden until app.js decides it is needed. -->
+<div id="onboarding" class="onboarding hidden"></div>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 200 200" role="img" aria-label="Faham">
+        <rect width="200" height="200" fill="#17573A"/>
+        <path d="M34,176 L34,110 Q34,37.8 100,24 Q166,37.8 166,110 L166,176 Z" fill="#0E3D28"/>
+        <path d="M50,176 L50,116 Q50,55.5 100,44 Q150,55.5 150,116 L150,176 Z" fill="#2E7D55"/>
+        <path d="M68,176 L68,124 Q68,75.3 100,66 Q132,75.3 132,124 L132,176 Z" fill="#E8DFCF"/>
+      </svg>
+      <b>Faham</b><span data-id="pahami apa yang kamu ucapkan">understand what you pray</span>
+    </div>
+    <div class="barrow">
+      <input class="search" id="q" type="search" autocomplete="off"
+        placeholder="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…"
+        aria-label="Search"
+        data-en-ph="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…"
+        data-id-ph="Cari — coba “sujud”, “rakaat”, “rabb”, “ampun”…">
+      <div class="seg" id="seg" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="on" aria-pressed="true">EN</button>
+        <button type="button" data-lang="id" aria-pressed="false">ID</button>
+        <button type="button" data-lang="both" aria-pressed="false">Both</button>
+      </div>
+    </div>
+    <nav id="tabs" aria-label="Sections"></nav>
+    <nav id="subnav" aria-label="Within this section"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="results"></div>
+
+  <!-- ================= TODAY ================= -->
+  <section id="today" aria-labelledby="today-h">
+    <p class="sec-h" data-id="Hari ini">Today</p>
+    <h2 id="today-h" class="sr-only" data-id="Hari ini">Today</h2>
+    <div id="todayPanel"></div>
+  </section>
+
+  <section id="tracker" aria-labelledby="tracker-h">
+    <p class="sec-h" data-id="Catatan salat">Prayer log</p>
+    <h2 id="tracker-h" data-id="Lima salat hari ini">The five, today</h2>
+    <p class="sec-lede" data-id="Ketuk salat setelah kamu mengerjakannya. Tidak ada akun, tidak ada server, tidak ada yang dikirim ke mana pun — catatannya tersimpan di perangkat ini saja.">Tap a prayer once you have prayed it. No account, no server, nothing sent anywhere — the record stays on this device.</p>
+    <div id="trackerPanel"></div>
+  </section>
+
+  <!-- ================= READ ================= -->
+  <section id="why" aria-labelledby="why-h">
+    <p class="sec-h" data-id="Mulai dari sini">Start here</p>
+    <h2 id="why-h" data-id="Sebelum bahasa Arabnya">Before the Arabic</h2>
+    <p class="sec-lede" data-id="Kamu bilang menghafal bahasa Arab tidak membuatmu memahami Islam. Itu benar, dan justru itulah sebabnya aplikasi ini ada. Baca lima bagian ini lebih dulu — inilah bingkai bagi semua yang lain.">You said memorising Arabic doesn't make you understand Islam. That's correct, and it's the reason this app exists. Read these five first — they're the frame everything else hangs on.</p>
+    <div id="concepts"></div>
+  </section>
+
+  <section id="islam" aria-labelledby="islam-h">
+    <p class="sec-h" data-id="Islam">Islam</p>
+    <h2 id="islam-h" data-id="Apa sebenarnya yang dikatakan agama ini">What this religion is actually saying</h2>
+    <p class="sec-lede" data-id="Kamu bilang ingin memahami Islam, bukan menghafal bahasa Arab. Inilah lapisan itu — sembilan tulisan tentang apa yang sebenarnya diklaim agama ini dan mengapa ia berbentuk seperti ini. Mulailah dari yang pertama.">You said you wanted to understand Islam, not memorise Arabic. This is that layer — nine pieces on what the religion actually claims and why it is shaped the way it is. Start with the first one.</p>
+    <div id="islamList"></div>
+  </section>
+
+  <section id="stories" aria-labelledby="stories-h">
+    <p class="sec-h" data-id="Kisah">Stories</p>
+    <h2 id="stories-h" data-id="Ketika yang teknis terasa berat">When the technical part is too much</h2>
+    <p class="sec-lede" data-id="Sepuluh kisah, diurutkan dari yang terpendek. Masing-masing dituturkan dengan bahasa biasa, dengan dua atau tiga ayat ditampilkan utuh dalam bahasa Arab di titik cerita berbelok. Tidak ada yang perlu dihafal, tidak ada urutan yang harus benar. Pilih sesuai sisa tenagamu.">Ten stories, sorted shortest first. Each one is told in plain prose — read it in English, tap for Indonesian — with two or three verses given in full Arabic where the story turns. No memorising, no sequence to get right. Pick one by how much energy you have.</p>
+    <div id="storyIndex"></div>
+    <div id="reader" class="hidden"></div>
+  </section>
+
+  <!-- ================= PRAYER ================= -->
+  <section id="rakaat" aria-labelledby="rakaat-h">
+    <p class="sec-h" data-id="Rakaat">Rakaat</p>
+    <h2 id="rakaat-h" data-id="Berapa jumlahnya, dan apa yang berubah">How many, and what changes</h2>
+    <p class="sec-lede" data-id="Satu rakaat adalah satu siklus penuh: berdiri, rukuk, dua kali sujud, lalu kembali. Sholat hanyalah siklus itu yang diulang sejumlah tertentu. Hampir semua kebingungan pemula adalah tentang apa yang berubah dari satu siklus ke siklus berikutnya — jadi di sinilah semuanya dijabarkan.">A rakaat is one full cycle: stand, bow, prostrate twice, and you're back. Prayers are just that cycle repeated a set number of times. Almost every beginner's confusion is about what changes between one cycle and the next — so here it is, spelled out.</p>
+
+    <div id="rakaatVisuals"></div>
+
+    <table class="tbl">
+      <thead><tr>
+        <th data-id="Sholat">Prayer</th>
+        <th class="n" data-id="Rakaat">Rakaat</th>
+        <th data-id="Suara">Voice</th>
+        <th data-id="Apa yang berbeda">What's different</th>
+      </tr></thead>
+      <tbody id="prayerTable"></tbody>
+    </table>
+
+    <div class="callout blue srch">
+      <b data-id="Tiga aturan yang menjelaskan semuanya">The three rules that explain everything</b>
+      <span data-id="1. Al-Fatihah dibaca di &lt;em&gt;setiap rakaat&lt;/em&gt;. 2. Surah pendek tambahan hanya di &lt;em&gt;rakaat 1 dan 2&lt;/em&gt; — tidak pernah di rakaat ke-3 atau ke-4. 3. Kamu duduk untuk tasyahud awal setelah rakaat 2 setiap kali sholat itu lebih dari dua rakaat. Kuasai ketiganya dan kamu bisa menyusun sendiri sholat apa pun.">1. Al-Fatihah is recited in <em>every rakaat</em>. 2. The extra short surah is added <em>only in rakaat 1 and 2</em> — never in the 3rd or 4th. 3. You sit for a middle tashahhud after rakaat 2 whenever the prayer has more than two rakaat. Learn those three and you can work out any prayer yourself.</span>
+    </div>
+
+    <div class="callout srch">
+      <b data-id="Tiga hal yang hanya berlaku saat bermakmum">Three things that only apply behind an imam</b>
+      <span data-id="Panduan di bawah mengandaikan kamu sholat sendiri, dan di situlah kamu akan mulai. Saat berjamaah kamu selalu membaca &lt;em&gt;pelan&lt;/em&gt;, bahkan pada sholat yang ditandai keras — yang mengeraskan bacaan adalah imam. Apakah kamu tetap membaca Al-Fatihah sendiri berbeda antarmazhab; lihat “Titik perbedaan antarmazhab” di bagian Dalam sholat. Dan kalau kamu datang terlambat lalu mendapati imam sudah rukuk, rakaat itu tetap terhitung untukmu.">The walkthroughs below assume you are praying alone, which is where you'll start. In congregation you always recite <em>silently</em>, even in the prayers marked aloud — the "aloud" applies to the imam. Whether you still recite Al-Fatihah yourself is one of the points the schools differ on; see "Where the schools differ" in the In the prayer section. And if you arrive late and catch the imam already bowing, that rakaat still counts for you.</span>
+    </div>
+
+    <div class="callout srch">
+      <b data-id="Dua pengecualian dari hitungan di atas">Two exceptions to the counts above</b>
+      <span data-id="Pada hari Jumat, sholat Jumat menggantikan Dzuhur dan jumlahnya 2 rakaat, bukan 4, didahului khutbah. Dan saat bepergian, sholat yang 4 rakaat boleh diringkas menjadi 2 (qasar). Keduanya belum perlu kamu pikirkan sekarang — tapi tabel ini bukan gambaran lengkap, dan lebih baik tahu sekarang daripada bingung di masjid nanti.">On Friday, Jumat prayer replaces Dzuhur and is 2 rakaat rather than 4, preceded by the khutbah. And when travelling, the 4-rakaat prayers may be shortened to 2 (qasr). Neither is something to worry about yet — but the table isn't the whole picture, and it's better to know that now than to be confused in a mosque later.</span>
+    </div>
+
+    <p class="sec-h spaced" data-id="Satu rakaat, dalam gambar">One rakaat, in pictures</p>
+    <div class="cycle" id="cycle"></div>
+
+    <p class="sec-h spaced" data-id="Tuntun aku satu per satu">Walk me through one</p>
+    <div class="picker" id="picker" role="group" aria-label="Choose a prayer"></div>
+    <div id="walk"></div>
+  </section>
+
+  <section id="words" aria-labelledby="words-h">
+    <p class="sec-h" data-id="Dalam sholat">In the prayer</p>
+    <h2 id="words-h" data-id="Semua yang kamu ucapkan, dan artinya">Everything you say, and what it means</h2>
+    <p class="sec-lede" data-id="Berurutan, dari takbiratul ihram sampai salam, mengikuti mazhab yang kamu pilih. Buka <b>Selami lebih dalam</b> kalau kamu ingin alasannya, bukan sekadar ringkasannya.">In order, from the opening takbir to the closing salam, following the school you selected. Open <b>Go deeper</b> when you want the reasoning rather than the summary.</p>
+    <div id="practicePanel"></div>
+    <div id="parts"></div>
+  </section>
+
+  <section id="wudhu" aria-labelledby="wudhu-h">
+    <p class="sec-h" data-id="Wudhu">Wudhu</p>
+    <h2 id="wudhu-h" data-id="Bersuci, secara berurutan">Washing, in order</h2>
+    <p class="sec-lede" data-id="Rukun-rukun wajib dalam urutan yang tetap, ditambah amalan sunnah yang biasa dilakukan di sekitarnya. Apa yang wajib dan apa yang sunnah sedikit berbeda antarmazhab, jadi daftar ini mengikuti pilihanmu. Wudhu tetap sah sampai ada yang membatalkannya — tidur, buang air, atau buang angin.">The obligatory acts in a fixed sequence, plus the sunnah ones most people do around them. Which are obligatory and which are sunnah varies a little by school, so this list follows your choice. It stays valid until something breaks it — sleep, using the toilet, passing wind.</p>
+    <div id="wudhuList"></div>
+  </section>
+
+  <!-- ================= QIBLA & TIMES ================= -->
+  <section id="times" aria-labelledby="times-h">
+    <p class="sec-h" data-id="Waktu sholat">Prayer times</p>
+    <h2 id="times-h" data-id="Waktu sholat hari ini">Today's prayer times</h2>
+    <p class="sec-lede" data-id="Dihitung di perangkat ini dari posisimu. Tidak ada permintaan ke layanan mana pun, jadi ia tetap bekerja tanpa koneksi dan koordinatmu tidak pergi ke mana-mana.">Calculated on this device from your position. There is no request to any service, so it keeps working with no connection and your coordinates go nowhere.</p>
+    <div id="timesPanel"></div>
+  </section>
+
+  <section id="qibla" aria-labelledby="qibla-h">
+    <p class="sec-h" data-id="Kiblat">Qibla</p>
+    <h2 id="qibla-h" data-id="Arah kiblat">Which way to face</h2>
+    <p class="sec-lede" data-id="Menghitung arah kiblat dari posisimu saat ini, memakai lokasi yang sama dengan waktu sholat. Perlu kompas ponsel untuk jarum yang bergerak. Baca peringatannya di bawah — kompas ponsel gampang meleset.">Works out the direction to the Kaaba from where you are, using the same location as the prayer times. It needs your phone's compass for the moving needle. Read the caution below — phone compasses are easily thrown off.</p>
+    <div id="qiblaPanel"></div>
+  </section>
+
+  <!-- ================= DUAS ================= -->
+  <section id="duas" aria-labelledby="duas-h">
+    <p class="sec-h" data-id="Doa">Duas</p>
+    <h2 id="duas-h" data-id="Doa-doa pendek untuk hari biasa">The short ones, for ordinary days</h2>
+    <p class="sec-lede" data-id="Bukan doa panjang untuk peristiwa besar — yang pendek, yang dipakai beberapa kali sehari. Sebagian besar hanya satu baris. Inilah bagian yang paling cepat menjadi kebiasaan.">Not the long supplications for big occasions — the short ones, used several times a day. Most are a single line. This is the section that becomes habit fastest.</p>
+    <div id="duaList"></div>
+  </section>
+
+  <!-- ================= SURAHS ================= -->
+  <section id="surah" aria-labelledby="surah-h">
+    <p class="sec-h" data-id="Surah">Surahs</p>
+    <h2 id="surah-h" data-id="Al-Fatihah dan surah-surah pendek">Al-Fatihah and the short ones</h2>
+    <p class="sec-lede" data-id="Kamu sudah hafal Al-Fatihah — jadi bacalah di sini untuk maknanya, bukan untuk menghafalnya. Empat surah setelahnya adalah yang mencukupi untuk rakaat 1 dan 2 sholat apa pun.">You already have Al-Fatihah memorised — so read it here for meaning, not for memorising. The four after it are the ones that cover you for rakaat 1 and 2 of any prayer.</p>
+    <div id="surahs"></div>
+  </section>
+
+  <!-- ================= QUESTIONS ================= -->
+  <section id="ask" aria-labelledby="ask-h">
+    <p class="sec-h" data-id="Pertanyaan">Questions</p>
+    <h2 id="ask-h" data-id="Yang sebenarnya ingin ditanyakan orang">What people actually want to ask</h2>
+    <p class="sec-lede" data-id="Tiga puluh dua pertanyaan yang benar-benar ditanyakan pemula, termasuk yang canggung. Yang diperselisihkan ditandai sebagai diperselisihkan, bukan dijawab seolah pasti.">Thirty-two questions beginners actually have, including the awkward ones. Where something is genuinely disputed it is marked as disputed rather than answered as though settled.</p>
+    <div id="faqList"></div>
+  </section>
+
+  <!-- ================= VOCABULARY ================= -->
+  <section id="kata" aria-labelledby="kata-h">
+    <p class="sec-h" data-id="Kosakata">Vocabulary</p>
+    <h2 id="kata-h" data-id="30 kata yang menyusun 80% sholatmu">The 30 words that are 80% of your prayer</h2>
+    <p class="sec-lede" data-id="Inilah jalan pintas yang tidak pernah diberitahukan kepada pemula. Sholat bukan tembok bunyi asing — ia kosakata kecil yang terus diulang. Kuasai tiga puluh kata ini dan sebagian besar yang kamu ucapkan tiap hari berhenti menjadi bunyi tanpa makna. Ketuk kata mana pun.">This is the shortcut nobody tells beginners. The prayer is not a wall of foreign sound — it's a small vocabulary repeated constantly. Learn these thirty and most of what you say each day stops being noise. Tap any word.</p>
+    <div class="vocab" id="vocabList"></div>
+  </section>
+
+  <!-- ================= SETTINGS ================= -->
+  <section id="settings" aria-labelledby="settings-h">
+    <p class="sec-h" data-id="Pengaturan">Settings</p>
+    <h2 id="settings-h" data-id="Pengaturan">Settings</h2>
+    <p class="sec-lede" data-id="Bahasa dan mazhab adalah dua pilihan terpisah. Mengubah satu tidak pernah mengatur ulang yang lain.">Language and school are separate preferences. Changing one never resets the other.</p>
+    <div id="settingsPanel"></div>
+  </section>
+
+  <footer>
+    <p><b data-id="Menyimpan Faham di ponselmu">Keeping Faham on your phone</b>
+      <span data-id="Buka alamatnya di Chrome atau Safari, lalu gunakan menu peramban — “Tambahkan ke layar utama” di Android, Bagikan → “Tambahkan ke Layar Utama” di iPhone. Setelah kunjungan pertama, ia bekerja tanpa koneksi.">— open the address in Chrome or Safari, then use the browser menu: “Add to Home screen” on Android, Share → “Add to Home Screen” on iPhone. After the first visit it works with no connection.</span></p>
+
+    <p><b data-id="Apa yang sudah diperiksa, dan apa yang belum">What has been checked, and what hasn't</b>
+      <span data-id="Setiap ayat Al-Quran dalam aplikasi ini — seluruh Al-Fatihah, empat surah pendek, dan ayat-ayat inti dalam kisah — telah dibandingkan kata demi kata dengan teks Utsmani dari Quran.com, dan cocok. Bacaan sholat berbeda halnya: iftitah, tasyahud, dan sholawat berasal dari hadis, punya beberapa riwayat yang sah, dan belum diverifikasi terhadap sumber primer di sini. Bacalah bersama gurumu sebelum menghafal, dan kalau lafalnya berbeda, pakai yang beliau ajarkan.">— every Quranic verse in this app has been compared word by word against the Uthmani text from Quran.com, and matches. The recitations of the prayer itself are a different matter: the opening supplication, tashahhud and salawat come from hadith, have several valid narrations, and have not been verified against a primary source here. Read them alongside your teacher before memorising, and if their wording differs, use theirs.</span></p>
+
+    <p><b data-id="Empat mazhab, satu panduan">Four schools, one guide</b>
+      <span data-id="Panduan sholat, tuntunan Witir, daftar wudhu, dan ketentuan Asar mengikuti mazhab yang kamu pilih di Pengaturan. Bila di dalam satu mazhab ada lebih dari satu pendapat yang dihormati, alternatifnya disebutkan, bukan disembunyikan. Kandungan fikih di sini masih menunggu telaah seorang yang berkompeten sebelum rilis.">— the prayer walkthrough, the Witr guidance, the wudhu list and the Asr convention all follow the school you pick in Settings. Where a school contains more than one respected opinion, the alternative is stated rather than hidden. The jurisprudential content here is still awaiting review by a qualified reader before release.</span></p>
+
+    <p><b data-id="Privasi">Privacy</b>
+      <span data-id="Tidak ada akun, tidak ada server, tidak ada analitik. Riwayat salatmu dan lokasimu tidak pernah meninggalkan perangkat ini; waktu sholat dan arah kiblat dihitung di sini.">— no account, no server, no analytics. Your prayer history and your location never leave this device; the prayer times and the qibla are calculated here.</span></p>
+
+    <p data-id="Terjemahan bahasa Inggris dan Indonesia di sini ditulis untuk kejelasan, bukan salinan terjemahan terbitan mana pun.">The English and Indonesian renderings here are written for clarity; they are not copies of any published translation.</p>
+  </footer>
+</main>
+
+<script type="module" src="app.js"></script>
+<noscript>
+  <p style="padding:20px;text-align:center">Faham needs JavaScript to render the prayer guide.</p>
+</noscript>
+</body>
+</html>
