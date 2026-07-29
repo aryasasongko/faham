@@ -1,5 +1,5 @@
 /* Faham offline cache. Bump CACHE when index.html changes. */
-var CACHE = 'faham-v4';
+var CACHE = 'faham-v7';
 var ASSETS = [
   './',
   './index.html',
