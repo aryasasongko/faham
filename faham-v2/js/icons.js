@@ -18,6 +18,23 @@ export const ICONS = {
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/>'
 };
 
+/**
+ * The Faham mark. Mirrors the inline SVG in index.html's header — the header
+ * copy is static markup so the page has a logo before any script runs, and this
+ * one is for anything rendered by JavaScript. Brand colours are deliberately
+ * literal rather than tokens: the mark is the same in light and dark mode.
+ */
+export function brandLogo(size, className) {
+  const s = size || 48;
+  return '<svg class="' + esc(className || 'brand-mark') + '" width="' + s + '" height="' + s +
+    '" viewBox="0 0 200 200" role="img" aria-label="Faham">' +
+    '<rect width="200" height="200" fill="#17573A"/>' +
+    '<path d="M34,176 L34,110 Q34,37.8 100,24 Q166,37.8 166,110 L166,176 Z" fill="#0E3D28"/>' +
+    '<path d="M50,176 L50,116 Q50,55.5 100,44 Q150,55.5 150,116 L150,176 Z" fill="#2E7D55"/>' +
+    '<path d="M68,176 L68,124 Q68,75.3 100,66 Q132,75.3 132,124 L132,176 Z" fill="#E8DFCF"/>' +
+    '</svg>';
+}
+
 export function icon(key, className) {
   if (!ICONS[key]) return '';
   return '<svg class="ic ' + esc(className || '') + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +

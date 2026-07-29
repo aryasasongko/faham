@@ -12,6 +12,7 @@ import { setLanguage, setMadhhab, setOnboarded, state } from '../state.js';
 import { t, pickLang } from '../i18n.js';
 import { $, esc, setHTML, qsa } from '../dom.js';
 import { MADHHAB_KEYS, MADHHAB_META } from '../madhhab.js';
+import { brandLogo } from '../icons.js';
 
 let step = 0;                 // 0 = language, 1 = madhhab
 let onFinish = null;
@@ -51,7 +52,12 @@ function render() {
   const host = $('onboarding');
   setHTML(host,
     '<div class="ob-panel" role="dialog" aria-modal="true" aria-labelledby="obTitle">' +
-      '<p class="ob-brand">' + esc(t('ob_welcome_h')) + '</p>' +
+      /* The mark is decorative beside its own name, so it is hidden from
+         assistive tech rather than read out twice. */
+      '<div class="ob-head">' +
+        '<span class="ob-logo-wrap" aria-hidden="true">' + brandLogo(56, 'ob-logo') + '</span>' +
+        '<p class="ob-brand">' + esc(t('ob_welcome_h')) + '</p>' +
+      '</div>' +
       '<p class="ob-lede">' + esc(t('ob_welcome_s')) + '</p>' +
       '<p class="ob-step">' + esc(t('ob_step')) + ' ' + (step + 1) + '/2</p>' +
       (step === 0 ? languageStep() : madhhabStep()) +

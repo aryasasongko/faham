@@ -24,7 +24,7 @@
    BUMP `VERSION` on every deploy that changes any shell file.
    ========================================================================== */
 
-var VERSION = 'v15';
+var VERSION = 'v16';
 var SHELL_CACHE = 'faham-shell-' + VERSION;
 var AUDIO_CACHE = 'faham-audio-v1';
 

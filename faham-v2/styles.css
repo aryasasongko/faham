@@ -737,9 +737,14 @@ svg.pose{display:block}
           calc(var(--space-6) + env(safe-area-inset-bottom));
 }
 .ob-panel{max-width:520px;margin:0 auto}
+/* Brand lockup: the mark sits beside its own name, larger than the header's
+   27 px version because this is the one screen with nothing else competing. */
+.ob-head{display:flex;align-items:center;gap:14px;margin:0 0 var(--space-4)}
+.ob-logo-wrap{flex:0 0 auto;display:block;line-height:0}
+.ob-logo{display:block;border-radius:14px}
 .ob-brand{
-  font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
-  font-weight:660;margin:0 0 var(--space-2);
+  font-size:clamp(19px,5.4vw,22px);font-weight:650;letter-spacing:-.015em;
+  color:var(--ink);margin:0;line-height:1.2;
 }
 .ob-lede{font-size:16px;color:var(--ink2);margin:0 0 var(--space-6);max-width:44ch}
 .ob-step{
