@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Faham privacy policy — what the app stores, what it never collects, and the single network request it makes.">
+<meta name="theme-color" content="#fcfcfb">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d">
+<script>
+/* Apply a forced theme before first paint, so a dark-mode user who chose Light
+   (or vice versa) never sees a flash of the wrong theme. app.js takes over
+   from here; on any error the app simply follows the device. */
+try {
+  var s = JSON.parse(localStorage.getItem('faham.settings.v1') || '{}');
+  if (s.theme === 'light' || s.theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', s.theme);
+  }
+} catch (e) { /* follow the device */ }
+</script>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Privacy — Faham</title>
+</head>
+<body>
+
+<main class="wrap policy">
+
+  <p class="policy-back"><a href="index.html">&larr; Faham</a></p>
+
+  <!-- ================= ENGLISH ================= -->
+  <article lang="en">
+    <p class="sec-h">Privacy policy</p>
+    <h2>What Faham stores, and what it never collects</h2>
+    <p class="sec-lede">Last updated 29 July 2026. This policy covers the Faham
+      web app and any version of it packaged for an app store.</p>
+
+    <div class="callout blue">
+      <b>The short version</b>
+      <span>Faham has no accounts, no server, no analytics and no advertising.
+        It does not collect, transmit or sell any personal information. Your
+        prayer records and your location stay on your own device.</span>
+    </div>
+
+    <h3 class="policy-h">What is stored on your device</h3>
+    <p>Faham saves two things in your browser's local storage, on your device
+      only:</p>
+    <ul>
+      <li><b>Your settings</b> — chosen language, madhhab, prayer-time
+        calculation method, reciter, and light/dark appearance.</li>
+      <li><b>Your prayer log</b> — which of the five daily prayers you have
+        marked as prayed, by date.</li>
+    </ul>
+    <p>Neither is sent anywhere. They exist only in the browser or app on the
+      device where you entered them, they are not synchronised between your
+      devices, and no one but you can read them. Clearing your browser data, or
+      uninstalling the app, deletes them permanently. You can also delete the
+      prayer log at any time from <b>Settings &rarr; Your data &rarr; Clear
+      prayer history</b>.</p>
+
+    <h3 class="policy-h">Location</h3>
+    <p>If you tap <b>Use my location</b>, Faham asks your device for your
+      position and uses it to calculate two things on the device itself: your
+      local prayer times, and the compass direction to the Kaaba. The
+      calculations run entirely in the app. <b>Your coordinates are never sent
+      to us or to anyone else</b>, because there is no server to send them to.</p>
+    <p>By default your position is kept in memory only and is forgotten when you
+      close the app. If you switch on <b>Remember this location on this
+      device</b>, an approximate position — rounded to roughly one kilometre — is
+      saved locally so the app does not have to ask again. Switching it off
+      deletes the saved value.</p>
+    <p>You can decline the location permission entirely. The prayer guide,
+      vocabulary, duas, surahs, stories and prayer log all work without it, and
+      you can pick a nearby city instead.</p>
+
+    <h3 class="policy-h">The compass</h3>
+    <p>On some devices the qibla compass asks for access to motion and
+      orientation sensors. Those readings are used only to rotate the needle on
+      screen while you are looking at it. They are not stored and not
+      transmitted. Refusing the permission leaves a static bearing, which still
+      works.</p>
+
+    <h3 class="policy-h">Network requests</h3>
+    <p>Faham makes one kind of outbound request, and only when you ask it to:
+      when you tap play on a Quran verse, the recording is fetched from a
+      public recitation service — currently
+      <span class="nowrap">quranicaudio.com</span>,
+      <span class="nowrap">verses.quran.com</span> or
+      <span class="nowrap">everyayah.com</span>. As with loading any file from
+      the internet, those services can see the request and the IP address it
+      came from. Nothing about you, your settings or your prayer log is included
+      in the request, and their privacy practices are their own.</p>
+    <p>Everything else — prayer times, the qibla, the prayer guide, the log —
+      is computed on your device and works with no connection at all.</p>
+
+    <h3 class="policy-h">What Faham does not do</h3>
+    <ul>
+      <li>No user accounts, sign-in or profiles.</li>
+      <li>No analytics, telemetry, crash reporting or usage tracking.</li>
+      <li>No advertising and no advertising identifiers.</li>
+      <li>No third-party SDKs, trackers or social media integrations.</li>
+      <li>No cookies used for tracking.</li>
+      <li>No sale or sharing of personal information — there is none to sell.</li>
+    </ul>
+
+    <h3 class="policy-h">Offline storage</h3>
+    <p>So the app works without a connection, your browser keeps a copy of
+      Faham's own files (pages, code, icons, and any recitation you have played)
+      in its cache. This is a copy of the app itself, not information about you.
+      Clearing your browser or app storage removes it.</p>
+
+    <h3 class="policy-h">Children</h3>
+    <p>Faham is suitable for all ages and does not knowingly collect
+      information from anyone, including children. Because it collects no
+      personal information at all, there is nothing to request, correct or
+      delete beyond the on-device data described above, which is under your
+      control.</p>
+
+    <h3 class="policy-h">Changes</h3>
+    <p>If this policy changes, the date at the top of this page changes with
+      it. Any change that would affect what is collected or transmitted will be
+      noted in the app.</p>
+
+    <h3 class="policy-h">Contact</h3>
+    <p>Questions about this policy: <a href="mailto:arya.sasongko@gmail.com">arya.sasongko@gmail.com</a></p>
+  </article>
+
+  <hr class="policy-rule">
+
+  <!-- ================= BAHASA INDONESIA ================= -->
+  <article lang="id">
+    <p class="sec-h">Kebijakan privasi</p>
+    <h2>Apa yang disimpan Faham, dan apa yang tidak pernah dikumpulkan</h2>
+    <p class="sec-lede">Diperbarui 29 Juli 2026. Kebijakan ini berlaku untuk
+      aplikasi web Faham dan versi mana pun yang dikemas untuk toko aplikasi.</p>
+
+    <div class="callout blue">
+      <b>Ringkasnya</b>
+      <span>Faham tidak punya akun, server, analitik, maupun iklan. Aplikasi ini
+        tidak mengumpulkan, mengirim, atau menjual data pribadi apa pun. Catatan
+        salat dan lokasimu tetap berada di perangkatmu sendiri.</span>
+    </div>
+
+    <h3 class="policy-h">Yang disimpan di perangkatmu</h3>
+    <p>Faham menyimpan dua hal di penyimpanan lokal peramban, hanya di
+      perangkatmu:</p>
+    <ul>
+      <li><b>Pengaturanmu</b> — pilihan bahasa, mazhab, metode perhitungan waktu
+        sholat, qari, dan tampilan terang/gelap.</li>
+      <li><b>Catatan salatmu</b> — salat mana dari lima waktu yang sudah kamu
+        tandai, beserta tanggalnya.</li>
+    </ul>
+    <p>Keduanya tidak dikirim ke mana pun. Data itu hanya ada di peramban atau
+      aplikasi pada perangkat tempat kamu memasukkannya, tidak disinkronkan
+      antarperangkat, dan tidak ada siapa pun selain kamu yang bisa membacanya.
+      Menghapus data peramban, atau mencopot aplikasi, menghapusnya secara
+      permanen. Kamu juga bisa menghapus catatan salat kapan saja melalui
+      <b>Pengaturan &rarr; Datamu &rarr; Hapus riwayat salat</b>.</p>
+
+    <h3 class="policy-h">Lokasi</h3>
+    <p>Kalau kamu menekan <b>Gunakan lokasi saya</b>, Faham meminta posisimu
+      kepada perangkat dan memakainya untuk menghitung dua hal di perangkat itu
+      sendiri: waktu sholat setempat dan arah kiblat. Seluruh perhitungan
+      berjalan di dalam aplikasi. <b>Koordinatmu tidak pernah dikirim kepada
+      kami maupun kepada siapa pun</b>, karena memang tidak ada server tujuannya.</p>
+    <p>Secara bawaan posisimu hanya disimpan di memori dan dilupakan saat
+      aplikasi ditutup. Kalau kamu menyalakan <b>Ingat lokasi ini di perangkat
+      ini</b>, posisi kira-kira — dibulatkan sekitar satu kilometer — disimpan
+      secara lokal agar aplikasi tidak perlu bertanya lagi. Mematikannya
+      menghapus nilai yang tersimpan.</p>
+    <p>Kamu boleh menolak izin lokasi sepenuhnya. Panduan sholat, kosakata,
+      doa, surah, kisah, dan catatan salat tetap bekerja tanpa itu, dan kamu
+      bisa memilih kota terdekat sebagai gantinya.</p>
+
+    <h3 class="policy-h">Kompas</h3>
+    <p>Pada sebagian perangkat, kompas kiblat meminta akses ke sensor gerak dan
+      orientasi. Pembacaan itu hanya dipakai untuk memutar jarum di layar selagi
+      kamu melihatnya. Data itu tidak disimpan dan tidak dikirim ke mana pun.
+      Menolak izinnya menyisakan arah statis, yang tetap berguna.</p>
+
+    <h3 class="policy-h">Permintaan jaringan</h3>
+    <p>Faham membuat satu jenis permintaan keluar, dan hanya saat kamu memintanya:
+      ketika kamu menekan putar pada ayat Al-Quran, rekamannya diambil dari
+      layanan bacaan publik — saat ini
+      <span class="nowrap">quranicaudio.com</span>,
+      <span class="nowrap">verses.quran.com</span>, atau
+      <span class="nowrap">everyayah.com</span>. Sebagaimana memuat berkas apa
+      pun dari internet, layanan tersebut dapat melihat permintaan itu dan
+      alamat IP asalnya. Tidak ada informasi tentang dirimu, pengaturanmu, atau
+      catatan salatmu yang disertakan, dan praktik privasi mereka adalah urusan
+      mereka sendiri.</p>
+    <p>Selebihnya — waktu sholat, arah kiblat, panduan sholat, catatan salat —
+      dihitung di perangkatmu dan bekerja sepenuhnya tanpa koneksi.</p>
+
+    <h3 class="policy-h">Yang tidak dilakukan Faham</h3>
+    <ul>
+      <li>Tidak ada akun pengguna, login, atau profil.</li>
+      <li>Tidak ada analitik, telemetri, laporan kerusakan, atau pelacakan penggunaan.</li>
+      <li>Tidak ada iklan dan tidak ada pengenal iklan.</li>
+      <li>Tidak ada SDK pihak ketiga, pelacak, atau integrasi media sosial.</li>
+      <li>Tidak ada cookie untuk pelacakan.</li>
+      <li>Tidak ada penjualan atau pembagian data pribadi — memang tidak ada yang bisa dijual.</li>
+    </ul>
+
+    <h3 class="policy-h">Penyimpanan luring</h3>
+    <p>Agar aplikasi bekerja tanpa koneksi, peramban menyimpan salinan berkas
+      Faham sendiri (halaman, kode, ikon, dan bacaan yang pernah kamu putar) di
+      cache-nya. Ini salinan aplikasinya, bukan informasi tentang dirimu.
+      Menghapus penyimpanan peramban atau aplikasi akan menghapusnya.</p>
+
+    <h3 class="policy-h">Anak-anak</h3>
+    <p>Faham sesuai untuk segala usia dan tidak dengan sengaja mengumpulkan
+      informasi dari siapa pun, termasuk anak-anak. Karena aplikasi ini sama
+      sekali tidak mengumpulkan data pribadi, tidak ada yang perlu diminta,
+      dikoreksi, atau dihapus selain data di perangkat yang dijelaskan di atas,
+      yang sepenuhnya kamu kendalikan.</p>
+
+    <h3 class="policy-h">Perubahan</h3>
+    <p>Kalau kebijakan ini berubah, tanggal di bagian atas halaman ini ikut
+      berubah. Perubahan apa pun yang memengaruhi data yang dikumpulkan atau
+      dikirim akan dicatat di dalam aplikasi.</p>
+
+    <h3 class="policy-h">Kontak</h3>
+    <p>Pertanyaan tentang kebijakan ini: <a href="mailto:arya.sasongko@gmail.com">arya.sasongko@gmail.com</a></p>
+  </article>
+
+  <footer>
+    <p><a class="footlink" href="index.html">&larr; Back to Faham</a></p>
+  </footer>
+</main>
+
+</body>
+</html>
