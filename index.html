@@ -66,6 +66,15 @@ body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);
   padding:6px 9px;border-radius:8px;border:0;background:transparent;color:var(--ink2);cursor:pointer;white-space:nowrap}
 .seg button:hover{color:var(--ink)}
 .seg button.on{background:var(--accent-fill);color:#fff}
+.pairb{flex:0 0 auto;font-family:inherit;font-size:12px;font-weight:650;letter-spacing:.02em;
+  padding:7px 9px;border-radius:9px;border:1px solid var(--border);background:var(--surface);
+  color:var(--muted);cursor:pointer;display:none}
+.pairb.avail{display:inline-flex}
+.pairb.on{background:var(--id-soft);border-color:transparent;color:var(--id-deep)}
+.konote{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--warn);
+  border-radius:0 12px 12px 0;padding:13px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.konote b{display:block;font-size:14px;margin-bottom:3px}
+.konote span{font-size:14px;color:var(--ink2)}
 nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 #tabs a{flex:0 0 auto;justify-content:center;display:flex;align-items:center;text-align:center;padding:8px 13px}
 #subnav{margin-top:7px}
@@ -268,34 +277,9 @@ svg.pose{display:block}
 .disp b{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--warn);margin-bottom:2px}
 .disp span{font-size:14px;color:var(--ink2)}
 
-/* ---- play buttons ---- */
-.playb{width:30px;height:30px;flex:0 0 auto;border-radius:50%;border:1.5px solid var(--accent);
-  background:transparent;color:var(--accent);cursor:pointer;padding:0;display:inline-flex;
-  align-items:center;justify-content:center;vertical-align:middle}
-.playb.sm{width:26px;height:26px}
-.playb svg{width:14px;height:14px;display:block}
-.playb .ply{fill:currentColor}
-.playb .stp{fill:currentColor;display:none}
-.playb.on{background:var(--accent-fill);border-color:var(--accent-fill);color:#fff}
-.playb.on .ply{display:none}
-.playb.on .stp{display:block}
-.playb[data-failed]{opacity:.4}
 .vrow{padding:15px 0;border-bottom:1px solid var(--line)}
-.vhead{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.vhead{margin-bottom:4px}
 .vno{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.vhead-all{display:flex;align-items:center;gap:10px;margin:14px 0 2px;padding-top:13px;
-  border-top:1px solid var(--line);font-size:13.5px;color:var(--ink2);font-weight:560}
-.recsw{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:13px 15px;margin-bottom:14px;box-shadow:var(--shadow)}
-.recsw .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-  font-weight:650;display:block;margin-bottom:8px}
-.rec{font-family:inherit;font-size:13.5px;font-weight:600;padding:7px 13px;border-radius:9px;
-  border:1px solid var(--border);background:transparent;color:var(--ink);cursor:pointer;margin-right:7px}
-.rec i{display:block;font-style:normal;font-size:10.5px;font-weight:500;opacity:.7;margin-top:1px}
-.rec.on{background:var(--accent-fill);border-color:var(--accent-fill);color:#fff}
-.recn{font-size:12px;color:var(--muted);margin:11px 0 0}
-.auderr{font-size:12.5px;color:var(--warn);margin-top:9px;font-weight:560}
-.anchor .vref .playb{margin-right:8px}
 
 /* ---- icons ---- */
 .ic{width:15px;height:15px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.9;
@@ -361,11 +345,6 @@ svg.pose{display:block}
   font-size:10px;display:flex;align-items:center;justify-content:center}
 .wleg.ob b{background:var(--accent-fill);border-color:var(--accent-fill);color:#fff}
 
-/* ---- audio ---- */
-.aud{margin:14px 0 0;padding-top:13px;border-top:1px solid var(--line)}
-.aud audio{width:100%;height:36px}
-.audn{font-size:12px;color:var(--muted);margin:7px 0 0}
-
 /* ---- stories ---- */
 .story-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:15px 17px;margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer;display:flex;gap:14px;align-items:flex-start}
@@ -427,14 +406,15 @@ footer p{margin:0 0 8px}
 
 <div class="bar">
   <div class="bar-in">
-    <div class="brand"><svg class="logo" viewBox="0 0 200 200" role="img" aria-label="Faham"><rect width="200" height="200" fill="#17573A"/><path d="M34,176 L34,110 Q34,37.8 100,24 Q166,37.8 166,110 L166,176 Z" fill="#0E3D28"/><path d="M50,176 L50,116 Q50,55.5 100,44 Q150,55.5 150,116 L150,176 Z" fill="#2E7D55"/><path d="M68,176 L68,124 Q68,75.3 100,66 Q132,75.3 132,124 L132,176 Z" fill="#E8DFCF"/></svg><b>Faham</b><span data-id="pahami apa yang kamu ucapkan">understand what you pray</span></div>
+    <div class="brand"><svg class="logo" viewBox="0 0 200 200" role="img" aria-label="Faham"><rect width="200" height="200" fill="#17573A"/><path d="M34,176 L34,110 Q34,37.8 100,24 Q166,37.8 166,110 L166,176 Z" fill="#0E3D28"/><path d="M50,176 L50,116 Q50,55.5 100,44 Q150,55.5 150,116 L150,176 Z" fill="#2E7D55"/><path d="M68,176 L68,124 Q68,75.3 100,66 Q132,75.3 132,124 L132,176 Z" fill="#E8DFCF"/></svg><b>Faham</b><span data-id="pahami apa yang kamu ucapkan" data-ko="당신이 무엇을 말하는지 이해하기">understand what you pray</span></div>
     <div class="barrow">
-      <input class="search" id="q" type="search" placeholder="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…" aria-label="Search" data-en-ph="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…" data-id-ph="Cari — coba “sujud”, “rakaat”, “rabb”, “ampun”…">
+      <input class="search" id="q" type="search" placeholder="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…" aria-label="Search" data-en-ph="Search — try “sujud”, “rakaat”, “rabb”, “forgive”…" data-id-ph="Cari — coba “sujud”, “rakaat”, “rabb”, “ampun”…" data-ko-ph="검색 — “수주드”, “라카아”, “두아” 등">
       <div class="seg" id="seg" role="group" aria-label="Language">
         <button type="button" data-l="en" class="on">EN</button>
         <button type="button" data-l="id">ID</button>
-        <button type="button" data-l="both">Both</button>
+        <button type="button" data-l="ko">한국어</button>
       </div>
+      <button type="button" id="pairBtn" class="pairb" aria-pressed="false" title="Show English alongside">+EN</button>
     </div>
     <nav id="tabs" role="tablist"></nav>
     <nav id="subnav"></nav>
@@ -445,41 +425,41 @@ footer p{margin:0 0 8px}
   <div id="results"></div>
 
   <section id="today" data-view="today">
-    <p class="sec-h" data-id="Hari ini">Today</p>
+    <p class="sec-h" data-id="Hari ini" data-ko="오늘">Today</p>
     <div id="todayPanel"></div>
   </section>
 
   <section id="why" data-view="read">
-    <p class="sec-h" data-id="Mulai dari sini">Start here</p>
-    <h2 data-id="Sebelum bahasa Arabnya">Before the Arabic</h2>
-    <p class="sec-lede" data-id="Kamu bilang menghafal bahasa Arab tidak membuatmu memahami Islam. Itu benar, dan justru itulah sebabnya aplikasi ini ada. Baca lima bagian ini lebih dulu — inilah bingkai bagi semua yang lain.">You said memorising Arabic doesn't make you understand Islam. That's correct, and it's the reason this app exists. Read these five first — they're the frame everything else hangs on.</p>
+    <p class="sec-h" data-id="Mulai dari sini" data-ko="시작하기">Start here</p>
+    <h2 data-id="Sebelum bahasa Arabnya" data-ko="아랍어에 앞서">Before the Arabic</h2>
+    <p class="sec-lede" data-id="Kamu bilang menghafal bahasa Arab tidak membuatmu memahami Islam. Itu benar, dan justru itulah sebabnya aplikasi ini ada. Baca lima bagian ini lebih dulu — inilah bingkai bagi semua yang lain." data-ko="아랍어를 외운다고 이슬람을 이해하게 되는 것은 아니라는 말에서 이 앱이 시작되었습니다. 맞는 말이고, 그래서 이 앱이 있습니다. 이 다섯 편을 먼저 읽으십시오 — 나머지 전부가 여기에 걸려 있습니다.">You said memorising Arabic doesn't make you understand Islam. That's correct, and it's the reason this app exists. Read these five first — they're the frame everything else hangs on.</p>
     <div id="concepts"></div>
   </section>
 
   <section id="islam" data-view="read">
-    <p class="sec-h" data-id="Islam">Islam</p>
-    <h2 data-id="Apa sebenarnya yang dikatakan agama ini">What this religion is actually saying</h2>
-    <p class="sec-lede" data-id="Kamu bilang ingin memahami Islam, bukan menghafal bahasa Arab. Inilah lapisan itu — sembilan tulisan tentang apa yang sebenarnya diklaim agama ini dan mengapa ia berbentuk seperti ini. Mulailah dari yang pertama.">You said you wanted to understand Islam, not memorise Arabic. This is that layer — nine pieces on what the religion actually claims and why it is shaped the way it is. Start with the first one.</p>
+    <p class="sec-h" data-id="Islam" data-ko="이슬람">Islam</p>
+    <h2 data-id="Apa sebenarnya yang dikatakan agama ini" data-ko="이 종교가 실제로 말하는 것">What this religion is actually saying</h2>
+    <p class="sec-lede" data-id="Kamu bilang ingin memahami Islam, bukan menghafal bahasa Arab. Inilah lapisan itu — sembilan tulisan tentang apa yang sebenarnya diklaim agama ini dan mengapa ia berbentuk seperti ini. Mulailah dari yang pertama." data-ko="이 종교가 실제로 무엇을 주장하며 왜 이런 모양인지에 관한 아홉 편의 글입니다. (아직 한국어로 번역되지 않았습니다.)">You said you wanted to understand Islam, not memorise Arabic. This is that layer — nine pieces on what the religion actually claims and why it is shaped the way it is. Start with the first one.</p>
     <div id="islamList"></div>
   </section>
 
   <section id="stories" data-view="read">
-    <p class="sec-h" data-id="Kisah">Stories</p>
-    <h2 data-id="Ketika yang teknis terasa berat">When the technical part is too much</h2>
-    <p class="sec-lede" data-id="Sepuluh kisah, diurutkan dari yang terpendek. Masing-masing dituturkan dengan bahasa biasa, dengan dua atau tiga ayat ditampilkan utuh dalam bahasa Arab di titik cerita berbelok. Tidak ada yang perlu dihafal, tidak ada urutan yang harus benar. Pilih sesuai sisa tenagamu.">Ten stories, sorted shortest first. Each one is told in plain prose — read it in English, tap for Indonesian — with two or three verses given in full Arabic where the story turns. No memorising, no sequence to get right. Pick one by how much energy you have.</p>
+    <p class="sec-h" data-id="Kisah" data-ko="이야기">Stories</p>
+    <h2 data-id="Ketika yang teknis terasa berat" data-ko="기술적인 부분이 버거울 때">When the technical part is too much</h2>
+    <p class="sec-lede" data-id="Sepuluh kisah, diurutkan dari yang terpendek. Masing-masing dituturkan dengan bahasa biasa, dengan dua atau tiga ayat ditampilkan utuh dalam bahasa Arab di titik cerita berbelok. Tidak ada yang perlu dihafal, tidak ada urutan yang harus benar. Pilih sesuai sisa tenagamu." data-ko="열 편의 이야기를 짧은 순서로 담았습니다. 각각 평이한 산문으로 전하며, 이야기가 꺾이는 자리에 두세 구절을 아랍어 원문으로 실었습니다. 외울 것도, 맞춰야 할 순서도 없습니다. 남은 기운에 맞춰 고르십시오. (아직 한국어로 번역되지 않았습니다.)">Ten stories, sorted shortest first. Each one is told in plain prose — read it in English, tap for Indonesian — with two or three verses given in full Arabic where the story turns. No memorising, no sequence to get right. Pick one by how much energy you have.</p>
     <div id="storyIndex"></div>
     <div id="reader" class="hidden"></div>
   </section>
 
   <section id="rakaat" data-view="prayer">
-    <p class="sec-h" data-id="Rakaat">Rakaat</p>
-    <h2 data-id="Berapa jumlahnya, dan apa yang berubah">How many, and what changes</h2>
-    <p class="sec-lede" data-id="Satu rakaat adalah satu siklus penuh: berdiri, rukuk, dua kali sujud, lalu kembali. Sholat hanyalah siklus itu yang diulang sejumlah tertentu. Hampir semua kebingungan pemula adalah tentang apa yang berubah dari satu siklus ke siklus berikutnya — jadi di sinilah semuanya dijabarkan.">A rakaat is one full cycle: stand, bow, prostrate twice, and you're back. Prayers are just that cycle repeated a set number of times. Almost every beginner's confusion is about what changes between one cycle and the next — so here it is, spelled out.</p>
+    <p class="sec-h" data-id="Rakaat" data-ko="라카아">Rakaat</p>
+    <h2 data-id="Berapa jumlahnya, dan apa yang berubah" data-ko="몇 번이며, 무엇이 달라지는가">How many, and what changes</h2>
+    <p class="sec-lede" data-id="Satu rakaat adalah satu siklus penuh: berdiri, rukuk, dua kali sujud, lalu kembali. Sholat hanyalah siklus itu yang diulang sejumlah tertentu. Hampir semua kebingungan pemula adalah tentang apa yang berubah dari satu siklus ke siklus berikutnya — jadi di sinilah semuanya dijabarkan." data-ko="한 라카아는 하나의 온전한 순환입니다. 서고, 굽히고, 두 번 엎드리면 처음으로 돌아옵니다. 예배는 그 순환을 정해진 횟수만큼 반복하는 것입니다. 초보자의 혼란은 거의 전부 한 순환과 다음 순환 사이에 무엇이 달라지는가에 관한 것이므로, 여기에 그것을 펼쳐 두었습니다.">A rakaat is one full cycle: stand, bow, prostrate twice, and you're back. Prayers are just that cycle repeated a set number of times. Almost every beginner's confusion is about what changes between one cycle and the next — so here it is, spelled out.</p>
 
     <div id="rakaatVisuals"></div>
 
     <table class="tbl">
-      <thead><tr><th data-id="Sholat">Prayer</th><th class="n" data-id="Rakaat">Rakaat</th><th data-id="Suara">Voice</th><th data-id="Apa yang berbeda">What's different</th></tr></thead>
+      <thead><tr><th data-id="Sholat">Prayer</th><th class="n" data-id="Rakaat" data-ko="라카아">Rakaat</th><th data-id="Suara">Voice</th><th data-id="Apa yang berbeda">What's different</th></tr></thead>
       <tbody id="prayerTable"></tbody>
     </table>
 
@@ -498,60 +478,61 @@ footer p{margin:0 0 8px}
       <span data-id="Pada hari Jumat, sholat Jumat menggantikan Dzuhur dan jumlahnya 2 rakaat, bukan 4, didahului khutbah. Dan saat bepergian, sholat yang 4 rakaat boleh diringkas menjadi 2 (qasar). Keduanya belum perlu kamu pikirkan sekarang — tapi tabel ini bukan gambaran lengkap, dan lebih baik tahu sekarang daripada bingung di masjid nanti.">On Friday, Jumat prayer replaces Dzuhur and is 2 rakaat rather than 4, preceded by the khutbah. And when travelling, the 4-rakaat prayers may be shortened to 2 (qasr). Neither is something to worry about yet — but the table isn't the whole picture, and it's better to know that now than to be confused in a mosque later.</span>
     </div>
 
-    <p class="sec-h" style="margin-top:30px" data-id="Satu rakaat, dalam gambar">One rakaat, in pictures</p>
+    <p class="sec-h" style="margin-top:30px" data-id="Satu rakaat, dalam gambar" data-ko="한 라카아, 그림으로">One rakaat, in pictures</p>
     <div class="cycle" id="cycle"></div>
 
-    <p class="sec-h" style="margin-top:30px" data-id="Tuntun aku satu per satu">Walk me through one</p>
+    <p class="sec-h" style="margin-top:30px" data-id="Tuntun aku satu per satu" data-ko="하나씩 안내받기">Walk me through one</p>
     <div class="picker" id="picker"></div>
     <div id="walk"></div>
   </section>
 
   <section id="words" data-view="prayer">
-    <p class="sec-h" data-id="Dalam sholat">In the prayer</p>
-    <h2 data-id="Semua yang kamu ucapkan, dan artinya">Everything you say, and what it means</h2>
-    <p class="sec-lede" data-id="Berurutan, dari takbiratul ihram sampai salam. Buka <b>Selami lebih dalam</b> kalau kamu ingin alasannya, bukan sekadar ringkasannya.">In order, from the opening takbir to the closing salam. Tap <b>Bahasa Indonesia</b> on any line for the Indonesian meaning; open <b>Go deeper</b> when you want the reasoning rather than the summary.</p>
+    <p class="sec-h" data-id="Dalam sholat" data-ko="예배 안에서">In the prayer</p>
+    <h2 data-id="Semua yang kamu ucapkan, dan artinya" data-ko="당신이 말하는 모든 것과 그 뜻">Everything you say, and what it means</h2>
+    <p class="sec-lede" data-id="Berurutan, dari takbiratul ihram sampai salam. Buka <b>Selami lebih dalam</b> kalau kamu ingin alasannya, bukan sekadar ringkasannya." data-ko="여는 타크비르부터 맺는 살람까지 순서대로입니다. 요약이 아니라 이유를 알고 싶으면 <b>더 깊이 보기</b>를 펼치십시오.">In order, from the opening takbir to the closing salam. Tap <b>Bahasa Indonesia</b> on any line for the Indonesian meaning; open <b>Go deeper</b> when you want the reasoning rather than the summary.</p>
     <div id="parts"></div>
   </section>
 
   <section id="duas" data-view="duas">
-    <p class="sec-h" data-id="Doa">Duas</p>
-    <h2 data-id="Doa-doa pendek untuk hari biasa">The short ones, for ordinary days</h2>
-    <p class="sec-lede" data-id="Bukan doa panjang untuk peristiwa besar — yang pendek, yang dipakai beberapa kali sehari. Sebagian besar hanya satu baris. Inilah bagian yang paling cepat menjadi kebiasaan.">Not the long supplications for big occasions — the short ones, used several times a day. Most are a single line. This is the section that becomes habit fastest.</p>
+    <p class="sec-h" data-id="Doa" data-ko="두아">Duas</p>
+    <h2 data-id="Doa-doa pendek untuk hari biasa" data-ko="평범한 날을 위한 짧은 기도들">The short ones, for ordinary days</h2>
+    <p class="sec-lede" data-id="Bukan doa panjang untuk peristiwa besar — yang pendek, yang dipakai beberapa kali sehari. Sebagian besar hanya satu baris. Inilah bagian yang paling cepat menjadi kebiasaan." data-ko="큰 일을 위한 긴 기도가 아니라, 하루에 몇 번씩 쓰는 짧은 것들입니다. 대부분 한 줄입니다. 가장 빨리 습관이 되는 부분입니다.">Not the long supplications for big occasions — the short ones, used several times a day. Most are a single line. This is the section that becomes habit fastest.</p>
     <div id="duaList"></div>
   </section>
 
   <section id="surah" data-view="read">
-    <p class="sec-h" data-id="Surah">Surahs</p>
-    <h2 data-id="Al-Fatihah dan surah-surah pendek">Al-Fatihah and the short ones</h2>
-    <p class="sec-lede" data-id="Kamu sudah hafal Al-Fatihah — jadi bacalah di sini untuk maknanya, bukan untuk menghafalnya. Empat surah setelahnya adalah yang mencukupi untuk rakaat 1 dan 2 sholat apa pun.">You already have Al-Fatihah memorised — so read it here for meaning, not for memorising. The four after it are the ones that cover you for rakaat 1 and 2 of any prayer.</p>
+    <p class="sec-h" data-id="Surah" data-ko="수라">Surahs</p>
+    <h2 data-id="Al-Fatihah dan surah-surah pendek" data-ko="알파티하와 짧은 수라들">Al-Fatihah and the short ones</h2>
+    <p class="sec-lede" data-id="Kamu sudah hafal Al-Fatihah — jadi bacalah di sini untuk maknanya, bukan untuk menghafalnya. Empat surah setelahnya adalah yang mencukupi untuk rakaat 1 dan 2 sholat apa pun." data-ko="알파티하와 그 뒤 네 개의 짧은 수라입니다. 이 넷이면 어떤 예배의 1·2번째 라카아를 감당할 수 있습니다.">You already have Al-Fatihah memorised — so read it here for meaning, not for memorising. The four after it are the ones that cover you for rakaat 1 and 2 of any prayer.</p>
     <div id="surahs"></div>
   </section>
 
   <section id="wudhu" data-view="prayer">
-    <p class="sec-h" data-id="Wudhu">Wudhu</p>
-    <h2 data-id="Bersuci, secara berurutan">Washing, in order</h2>
-    <p class="sec-lede" data-id="Enam rukun wajib dalam urutan yang tetap, ditambah amalan sunnah yang biasa dilakukan di sekitarnya. Wudhu tetap sah sampai ada yang membatalkannya — tidur, buang air, atau buang angin.">Six obligatory acts in a fixed sequence, plus the sunnah ones most people do around them. It stays valid until something breaks it — sleep, using the toilet, passing wind.</p>
+    <p class="sec-h" data-id="Wudhu" data-ko="우두">Wudhu</p>
+    <h2 data-id="Bersuci, secara berurutan" data-ko="순서대로 씻기">Washing, in order</h2>
+    <p class="sec-lede" data-id="Enam rukun wajib dalam urutan yang tetap, ditambah amalan sunnah yang biasa dilakukan di sekitarnya. Wudhu tetap sah sampai ada yang membatalkannya — tidur, buang air, atau buang angin." data-ko="정해진 순서를 따르는 여섯 가지 의무 동작과, 그 주변에서 대개 함께 하는 순나 동작들입니다. 무언가 깨뜨리기 전까지 유효합니다 — 잠, 용변, 방귀.">Six obligatory acts in a fixed sequence, plus the sunnah ones most people do around them. It stays valid until something breaks it — sleep, using the toilet, passing wind.</p>
     <div id="wudhuList"></div>
   </section>
 
   <section id="qibla" data-view="qibla">
-    <p class="sec-h" data-id="Kiblat">Qibla</p>
-    <h2 data-id="Arah kiblat">Which way to face</h2>
-    <p class="sec-lede" data-id="Menghitung arah kiblat dari posisimu saat ini. Perlu izin lokasi, dan kompas ponsel untuk jarum yang bergerak. Baca peringatannya di bawah — kompas ponsel gampang meleset.">Works out the direction to the Kaaba from where you are. It needs location permission, and your phone's compass for the moving needle. Read the caution below — phone compasses are easily thrown off.</p>
+    <p class="sec-h" data-id="Kiblat" data-ko="키블라">Qibla</p>
+    <h2 data-id="Arah kiblat" data-ko="어느 쪽을 향할 것인가">Which way to face</h2>
+    <p class="sec-lede" data-id="Menghitung arah kiblat dari posisimu saat ini. Perlu izin lokasi, dan kompas ponsel untuk jarum yang bergerak. Baca peringatannya di bawah — kompas ponsel gampang meleset." data-ko="현재 위치에서 카바 방향을 계산합니다. 위치 권한이 필요하며, 바늘이 움직이려면 휴대폰 나침반이 필요합니다. 아래 주의 사항을 읽어 보십시오 — 휴대폰 나침반은 쉽게 어긋납니다.">Works out the direction to the Kaaba from where you are. It needs location permission, and your phone's compass for the moving needle. Read the caution below — phone compasses are easily thrown off.</p>
     <div id="qiblaPanel"></div>
   </section>
 
   <section id="ask" data-view="ask">
-    <p class="sec-h" data-id="Pertanyaan">Questions</p>
-    <h2 data-id="Yang sebenarnya ingin ditanyakan orang">What people actually want to ask</h2>
-    <p class="sec-lede" data-id="Tiga puluh dua pertanyaan yang benar-benar ditanyakan pemula, termasuk yang canggung. Yang diperselisihkan ditandai sebagai diperselisihkan, bukan dijawab seolah pasti.">Thirty-two questions beginners actually have, including the awkward ones. Where something is genuinely disputed it is marked as disputed rather than answered as though settled.</p>
+    <p class="sec-h" data-id="Pertanyaan" data-ko="질문">Questions</p>
+    <h2 data-id="Yang sebenarnya ingin ditanyakan orang" data-ko="사람들이 실제로 묻고 싶은 것">What people actually want to ask</h2>
+    <p class="sec-lede" data-id="Tiga puluh dua pertanyaan yang benar-benar ditanyakan pemula, termasuk yang canggung. Yang diperselisihkan ditandai sebagai diperselisihkan, bukan dijawab seolah pasti." data-ko="초보자가 실제로 갖는 서른두 가지 질문이며, 묻기 어색한 것들도 포함했습니다. 견해가 실제로 갈리는 곳은 정해진 답 대신 갈린다고 표시했습니다.">Thirty-two questions beginners actually have, including the awkward ones. Where something is genuinely disputed it is marked as disputed rather than answered as though settled.</p>
     <div id="faqList"></div>
   </section>
 
   <section id="kata" data-view="read">
-    <p class="sec-h" data-id="Kosakata">Vocabulary</p>
-    <h2 data-id="30 kata yang menyusun 80% sholatmu">The 30 words that are 80% of your prayer</h2>
-    <p class="sec-lede" data-id="Inilah jalan pintas yang tidak pernah diberitahukan kepada pemula. Sholat bukan tembok bunyi asing — ia kosakata kecil yang terus diulang. Kuasai tiga puluh kata ini dan sebagian besar yang kamu ucapkan tiap hari berhenti menjadi bunyi tanpa makna. Ketuk kata mana pun.">This is the shortcut nobody tells beginners. The prayer is not a wall of foreign sound — it's a small vocabulary repeated constantly. Learn these thirty and most of what you say each day stops being noise. Tap any word.</p>
+    <p class="sec-h" data-id="Kosakata" data-ko="어휘">Vocabulary</p>
+    <h2 data-id="30 kata yang menyusun 80% sholatmu" data-ko="예배의 80%를 이루는 30개의 단어">The 30 words that are 80% of your prayer</h2>
+    <p class="sec-lede" data-id="Inilah jalan pintas yang tidak pernah diberitahukan kepada pemula. Sholat bukan tembok bunyi asing — ia kosakata kecil yang terus diulang. Kuasai tiga puluh kata ini dan sebagian besar yang kamu ucapkan tiap hari berhenti menjadi bunyi tanpa makna. Ketuk kata mana pun." data-ko="초보자에게 아무도 알려 주지 않는 지름길입니다. 예배는 낯선 소리의 벽이 아니라, 끊임없이 반복되는 작은 어휘입니다. 이 서른 개를 익히면 매일 말하는 것의 대부분이 더 이상 소음이 아니게 됩니다. (설명은 아직 한국어로 번역되지 않았습니다.)">This is the shortcut nobody tells beginners. The prayer is not a wall of foreign sound — it's a small vocabulary repeated constantly. Learn these thirty and most of what you say each day stops being noise. Tap any word.</p>
+    <div id="vocabNote"></div>
     <div class="vocab" id="vocabList"></div>
   </section>
 
@@ -1207,6 +1188,373 @@ var ENCOURAGE = [
 ];
 
 
+/* ============================ KOREAN OVERLAY ============================
+   Core scope: navigation, the prayer walkthrough, every step of the prayer,
+   wudhu, duas, the surahs, and the questions section.
+   The long essays, the ten stories and the vocabulary notes are not yet
+   translated and fall back to English, flagged in the interface.
+   Where the schools of law differ, the Korean text describes the difference
+   instead of instructing — the Indonesian NU/Muhammadiyah material is dropped,
+   since it does not apply in Korea.                                        */
+var KO = {
+
+ui: {
+  deeper:'더 깊이 보기', why:'왜 이 부분이 있는가', quran:'꾸란의 표현 그대로',
+  howtold:'꾸란이 전하는 방식', doing:'이 수라가 하는 일', back:'← 모든 이야기',
+  oblig:'의무', sunnah:'순나(권장)', clear:'검색창을 비우면 전체가 다시 보입니다.',
+  rakaat:'라카아', middle:'중간 라카아', opening:'첫 라카아', final:'마지막 라카아',
+  aloud:'소리 내어', silent:'조용히', only12:'1~2번째 라카아만',
+  only34:'3·4 라카아 예배', subuhOnly:'파즈르 전용'
+},
+
+prayers: {
+  subuh:  {time:'새벽', aloud:'소리 내어',
+    diff:'가장 짧은 예배입니다. 공동체에 따라 두 번째 라카아에서 루쿠(허리 굽힘) 뒤에 서서 쿠누트 기도를 낭송하기도 하고, 하지 않기도 합니다. 두 방식 모두 확립된 견해이니 다니는 마스지드를 따르십시오. 두 라카아뿐이므로 중간에 앉는 타샤후드는 없고, 마지막에 한 번만 앉습니다.'},
+  dzuhur: {time:'정오', aloud:'조용히',
+    diff:'알파티하를 포함해 조용히 낭송합니다. 두 번째 라카아 뒤에 앉아 타샤후드를 합니다. 3·4번째 라카아는 알파티하만 낭송하고 추가 수라는 없습니다.'},
+  ashar:  {time:'오후', aloud:'조용히',
+    diff:'주흐르와 구조가 완전히 같습니다. 전체를 조용히 낭송하고, 두 번째 라카아 뒤에 앉으며, 3·4번째 라카아에는 추가 수라가 없습니다.'},
+  maghrib:{time:'일몰 직후', aloud:'1~2번째는 소리 내어',
+    diff:'세 라카아로 이루어진 유일한 예배입니다. 1·2번째 라카아는 소리 내어, 3번째는 조용히 낭송합니다. 두 번째 라카아 뒤에 앉고, 이어지는 한 라카아는 알파티하만 낭송합니다.'},
+  isya:   {time:'밤', aloud:'1~2번째는 소리 내어',
+    diff:'1·2번째 라카아는 소리 내어, 3·4번째는 조용히 낭송합니다. 두 번째 라카아 뒤에 앉습니다. 3·4번째 라카아는 알파티하만 낭송합니다.'}
+},
+
+parts: {
+ niat: {t:'니야 — 의도', n:'시작하기 전', pos:'서서', times:'',
+   en:'의도는 마음속에서 정합니다. 지금 어떤 예배를 드리는지, 그리고 그것을 알라를 위해 드린다는 것. 소리 내어 아랍어로 말하는 관습도 있으나, 그것은 마음을 모으기 위한 보조 수단이지 의도 자체가 아닙니다. 소리 내지 않아도 예배는 유효합니다.',
+   why:'이것이 예배와 단순한 동작을 가르는 선입니다. 서고, 굽히고, 이마를 바닥에 대는 일은 의도가 그것을 예배로 만들기 전까지는 운동일 뿐입니다. 그래서 의도가 가장 먼저 옵니다.'},
+ takbir: {t:'타크비라툴 이흐람 — 시작', n:'1단계', pos:'서서', times:'한 번',
+   en:'알라는 더 크시다.',
+   why:'"가장 크다"가 아니라 "더 크다"입니다. 문장은 일부러 열려 있습니다 — 당신이 안고 들어온 무엇보다도 더 크다는 뜻입니다. 답장하지 못한 메일, 다툼, 불안한 일. 하나도 이름 붙이지 않지만 그 모두를 덮습니다.'},
+ iftitah: {t:'이프티타 두아 — 여는 기도', n:'2단계', pos:'서서', times:'첫 라카아만',
+   en:'알라는 크시고 그 크심이 지극하며, 알라께 넘치는 찬미가 있고, 아침저녁으로 알라께 영광이 있습니다. 저는 하늘과 땅을 지으신 분께 제 얼굴을 향합니다. 진리로 기울어 순종하며, 저는 다른 것을 알라와 함께 두는 자가 아닙니다. 저의 예배와 저의 헌신, 저의 삶과 저의 죽음은 만유의 주 알라의 것입니다. 그분께는 동반자가 없으며, 저는 그렇게 명령받았고 순종하는 자 가운데 하나입니다.',
+   why:'방금 무엇을 맡겼는지 읽어 보십시오. 예배, 헌신, 삶, 죽음. 예배 전체에서 가장 넓은 선언이며, 무엇 하나 청하기 전에 먼저 놓입니다. 의무가 아니라 순나이지만, 생략하면 그 틀이 사라집니다.'},
+ 'fatihah-ref': {t:'알파티하', n:'3단계', pos:'서서', times:'모든 라카아',
+   en:'모든 예배의 모든 라카아에서 낭송합니다 — 하루 열일곱 라카아이므로 열일곱 번입니다. 전문과 각 구절의 뜻은 아래 수라 항목에 있습니다.',
+   why:'예배가 없이는 성립하지 않는 유일한 낭송입니다. 이 목록의 다른 모든 것은 상황에 따라 줄이거나 대신하거나 생략할 수 있지만, 알파티하는 그렇지 않습니다. 유일한 예외는 이맘이 이미 루쿠에 든 뒤 합류한 경우입니다.'},
+ 'surah-ref': {t:'짧은 수라 하나', n:'4단계', pos:'서서', times:'1~2번째 라카아',
+   en:'알파티하 뒤에 꾸란의 어느 부분이든 덧붙입니다. 실제로는 대개 뒤쪽의 짧은 수라 가운데 하나를 읽습니다. 처음 두 라카아에서만 합니다.',
+   why:'예배가 고정되기를 멈추는 지점입니다. 알파티하는 결코 바뀌지 않지만 이 자리는 당신의 것입니다. 수라를 더 익힐수록 당신의 예배는 전에 없던 폭을 갖게 됩니다.'},
+ ruku: {t:'루쿠 — 허리 굽힘', n:'5단계', pos:'굽혀서', times:'3회',
+   en:'위대하신 나의 주께 영광이 있으며, 모든 찬미가 그분의 것입니다.',
+   why:'수브하나는 옮기기 어려운 말입니다. 어떤 흠도, 어울리지 않는 어떤 말도 그분과 무관함을 선언한다는 뜻입니다. 등을 수평으로 하고 시선을 바닥에 둔 채 "위대하신"과 짝지어집니다 — 몸이 말과 같은 것을 말하고 있습니다.'},
+ itidal: {t:'이으티달 — 일어섬', n:'6단계', pos:'다시 서서', times:'한 번',
+   en:'알라께서는 그분을 찬미하는 자의 소리를 들으십니다. 우리 주여, 모든 찬미가 당신의 것입니다 — 하늘을 채우고 땅을 채우며, 그 뒤에 당신이 원하시는 무엇이든 채웁니다.',
+   why:'첫 문장은 당신이 들렸다는 진술입니다. 몸을 일으키는 동작 중에 말해지므로, 다 일어서기도 전에 응답이 도착합니다. 그런 다음 찬미가 부피로 측정됩니다 — 하늘만큼, 땅만큼, 그 이상.'},
+ sujud: {t:'수주드 — 엎드림', n:'7단계', pos:'엎드려서', times:'3회 · 라카아당 두 번',
+   en:'지극히 높으신 나의 주께 영광이 있으며, 모든 찬미가 그분의 것입니다.',
+   why:'루쿠와 비교해 보십시오. 그때는 "위대하신"이었고 여기서는 "지극히 높으신"입니다 — 그리고 그 말은 몸이 닿을 수 있는 가장 낮은 자리에서, 이마를 땅에 대고 말해집니다. 두 자세 사이의 최대 거리가 이 문장의 전부입니다.'},
+ duduk: {t:'두 번의 수주드 사이의 앉음', n:'8단계', pos:'앉아서', times:'앉을 때마다',
+   en:'나의 주여, 저를 용서하시고, 저를 불쌍히 여기시고, 제 안의 부서진 것을 이어 주시고, 저를 높이시고, 제게 양식을 주시고, 저를 인도하시고, 제게 평안을 주시고, 저를 용납하소서.',
+   why:'짧은 숨 하나에 여덟 가지 청원이 들어 있고, 사람에게 필요한 거의 전부를 덮습니다. 예배 전체에서 뜻을 아는 문장을 딱 하나만 고른다면 이것이 유력한 후보입니다 — 가장 꾸밈없이 인간적인 문장입니다.'},
+ tasyahud: {t:'타샤후드 — 증언', n:'9단계', pos:'앉아서', times:'2번째 라카아 뒤와 마지막',
+   en:'모든 인사와 축복과 기도와 좋은 것들은 알라의 것입니다. 예언자시여, 당신에게 평화와 알라의 자비와 축복이 있기를. 우리에게, 그리고 알라의 의로운 종들에게 평화가 있기를. 저는 알라 외에 신이 없음을 증언하며, 무함마드가 알라의 사도임을 증언합니다.',
+   why:'사람을 무슬림이 되게 하는 문장인 샤하다가 모든 예배 안에, 그 끝자락에 놓여 있습니다. 그날의 예배에 무엇이 담겼든, 예배는 이 종교 전체가 딛고 선 것을 다시 말하며 닫힙니다.'},
+ salawat: {t:'살라와트 — 예언자를 위한 기도', n:'10단계', pos:'앉아서', times:'마지막 앉음에서만',
+   en:'알라여, 이브라힘과 그 가족에게 축복을 내리셨듯 무함마드와 그 가족에게 축복을 내리소서. 그리고 이브라힘과 그 가족에게 은혜를 베푸셨듯 무함마드와 그 가족에게 은혜를 베푸소서, 온 세상 가운데서. 참으로 당신은 찬미받으실 분이며 영광되신 분입니다.',
+   why:'무슬림의 예배 한가운데, 하루에 다섯 번 이브라힘이 등장합니다. 이슬람이 새로운 종교가 아니라 더 오래된 계보의 이어짐으로 제시된다는 가장 분명한 신호입니다.'},
+ salam: {t:'살람 — 맺음', n:'11단계', pos:'앉아서', times:'두 번 · 오른쪽, 왼쪽',
+   en:'여러분에게 평화와 알라의 자비가 있기를.',
+   why:'예배는 밖을 향해 돌아 사람에게 인사하며 끝납니다. 지난 몇 분은 온전히 수직이었고 — 알라를 향했고 — 출구는 수평입니다. 오른쪽 사람에게, 왼쪽 사람에게, 거기 아무도 없더라도.'}
+},
+
+wudhu: [
+ {t:'니야(의도)', d:'시작할 때 마음속으로 정합니다 — 이 씻음이 예배를 위한 정결임을.'},
+ {t:'두 손을 손목까지 씻기', d:'세 번. 순나이며, 자연스러운 첫 동작입니다.'},
+ {t:'입을 헹구고 코에 물을 넣기', d:'각각 세 번. 순나입니다. 입에 물을 머금었다 뱉고, 코에 가볍게 넣었다 풀어냅니다.'},
+ {t:'얼굴 씻기', d:'세 번. 이마 경계에서 턱 아래까지, 귀에서 귀까지. 의무입니다.'},
+ {t:'두 팔을 팔꿈치까지 씻기', d:'세 번. 오른쪽 다음 왼쪽, 팔꿈치를 포함해서. 의무입니다.'},
+ {t:'머리의 일부를 쓸기', d:'젖은 손으로. 의무입니다 — 학파에 따라 일부만 쓸어도 충분하다고 보기도 하고 전체를 요구하기도 합니다. 다니는 마스지드에서 가르치는 방식을 따르십시오.'},
+ {t:'두 귀를 쓸기', d:'젖은 손으로 안팎을. 순나입니다.'},
+ {t:'두 발을 복사뼈까지 씻기', d:'세 번. 오른쪽 다음 왼쪽, 발가락 사이까지. 의무입니다.'},
+ {t:'순서대로(타르티브)', d:'의무 동작은 이 순서를 따라야 합니다. 의무입니다 — 그리고 의도는 얼굴을 씻기 시작하는 그 순간에 있어야 합니다.'},
+ {t:'끊김 없이(무왈라)', d:'이어서 하여 한 부위가 마르기 전에 다음을 씻는 것. 학파에 따라 의무로 보기도 하고 권장으로 보기도 합니다. 중간에 끊겼다고 해서 반드시 다시 해야 하는 것은 아닙니다.'}
+],
+
+duas: [
+ {g:'아침', t:'잠에서 깰 때',
+  en:'우리를 죽게 하신 뒤 다시 살리신 알라께 모든 찬미가 있으며, 그분께로 돌아갑니다.',
+  w:'여기서 잠은 작은 죽음으로 묘사됩니다. 무엇보다 먼저, 휴대폰을 집기 전에 말합니다.'},
+ {g:'아침', t:'집을 나설 때',
+  en:'알라의 이름으로, 저는 알라께 의탁합니다. 알라의 도움 없이는 어떤 힘도 능력도 없습니다.',
+  w:'맡김을 압축한 문장이며, 문 앞에서 걸음을 멈추지 않고 말할 만큼 짧습니다.'},
+ {g:'하루 중', t:'먹기 전',
+  en:'알라의 이름으로.',
+  w:'그게 전부입니다. 잊고 이미 먹기 시작했다면 <i>비스밀라히 아우왈라후 와 아키라</i> — 처음과 끝에 알라의 이름으로 — 라고 말합니다.'},
+ {g:'하루 중', t:'먹은 뒤',
+  en:'우리에게 먹이시고 마시게 하시며 우리를 무슬림으로 만드신 알라께 모든 찬미가 있습니다.',
+  w:'음식과 믿음을 한 호흡에 함께 감사한다는 점을 눈여겨보십시오.'},
+ {g:'하루 중', t:'화장실에 들어갈 때',
+  en:'알라여, 더럽고 해로운 모든 것으로부터 당신께 피합니다.',
+  w:'들어가기 전에 말하며, 나올 때의 다음 기도와 짝을 이룹니다.'},
+ {g:'하루 중', t:'화장실에서 나올 때',
+  en:'당신의 용서를 구합니다.',
+  w:'단 한 단어입니다. 왜 하필 그 순간에 용서를 구하는지에 대해 학자들이 길게 썼는데, 흔한 해석은 짐이 덜어진 데 대한 안도입니다.'},
+ {g:'하루 중', t:'길을 나설 때',
+  en:'우리 스스로는 결코 다룰 수 없었을 이것을 우리에게 복종시키신 분께 영광이 있으며 — 우리는 반드시 우리 주께로 돌아갑니다.',
+  w:'꾸란에서 온 구절입니다. 차나 비행기에 오를 때 말합니다. 마지막 구절이 평범한 여행을 더 긴 여정에 대한 상기로 바꿉니다.'},
+ {g:'마스지드에서', t:'마스지드에 들어갈 때',
+  en:'알라여, 저에게 당신의 자비의 문을 열어 주소서.',
+  w:'들어갈 때 오른발 먼저, 나올 때 왼발 먼저. 간단하고, 두 번만 해 보면 기억에 남습니다.'},
+ {g:'마스지드에서', t:'마스지드에서 나올 때',
+  en:'알라여, 저는 당신의 은혜를 구합니다.',
+  w:'들어갈 때는 자비를 구하고 나올 때는 양식을 구합니다. 이 짝은 의도된 것입니다.'},
+ {g:'힘들 때', t:'불안과 슬픔',
+  en:'알라여, 불안과 슬픔으로부터 당신께 피합니다.',
+  w:'더 긴 기도의 한 부분입니다. 미래에 대한 불안과 과거에 대한 슬픔이 따로 불린다는 점이 눈에 띕니다.'},
+ {g:'힘들 때', t:'감당할 수 없는 일 앞에서',
+  en:'알라께서 우리에게 충분하시며, 그분은 가장 좋은 의지처이십니다.',
+  w:'꾸란에서 온 구절입니다. 할 수 있는 것을 다 했고 결과는 당신의 것이 아닌 그 순간을 위한 문장입니다.'},
+ {g:'힘들 때', t:'부모를 위하여',
+  en:'나의 주여, 그 두 분이 저를 어릴 때 기르셨듯 그 두 분을 불쌍히 여기소서.',
+  w:'꾸란에서, 나이 든 부모에게 온유하라는 대목 안에 있습니다. 이유가 청원 안에 함께 들어 있습니다.'},
+ {g:'밤', t:'잠들기 전',
+  en:'알라여, 당신의 이름으로 저는 죽고 또 삽니다.',
+  w:'잠에서 깰 때의 기도와 짝을 이루는 맺음입니다. 휴대폰을 내려놓은 뒤 가장 마지막에 말합니다.'}
+],
+
+surahs: {
+ 'Al-Fatihah': {meta:'여는 장 · 7절 · 모든 라카아', intro:'예배의 모든 라카아에서 낭송합니다. 소리보다 그것이 무엇을 구하는지를 읽어 보십시오.',
+  why:'구조를 보십시오. 찬미 세 절, "우리"로 돌아서는 경첩 한 절, 그리고 청원. 청원이 마지막에 놓이고, 구하는 것은 안락이 아니라 인도입니다. 다섯째 절에서 "그분"이 "당신"으로 바뀌는 것도 눈여겨보십시오 — 수라가 알라를 묘사하기를 멈추고 알라께 말하기 시작합니다.',
+  v:['자비로우시고 자애로우신 알라의 이름으로.',
+     '모든 찬미는 만유의 주 알라의 것입니다.',
+     '자비로우시고 자애로우신 분,',
+     '심판의 날의 주인이시여.',
+     '오직 당신만을 저희가 경배하며, 오직 당신께만 도움을 구합니다.',
+     '저희를 곧은 길로 인도하소서.',
+     '당신께서 은총을 베푸신 이들의 길로 — 노여움을 산 이들의 길도, 길을 잃은 이들의 길도 아닌.']},
+ 'Al-Ikhlas': {meta:'순수함 · 4절 · 112장', intro:'가장 먼저 배우는 가장 짧은 수라이며, 신학적으로 가장 밀도가 높습니다.',
+  why:'네 줄이 오직 부정으로 신을 정의합니다 — 낳지 않으시고, 태어나지 않으셨고, 견줄 것이 없습니다. "신은 무엇인가"라는 물음에, 당신이 그분을 넣어 볼 만한 모든 범주를 치워 냄으로써 답합니다.',
+  v:['말하라: 그분은 알라, 유일하신 분.',
+     '알라는 영원한 의지처 — 모두가 그분께 의지하나 그분은 누구에게도 의지하지 않으십니다.',
+     '그분은 낳지 않으시고, 태어나지도 않으셨으며,',
+     '그분과 견줄 것은 아무것도 없습니다.']},
+ 'Al-Falaq': {meta:'새벽 · 5절 · 113장', intro:'보호를 구하는 기도이며, 뒤따르는 안나스와 짝을 이룹니다.',
+  why:'열거되는 위협이 구체적이고 점점 올라갑니다. 피조물 일반, 그다음 밤, 그다음 의도된 해악, 그다음 시기. 시기로 끝나는데 — 그것만이 다른 사람의 마음속에 살며 당신에게 닿는 데 아무 행동도 필요로 하지 않습니다.',
+  v:['말하라: 새벽의 주께 피합니다,',
+     '그분이 지으신 것들의 해악으로부터,',
+     '어둠이 내려앉을 때 그 해악으로부터,',
+     '매듭에 입김을 부는 자들의 해악으로부터,',
+     '그리고 시기하는 자가 시기할 때 그 해악으로부터.']},
+ 'An-Nas': {meta:'사람 · 6절 · 114장', intro:'꾸란의 마지막 수라이며, 알팔라끄와 자연스럽게 짝을 이룹니다.',
+  why:'알팔라끄가 바깥의 해악으로부터 보호를 구한다면, 이 수라는 안쪽의 해악 — 가슴속의 속삭임 — 으로부터 보호를 구합니다. 그리고 그 속삭이는 자가 사람일 수도 있다는 말로 끝나는데, 예상과는 다르게 다가옵니다.',
+  v:['말하라: 사람의 주께 피합니다,','사람의 왕,','사람의 신께,',
+     '물러갔다 다시 오는 속삭이는 자의 해악으로부터,',
+     '사람의 가슴속에 속삭이는 자,','진과 사람 가운데서.']},
+ "Al-'Asr": {meta:'시간 · 3절 · 103장', intro:'세 줄입니다. 가르침 전체의 요약이라고 흔히 이야기됩니다.',
+  why:'회계의 비유입니다. 시간은 쓰이고, 모두가 손실을 보고 있으며, 네 가지가 당신을 흑자로 돌려놓습니다 — 믿음, 선행, 서로에게 진실을 말하는 것, 그리고 견디는 것. 넷 중 둘은 혼자서는 할 수 없는 일이라는 점을 눈여겨보십시오.',
+  v:['시간을 두고 맹세하나니 —','참으로 사람은 손실 가운데 있습니다,',
+     '믿고 선을 행하며 서로에게 진리를 권하고 인내를 권하는 이들은 제외하고.']}
+},
+
+prompts: [
+ '두 번의 수주드 사이의 앉음을 3초만 늦춰 보십시오. 그 안에 여덟 가지 청원이 들어 있는데 거의 모두가 서두릅니다.',
+ '오늘 루쿠에서 등을 수평으로 한 채 아짐 — 위대하신 — 이라는 말을 떠올려 보십시오. 몸과 말이 같은 것을 말하고 있습니다.',
+ '알파티하가 다섯째 절에서 알라에 대해 말하기를 멈추고 알라께 말하기 시작한다는 점에 주목해 보십시오.',
+ '오늘 타크비르 전에, 당신이 안고 들어온 한 가지를 속으로 이름 붙여 보십시오. 그런 다음 알라후 아크바르를 말하고 그것에 대해 진심으로 그렇게 여기십시오.',
+ '수주드에서 정해진 말을 마친 뒤, 당신의 언어로 무엇이든 구해 보십시오. 대부분은 그 자리를 한 번도 쓰지 않습니다.',
+ '오늘 한 번은 앱을 열지 않고 예배를 드려 보십시오. 틀려도 괜찮습니다 — 기억을 끄집어내는 그 과정이 기억을 만듭니다.',
+ '오늘 한 예배는 시간의 끝자락이 아니라 시작에 드려 보십시오. 서두르지 않는 쪽은 전혀 다른 경험입니다.',
+ '가장 자주 낭송하는 수라의 뜻을 읽어 보십시오. 뜻을 모른 채 말해 왔다면 오늘이 고치기 좋은 날입니다.',
+ '예배 전에 휴대폰을 다른 방에 두십시오. 엎어 놓는 것이 아니라 다른 방에.',
+ '아무도 없더라도 오른쪽 사람을 향해 살람을 말해 보십시오. 예배는 일부러 밖을 향해 돌며 끝납니다.',
+ '오늘 어휘 목록에서 새 단어를 하나만 익혀 보십시오. 딱 하나면 됩니다.',
+ '한 번의 예배에서 라흐마 — 자비 — 의 어근을 가진 말을 몇 번이나 말하는지 세어 보십시오.',
+ '타크비르 전에 2초만 가만히 서 보십시오. 숨이 찬 채로 시작하지 않는 예배가 더 낫게 시작됩니다.',
+ '이으티달에서 첫 문장이 당신이 들렸다는 진술이라는 것을 기억하십시오. 다 일어서기도 전에 도착합니다.',
+ '오늘 한 예배를 골라, 존경하는 누군가가 보고 있는 것처럼 드려 보십시오. 이흐산이 구하는 것이 대략 그것입니다.'
+],
+
+encourage: [
+ '당신이 통제하려 애쓰지만 애초에 당신 것이 아니었던 한 가지를 이름 붙여 보십시오. 마그립 전에 내려놓으십시오.',
+ '낙타를 묶고, 그다음 맡기십시오. 오늘 당신의 몫을 하고 결과는 다른 분의 일로 두십시오.',
+ '오늘 당신은 이마를 몇 번이나 바닥에 댈 것입니다. 그것이 주도권을 쥐지 않는 연습입니다.',
+ '맡김은 포기가 아닙니다. 애초에 당신이 질 몫이 아니었던 부분을 내려놓는 것입니다.',
+ '이슬람과 살람은 같은 어근에서 나옵니다. 건네라고 요구받는 그것이 곧 평안으로 돌아옵니다.',
+ '오늘 기계적으로 느껴지더라도 그냥 하십시오. 느낌은 습관을 앞서기보다 뒤따를 때가 훨씬 많습니다.',
+ '당신은 뒤처지지 않았습니다. 당신이 맞춰야 했던 일정표는 애초에 없었습니다.',
+ '오늘 드린 한 번의 예배가 당신이 계획 중인 완벽한 예배보다 값집니다.',
+ '목표는 결코 흔들리지 않는 사람이 되는 것이 아닙니다. 흔들림을 가져갈 곳을 갖는 것입니다.',
+ '더듬거리고 반쯤만 기억나는 예배도 인정됩니다. 진짜의 열등한 판본이 아닙니다.',
+ '하나를 놓쳤군요. 채우고 계속 가십시오 — 그것이 방법의 전부이고, 늘 그랬습니다.',
+ '무엇을 안고 들어왔든, 타크비르는 그것보다 크도록 만들어졌습니다.'
+],
+
+walk: {
+  niat:'니야, 그다음 <a href="#words">타크비라툴 이흐람</a>',
+  niatD:'두 손을 어깨 높이로. 여기서부터 당신은 예배 안에 있습니다.',
+  ift:'<a href="#words">이프티타 두아</a>',
+  iftD:'조용히, 첫 라카아에서만. 순나이므로 생략해도 무효가 되지 않습니다.',
+  stand:'라카아 ', standD:'서는 자세로 일어서며 말합니다.',
+  fatD:'모든 라카아, 예외 없이. 혼자 드릴 때는 표시된 곳에서 소리 내어, 이맘 뒤에서는 언제나 조용히 낭송합니다.',
+  sur:'짧은 수라 하나', surD:'알이클라스, 알팔라끄, 안나스가 초보자의 통상적인 선택입니다.',
+  nosur:'추가 수라 없음', nosurD:'3번째 라카아부터는 알파티하만입니다. 가장 흔히 헷갈리는 지점입니다.',
+  ruku:'<a href="#words">루쿠</a> — 허리 굽힘', rukuD:'내려가며 타크비르, 그다음 낭송을 세 번.',
+  qunut:"<a href=\"#words\">이으티달</a>, 그다음 <b>쿠누트</b>",
+  qunutD:'일어선 뒤, 공동체에 따라 두 번째 라카아의 이 자리에서 쿠누트 기도를 더합니다. 하는 곳도 있고 하지 않는 곳도 있으니 다니는 마스지드를 따르십시오.',
+  itidal:"<a href=\"#words\">이으티달</a> — 곧게 서기", itidalD:'다시 내려가기 전에 완전히 곧게 서서 잠시 멈춥니다.',
+  suj1:'<a href="#words">수주드</a> — 첫 번째 엎드림', suj1D:'일곱 부위가 바닥에 닿습니다. 낭송을 세 번.',
+  sit:'<a href="#words">두 번의 수주드 사이에 앉기</a>', sitD:'짧지만 여덟 가지 청원이 담겨 있습니다. 서두르지 마십시오.',
+  suj2:'<a href="#words">수주드</a> — 두 번째 엎드림', suj2D:'첫 번째와 같습니다. 이로써 한 라카아가 끝납니다.',
+  mid:'<b>중간 타샤후드</b>를 위해 앉기',
+  midD:'이 예배는 두 라카아보다 길기 때문에 여기서 앉아 타샤후드와 짧은 살라와트를 낭송한 뒤 3번째 라카아를 위해 다시 섭니다.',
+  fin:'<b>마지막 타샤후드</b>를 위해 앉기',
+  finD:'타샤후드 전문, 그다음 이브라힘을 포함한 살라와트 전문. 개인적인 기도는 살람 전 이 자리에 놓입니다.',
+  salam:'<a href="#words">살람</a> — 오른쪽, 그다음 왼쪽', salamD:'고개를 오른쪽으로, 그다음 왼쪽으로 돌립니다. 예배가 끝났습니다.'
+},
+
+qibla: {
+  lede:'현재 위치에서 카바 방향을 계산합니다. 위치 권한이 필요하며, 바늘이 움직이려면 휴대폰의 나침반이 필요합니다. 아래 주의 사항을 읽어 보십시오 — 휴대폰 나침반은 쉽게 어긋납니다.',
+  h2:'어느 쪽을 향할 것인가',
+  ask:'아래를 누르고 위치를 허용하십시오. 아무것도 전송되지 않습니다 — 계산은 이 휴대폰 안에서 이루어집니다.',
+  find:'키블라 찾기', on:'나침반 켜기',
+  fromN:'북쪽 기준 — 대략 ', away:'메카까지 약 ',
+  wait:'나침반을 기다리는 중…',
+  nocomp:'나침반 값이 아직 없습니다 — 바늘은 북쪽 기준 방위를 가리킵니다. 나침반 앱으로 맞추거나, 마스지드에서는 줄을 따르십시오.',
+  facing:'키블라를 향하고 있습니다.', turn:'돌리십시오 ', left:'왼쪽으로', right:'오른쪽으로',
+  cityAsk:'또는 도시를 선택하십시오:',
+  denied:'위치 권한이 거부되어 가까운 도시를 선택해 주십시오.',
+  nosupport:'이 브라우저는 위치를 지원하지 않습니다 — 아래에서 도시를 선택하십시오.',
+  cautionT:'참고 도구이지 판정 기준이 아닙니다',
+  caution:'휴대폰 나침반은 금속, 케이스, 자동차, 잘못된 보정에 쉽게 영향을 받아 수십 도까지 어긋날 수 있습니다. 바늘이 흔들리면 노트북에서 떨어져 휴대폰을 8자로 움직여 보정하십시오. 마스지드에서는 줄을 따르십시오. 집에서는 대략 맞는 것으로 충분하다고 오랫동안 받아들여져 왔습니다 — 확실히 알 수 없을 때 대체적인 방향을 향하는 것으로 충분하다는 것이 오래된 견해입니다.',
+  north:['북','동','남','서'],
+  pts:['북','북동','동','남동','남','남서','서','북서']
+},
+
+today: {try:'오늘 해 볼 것', verse:'한 구절', word:'한 단어', dua:'오늘의 두아', story:'10분이 있다면'},
+
+visuals: {
+  aloud:'소리 내어 낭송', silent:'조용히 낭송',
+  extra:'추가 수라 — 처음 두 라카아만',
+  sit:'앉기', sitEnd:'앉기 + 살람', fat:'알파티하', plusSur:'+ 수라', qunut:'쿠누트',
+  arcNote:'가운데 두 예배는 근무 시간 안에 들어옵니다. 사람들이 가장 많이 놓치는 이유이며, 이 계획이 그 둘을 가장 나중에 더하는 이유입니다.',
+  wudhuNote:'채워진 번호는 의무이고 테두리만 있는 번호는 순나입니다. 순서가 중요합니다 — 순서 자체가 의무 가운데 하나입니다.',
+  wudhuLabels:['두 손','입과 코','얼굴','팔꿈치까지 팔','머리','귀','복사뼈까지 발'],
+  cycle:[['서기','알파티하'],['루쿠','수브하나 라비얄 아짐'],['일어서기',"사미알라후 리만 하미다"],
+         ['수주드',"수브하나 라비얄 아을라"],['앉기','라빅피르 리'],['수주드','다시 — 라카아 완료']]
+},
+
+notice: {
+  t:'한국어판에 대하여',
+  b:'이 앱은 원래 인도네시아에서 한 사람을 위해 만들어졌습니다. 한국어 번역은 예배에 필요한 핵심 — 안내, 라카아 진행, 예배의 각 단계, 우두, 두아, 수라, 질문 — 을 담고 있습니다. 아홉 편의 긴 글과 열 편의 이야기, 어휘 설명은 아직 번역되지 않아 영어로 표시됩니다.<br><br>두 가지를 분명히 밝힙니다. 첫째, 이 한국어는 한국인 무슬림의 검수를 거치지 않았습니다. 용어가 한국 이슬람 공동체에서 실제로 쓰는 표현과 다를 수 있습니다. 둘째, 학파에 따라 달라지는 부분 — 쿠누트, 의도를 소리 내어 말하는 것, 손의 위치 — 은 지시가 아니라 차이로 서술했습니다. 다니는 마스지드에서 가르치는 대로 따르시고, 확신이 서지 않는 것은 사람에게 물으십시오.'
+},
+
+untrans: {
+  t:'아직 번역되지 않았습니다',
+  b:'이 부분은 아직 한국어로 옮기지 않았습니다. 아래 내용은 영어로 표시됩니다.'
+}
+};
+
+/* 32 questions — the NU/Muhammadiyah material is replaced with neutral
+   "communities differ, follow your mosque" phrasing for a Korean audience. */
+KO.faq = [
+{q:'이맘이 이미 시작한 뒤에 도착했습니다.',
+ a:'이맘이 어느 자세에 있든 곧바로 합류하십시오 — 타크비르를 하고 따라갑니다. 놓친 라카아는 이맘이 살람을 한 뒤 혼자 일어나 채웁니다. 이맘이 이미 루쿠에 들어 있을 때 합류했다면 그 라카아는 인정되며, 그 라카아의 알파티하를 완성하지 않아도 됩니다.'},
+{q:'몇 라카아를 했는지 잊었습니다.',
+ a:'적은 쪽을 택하고 거기서 이어 가십시오. 둘째인지 셋째인지 확신이 없다면 둘째로 봅니다. 마지막에 살람 전에 두 번의 추가 엎드림 — 수주드 사후, 잊음에 대한 엎드림 — 을 합니다. 누구에게나 일어나는 일이라 이 절차가 있는 것입니다.'},
+{q:'예배를 완전히 놓쳤습니다.',
+ a:'기억나는 즉시 드리십시오 — 이를 까다(보충)라고 합니다. 한 번 놓친 것이 하루 전체를 포기할 이유가 되지 않게 하십시오. 방법은 이것입니다: 채우고, 원인을 적어 두고, 계속 갑니다.'},
+{q:'앉아서 예배를 드려도 됩니까?',
+ a:'의무 예배는 가능하다면 서서 드려야 합니다. 정말로 불가능하다면 — 질병, 부상, 비행기에서 공간이 없을 때 — 앉아서 드리고, 앉을 수도 없다면 누워서 드립니다. 의무는 당신이 할 수 있는 만큼으로 조정되며, 그냥 사라지지는 않습니다.'},
+{q:'우두를 할 물이 없습니다.',
+ a:'그럴 때는 타얌뭄 — 깨끗한 흙이나 먼지로 하는 마른 정결 — 을 합니다. 깨끗한 먼지 있는 면에 두 손바닥을 대고, 얼굴을 쓸고, 그다음 두 손을 쓸어냅니다. 물을 정말 구할 수 없거나 물이 해로울 때 적용됩니다. 한 번만 직접 배워 두면 금방 익힙니다.'},
+{q:'우두는 무엇 때문에 깨집니까?',
+ a:'주요한 것들: 용변, 방귀, 깊은 잠, 의식 상실. 우두는 예배마다 새로 하는 것이 아닙니다 — 한 번의 우두로 무엇이 깨뜨리기 전까지 여러 예배를 드릴 수 있습니다.',
+ d:'이성과의 피부 접촉은 견해가 갈립니다. 깨진다고 보는 학파도 있고 그렇지 않다고 보는 학파도 있습니다. 다니는 마스지드에서 가르치는 대로 따르십시오.'},
+{q:'신발을 신고 예배해도 됩니까?',
+ a:'깨끗하다면 됩니다 — 예언자께서 그렇게 하셨다는 기록이 있습니다. 다만 실제로 마스지드에는 카펫이 깔려 있고 모두 신발을 벗으므로 그 자리의 방식을 따르십시오. 야외나 깨끗한 바닥의 직장에서는 신발이 문제되지 않습니다.'},
+{q:'사무실에서는 어디서 예배합니까?',
+ a:'깨끗하고 어느 정도 사적인 공간이면 됩니다 — 빈 회의실이면 충분합니다. 대략 몸 하나 길이의 깨끗한 바닥이 필요합니다. 예배용 매트가 있으면 편하지만 필수는 아닙니다.'},
+
+{q:'예배할 때 아무 느낌도 들지 않습니다.',
+ a:'그것이 보통의 출발점이며, 그렇게 말하는 것은 실패의 고백이 아닙니다. 이 전통은 감정을 만들어 내라고 요구한 적이 없습니다. 나와서, 보여지고 있는 것처럼 행하라고 했을 뿐입니다. 느낌은 습관보다 앞서기보다 뒤따를 때가 많습니다 — 종종 훨씬 뒤에, 고르지 않게.'},
+{q:'예배 내내 딴생각을 했습니다. 그래도 인정됩니까?',
+ a:'인정됩니다. 산만함은 예배를 무효로 만들지 않습니다 — 만약 그렇다면 거의 누구의 예배도 유효하지 않을 것입니다. 마음이 함께 있는 것은 예배를 더 낫게 만드는 것이지, 인정되게 만드는 것이 아닙니다. 알아차리고, 돌아오고, 계속하십시오. 그 돌아옴 자체가 연습입니다.'},
+{q:'서른이 넘어 시작합니다. 너무 늦었습니까?',
+ a:'아닙니다. 그 질문은 애초에 발급된 적 없는 일정표를 전제합니다. 사람들은 아주 늦게를 포함해 모든 나이에 시작하며, 원전들은 이 실천으로 돌아서는 사람을 평가 대상이 아니라 좋은 소식으로 다룹니다. 당신은 누구보다도 뒤처지지 않았습니다.'},
+{q:'이제 종교적으로 보여야 합니까?',
+ a:'아닙니다. 남성에게는 배꼽에서 무릎까지 가리고 단정히 입는 것 외에 별도의 복장 규정이 없으며, 수염이나 특정한 모자, 옷장 교체를 요구하는 것은 없습니다. 드러내 보이는 것은 의무의 일부가 아니며, 지난달과 똑같은 모습으로 조용히 예배하는 것은 전혀 이상하지 않습니다.'},
+{q:'발음이 형편없습니다. 잘못하고 있는 걸까요?',
+ a:'모든 초보자가 하는 그대로 하고 있습니다. 학자들은 아직 배우는 중인 사람에게 다 배운 사람의 기준을 적용하지 않는다고 일관되게 보았습니다. 계속 연습하고, 사람에게 교정받고, 그동안에도 예배하십시오 — 유창해질 때까지 기다리면 몇 년을 기다리게 됩니다.'},
+{q:'가족이 신앙 생활을 하지 않습니다. 거리가 생길까요?',
+ a:'그럴 필요는 없습니다. 원전들은 신앙심이 부모를 대하는 방식을 해치지 않도록 유난히 단호합니다 — 어떤 경우에도 그들과 잘 지내라는 지시입니다. 조용히 실천하고 아무도 교정하지 않는 편이 반대쪽보다 훨씬 잘 통하는 경우가 많습니다.'},
+{q:'자꾸 예배를 놓칩니다. 하는 척을 그만둘까요?',
+ a:'예배를 놓친다고 위선자가 되는 것이 아닙니다. 몇 달이 걸리는 습관을 만들고 있는 사람이 되는 것입니다. 그만두는 사람은 대개 일관되지 못함이 자격을 박탈한다고 결론 내린 사람들입니다. 놓친 것을 채우고 다음 것을 드리십시오.'},
+{q:'시작했다고 알려야 합니까?',
+ a:'아닙니다. 서두르지 않을 이유도 있습니다. 이 전통은 남에게 보이기 위한 종교 행위를 경계하며, 알리는 데서 오는 실질적 이익은 대개 느껴지는 것보다 작습니다. 당신을 교정해 줄 수 있는 신뢰하는 한 사람에게 알리는 편이 모두에게 알리는 것보다 값집니다.'},
+
+{q:'무엇이 음식을 하람으로 만듭니까?',
+ a:'목록은 짧습니다. 돼지고기와 그 파생물, 피, 죽은 고기, 제대로 도축되지 않은 동물, 그리고 취하게 하는 것. 그 밖의 모든 것은 기본적으로 허용됩니다 — 근본 원칙은 금지할 이유가 없는 한 허용된다는 것이며, 이는 흔히 상상하는 것과 반대입니다.'},
+{q:'요리에 쓰인 알코올이나 바닐라 추출물은 어떻습니까?',
+ a:'학자들의 견해가 갈립니다. 가장 엄격한 입장은 알코올이 들어간 것을 일체 피합니다. 널리 받아들여지는 견해는 취하게 할 수 없는 미량이고 조리 과정에서 변형된 것은 금지된 그 물질이 아니라고 봅니다. 한국에서는 할랄 인증이 실질적인 기준이 됩니다.',
+ d:'실제로 견해가 갈리는 문제입니다. 중요하다면 앱이 아니라 신뢰하는 사람에게 물으십시오.'},
+{q:'여행 중에는 예배를 어떻게 합니까?',
+ a:'일정 거리 이상의 여정에서는 네 라카아 예배를 두 라카아로 줄일 수 있습니다 — 까스르입니다. 주흐르와 아스르를, 마그립과 이샤를 붙여서 함께 드릴 수도 있습니다. 둘 다 허용이지 의무가 아닙니다.'},
+{q:'금요 예배는 저에게 의무입니까?',
+ a:'그렇습니다 — 거주 중이고 가능한 성인 남성에게 주무아는 주흐르를 대신하며 의무입니다. 쿠트바(설교) 뒤에 두 라카아를 드리며, 예배만이 아니라 설교에도 참석해야 합니다. 여행자, 아픈 사람, 여성에게는 의무가 아닙니다.'},
+{q:'자카트를 내야 합니까?',
+ a:'재산이 니사브 — 금이나 은의 가치에 연동된 기준 — 이상으로 음력 1년 동안 계속 유지된 경우에만 해당합니다. 그렇다면 매년 그 재산의 2.5%입니다. 버는 것이 아니라 보유한 것을 기준으로 계산하며, 내야 한다고 짐작하는 사람 중 상당수는 실제로는 해당하지 않습니다.'},
+{q:'단식의 기본은 무엇입니까?',
+ a:'라마단 동안 새벽부터 일몰까지 음식, 음료, 흡연, 부부 관계를 삼가며, 의도는 미리 정합니다. 질병, 여행, 그 밖의 실제적인 어려움은 면제되며 나중에 그 날수를 채웁니다. 일 년에 한 달이고, 첫 며칠이 가장 힘듭니다.'},
+{q:'음악은 허용됩니까?',
+ a:'이것은 실제로 견해가 갈리는 문제이며, 간단하다고 말하는 사람은 무언가를 건너뛰고 있는 것입니다. 폭넓은 허용부터 상당한 제한까지 견해가 걸쳐 있고, 이견의 상당 부분은 소리 자체보다 내용과 맥락에 관한 것입니다. 제가 대신 결론 내리지 않겠습니다.',
+ d:'신뢰하는 사람에게 물으십시오. 바로 이런 종류의 질문이야말로 앱이 답을 삼가야 하는 것입니다.'},
+{q:'직장에서 여성과 악수해도 됩니까?',
+ a:'이 또한 견해가 갈립니다. 많은 학자들은 마흐람이 아닌 이성과의 신체 접촉을 피해야 한다고 보고, 거절이 심각한 무례나 직업적 손해가 될 상황에서는 악수를 허용하는 견해도 있습니다. 많은 무슬림이 대신 가슴에 손을 얹어 정중히 표시합니다.',
+ d:'견해가 갈립니다. 배우는 곳의 가르침을 따르고 상황을 살피십시오.'},
+
+{q:'"의도는 반드시 소리 내어 말해야 한다."',
+ a:'의도는 마음에 있으며, 그것이 유효하게 만드는 것입니다. 정해진 문구를 소리 내어 말하는 것은 마음을 모으기 위한 관습으로, 그렇게 가르치는 공동체도 있고 근거가 없다고 보는 공동체도 있습니다. 어느 쪽이든 소리 내지 않아도 예배는 유효합니다.'},
+{q:'"예배마다 우두를 다시 해야 한다."',
+ a:'그렇지 않습니다. 한 번의 우두는 무엇이 깨뜨릴 때까지 유지되며 그것으로 여러 예배를 드릴 수 있습니다. 예배마다 우두를 새로 하는 것은 미덕이지 요구 사항이 아닙니다.'},
+{q:'"예배를 시작하려면 먼저 많이 외워야 한다."',
+ a:'아닙니다. 의무의 핵심은 의도, 시작하는 타크비르, 알파티하, 잠시 멈춤을 포함한 루쿠와 수주드, 타샤후드가 있는 마지막 앉음, 그리고 살람입니다. 짧은 문장 몇 개입니다. 나머지는 순나이며 몇 달에 걸쳐 더해 가면 됩니다.'},
+{q:'메신저로 도는 하디스가 진짜인지 어떻게 압니까?',
+ a:'어느 모음집에서 왔는지 물으십시오. 진짜 전승은 부하리, 무슬림, 아부 다우드 같은 이름 있는 출처로 추적되며 등급이 매겨져 있습니다. 출처 없이 아름다운 인용구로만 도는 것은 검증되지 않은 것으로 다루십시오. 조작된 자료는 수백 년간 유통되어 왔습니다.'},
+{q:'"파즈르의 쿠누트는 필수다" — 또는 "그것은 이단이다".',
+ a:'어디에 서 있느냐에 따라 둘 다 정확하지 않습니다. 어떤 학파는 파즈르의 쿠누트를 강한 순나로 보아 빠뜨리면 수주드 사후를 하도록 하고, 다른 학파들은 파즈르에 쿠누트가 없다고 봅니다. 모두 존중받는 견해입니다. 다니는 마스지드를 따르시면 됩니다.'},
+{q:'제 앞으로 누가 지나가면 예배가 무효가 됩니까?',
+ a:'대체로 예배 자체는 유효합니다. 다만 바로 앞으로 지나가게 두는 것은 권장되지 않으며 부드럽게 막을 수 있습니다. 사람들이 벽이나 기둥, 앞에 놓은 가방을 향해 예배하는 이유입니다. 이 주제의 전승은 길게 논의되며 학파마다 다르게 읽습니다.'},
+{q:'"올바른 방식은 하나뿐이고 나머지는 틀렸다."',
+ a:'근본 — 알라가 누구신지, 꾸란이 무엇인지, 다섯 예배가 의무라는 것 — 에는 심각한 이견이 없습니다. 방법의 세부에서는 네 학파가 정직한 방법론으로 서로 다른 결론에 이르렀고, 고전 학자들은 대체로 그 폭을 결함이 아니라 자비로 보았습니다. 옆에서 조금 다르게 예배하는 사람은 아마도 틀리지 않았습니다.'},
+{q:'"충분히 진실하지 않으면 인정되지 않는다."',
+ a:'유효함과 훌륭함은 다른 것입니다. 필요한 요소를 갖춘 예배는 집중이 형편없어도 유효합니다. 진실함은 그것을 더 낫게 만들지, 존재하게 만드는 것이 아닙니다. 자신이 충분히 진실한지에 대한 불안은 이 전통에서 그 자체로 알려진 문제이며, 조언은 한결같이 자신을 감사하다 마비되지 말고 계속 예배하라는 것이었습니다.'}
+];
+
+KO.faqGroups = {
+ "When something goes wrong":'무언가 어긋났을 때',
+ "The ones people don't ask aloud":'소리 내어 묻지 않는 것들',
+ "Everyday life":'일상생활',
+ "Things people get wrong":'흔히 잘못 아는 것들'
+};
+KO.duaGroups = {'Morning':'아침','Through the day':'하루 중','At the masjid':'마스지드에서',
+ "When it's hard":'힘들 때','Night':'밤'};
+
+/* attach the Korean strings to the existing data objects */
+function mergeKO(){
+  /* NOTE: PARTS entries carry an "id" identifier AND an "id" field holding the
+     Indonesian text — the second wins, so the identifier is unusable here.
+     KO.parts is written in the same order as PARTS, so merge by position. */
+  var kparts = Object.keys(KO.parts).map(function(k){ return KO.parts[k]; });
+  PARTS.forEach(function(p,i){ var k=kparts[i]; if(!k) return;
+    p.tko=k.t; p.nko=k.n; p.posko=k.pos; p.timesko=k.times; p.enko=k.en; p.whyko=k.why; });
+  WUDHU.forEach(function(w,i){ var k=KO.wudhu[i]; if(!k) return; w.tko=k.t; w.dko=k.d; });
+  DUAS.forEach(function(d,i){ var k=KO.duas[i]; if(!k) return;
+    d.gko=KO.duaGroups[d.g]||k.g; d.tko=k.t; d.enko=k.en; d.wko=k.w; });
+  SURAHS.forEach(function(s){ var k=KO.surahs[s.name]; if(!k) return;
+    s.metako=k.meta; s.introko=k.intro; s.whyko=k.why;
+    s.v.forEach(function(v,i){ v.ko=k.v[i]; }); });
+  FAQ.forEach(function(f,i){ var k=KO.faq[i]; if(!k) return;
+    f.gko=KO.faqGroups[f.g]; f.qko=k.q; f.ako=k.a; f.dko=k.d; });
+  PRAYERS.forEach(function(p){ var k=KO.prayers[p.id]; if(!k) return;
+    p.timeko=k.time; p.aloudko=k.aloud; p.diffko=k.diff; });
+  PROMPTS.forEach(function(a,i){ a[2]=KO.prompts[i]; });
+  ENCOURAGE.forEach(function(a,i){ a[2]=KO.encourage[i]; });
+  for(var k in KO.ui){ if(UI[k]) UI[k][2]=KO.ui[k]; }
+  CYCLE.forEach(function(c,i){ var k=KO.visuals.cycle[i]; if(k){ c.tko=k[0]; c.dko=k[1]; } });
+}
+
 /* ============================ QUESTIONS ============================ */
 var FAQ = [
 /* ---------- when something goes wrong ---------- */
@@ -1764,13 +2112,21 @@ var STORIES = [
 ];
 
 /* ===================== LANGUAGE ===================== */
-var LANG = 'en';                     /* 'en' | 'id' | 'both' */
-function P(en, id){ return LANG === 'id' ? id : en; }
-function IDB(html, raw){             /* the Indonesian block, shown only in Both mode */
-  if(LANG !== 'both') return '';
-  return '<div class="id-txt show"><span class="lbl">Bahasa Indonesia</span>'+
-         (raw ? html : '<p>'+html+'</p>')+'</div>';
+var LANG = 'en';                     /* 'en' | 'id' | 'ko' */
+var PAIR = false;                    /* show the English alongside a translation */
+function P(en, id, ko){
+  if(LANG === 'id') return (id === undefined || id === null) ? en : id;
+  if(LANG === 'ko') return (ko === undefined || ko === null) ? en : ko;
+  return en;
 }
+/* the secondary block: the English original, shown under a translation on request */
+function IDB(en, raw){
+  if(!PAIR || LANG === 'en' || en === undefined || en === null || en === '') return '';
+  return '<div class="id-txt show"><span class="lbl">English</span>'+
+         (raw ? en : '<p>'+en+'</p>')+'</div>';
+}
+/* true when the current language has no translation for a block of content */
+function untranslated(){ return LANG === 'ko'; }
 var UI = {
   deeper:  ['Go deeper',                  'Selami lebih dalam'],
   why:     ['Why it is there',            'Mengapa ia ada di sana'],
@@ -1792,7 +2148,12 @@ var UI = {
   only34:  ['3 & 4 rakaat prayers',       'sholat 3 & 4 rakaat'],
   subuhOnly:['Subuh only',                'khusus Subuh']
 };
-function U(k){ return LANG === 'id' ? UI[k][1] : UI[k][0]; }
+function U(k){
+  var a = UI[k];
+  if(LANG === 'id') return a[1];
+  if(LANG === 'ko') return a[2] || a[0];
+  return a[0];
+}
 
 /* ===================== RAKAAT WALKTHROUGH ENGINE ===================== */
 function buildWalk(p){
@@ -1804,74 +2165,74 @@ function buildWalk(p){
       : '<span class="flag silent">'+U('silent')+'</span>';
 
     if(first){
-      steps.push({t:P('Niat, then <a href="#words">Takbiratul Ihram</a>','Niat, lalu <a href="#words">Takbiratul Ihram</a>'),
-        d:P('Hands to the shoulders. From here you are inside the prayer.','Tangan setinggi bahu. Sejak titik ini kamu sudah di dalam sholat.'),
+      steps.push({t:P('Niat, then <a href="#words">Takbiratul Ihram</a>','Niat, lalu <a href="#words">Takbiratul Ihram</a>',KO.walk.niat),
+        d:P('Hands to the shoulders. From here you are inside the prayer.','Tangan setinggi bahu. Sejak titik ini kamu sudah di dalam sholat.',KO.walk.niatD),
         say:'Allāhu akbar'});
-      steps.push({t:P('<a href="#words">Doa Iftitah</a>','<a href="#words">Doa Iftitah</a>'),
-        d:P('Silently, first rakaat only. Sunnah — skipping it does not invalidate anything.','Dibaca pelan, hanya rakaat pertama. Sunnah — meninggalkannya tidak membatalkan apa pun.'),
+      steps.push({t:P('<a href="#words">Doa Iftitah</a>','<a href="#words">Doa Iftitah</a>',KO.walk.ift),
+        d:P('Silently, first rakaat only. Sunnah — skipping it does not invalidate anything.','Dibaca pelan, hanya rakaat pertama. Sunnah — meninggalkannya tidak membatalkan apa pun.',KO.walk.iftD),
         say:'Allāhu akbar kabīrā…'});
     } else {
-      steps.push({t:P('Stand for rakaat ','Berdiri untuk rakaat ')+r,
-        d:P('Said as you rise into the standing position.','Diucapkan saat kamu bangkit ke posisi berdiri.'),
+      steps.push({t:P('Stand for rakaat ','Berdiri untuk rakaat ',KO.walk.stand)+r,
+        d:P('Said as you rise into the standing position.','Diucapkan saat kamu bangkit ke posisi berdiri.',KO.walk.standD),
         say:'Allāhu akbar'});
     }
 
     steps.push({t:'<a href="#surah">Al-Fatihah</a> '+voice,
       d:P('Every rakaat, without exception. Praying alone you recite it aloud where marked; behind an imam you always recite silently.',
-          'Setiap rakaat, tanpa kecuali. Kalau sholat sendiri kamu mengeraskannya di tempat yang ditandai; kalau bermakmum kamu selalu membacanya pelan.'),
+          'Setiap rakaat, tanpa kecuali. Kalau sholat sendiri kamu mengeraskannya di tempat yang ditandai; kalau bermakmum kamu selalu membacanya pelan.',KO.walk.fatD),
       say:"Al-ḥamdu lillāhi rabbil-'ālamīn…"});
 
     if(firstTwo){
-      steps.push({t:P('A short surah','Satu surah pendek')+' <span class="flag only">'+U('only12')+'</span>',
-        d:P('Al-Ikhlas, Al-Falaq or An-Nas is the usual beginner choice.','Al-Ikhlas, Al-Falaq, atau An-Nas adalah pilihan pemula yang lazim.'),
+      steps.push({t:P('A short surah','Satu surah pendek',KO.walk.sur)+' <span class="flag only">'+U('only12')+'</span>',
+        d:P('Al-Ikhlas, Al-Falaq or An-Nas is the usual beginner choice.','Al-Ikhlas, Al-Falaq, atau An-Nas adalah pilihan pemula yang lazim.',KO.walk.surD),
         say:'Qul huwallāhu aḥad…'});
     } else {
-      steps.push({t:P('No extra surah','Tanpa surah tambahan'),
+      steps.push({t:P('No extra surah','Tanpa surah tambahan',KO.walk.nosur),
         d:P('From rakaat 3 onward it is Al-Fatihah alone. This is the single most common point of confusion.',
-            'Mulai rakaat ke-3 hanya Al-Fatihah saja. Inilah titik yang paling sering membingungkan.'),
+            'Mulai rakaat ke-3 hanya Al-Fatihah saja. Inilah titik yang paling sering membingungkan.',KO.walk.nosurD),
         say:''});
     }
 
-    steps.push({t:P("<a href=\"#words\">Ruku'</a> — bow","<a href=\"#words\">Rukuk</a> — membungkuk"),
-      d:P('Takbir as you go down, then the words three times.','Takbir saat turun, lalu bacaannya tiga kali.'),
+    steps.push({t:P("<a href=\"#words\">Ruku'</a> — bow","<a href=\"#words\">Rukuk</a> — membungkuk",KO.walk.ruku),
+      d:P('Takbir as you go down, then the words three times.','Takbir saat turun, lalu bacaannya tiga kali.',KO.walk.rukuD),
       say:"Subḥāna rabbiyal-'aẓīmi wa biḥamdih ×3"});
 
     if(p.id==="subuh" && r===2){
-      steps.push({t:P("<a href=\"#words\">I'tidal</a>, then <b>qunut</b>","<a href=\"#words\">I'tidal</a>, lalu <b>qunut</b>")+
+      steps.push({t:P("<a href=\"#words\">I'tidal</a>, then <b>qunut</b>","<a href=\"#words\">I'tidal</a>, lalu <b>qunut</b>",KO.walk.qunut)+
           ' <span class="flag only">'+U('subuhOnly')+'</span>',
         d:P("Stand up, then the qunut supplication is added here in the second rakaat. Sunnah in the Shafi'i school and standard in NU mosques; Muhammadiyah generally omits it. Follow whichever mosque you pray in.",
             "Berdiri tegak, lalu doa qunut ditambahkan di sini pada rakaat kedua. Sunnah dalam mazhab Syafi'i dan lazim di masjid NU; Muhammadiyah umumnya tidak membacanya. Ikuti kebiasaan masjid tempat kamu sholat."),
         say:"Sami'allāhu liman ḥamidah… "+P('then qunut','lalu qunut')});
     } else {
-      steps.push({t:P("<a href=\"#words\">I'tidal</a> — stand up straight","<a href=\"#words\">I'tidal</a> — berdiri tegak"),
-        d:P('Fully upright and still before going down again.','Tegak sepenuhnya dan tenang sejenak sebelum turun lagi.'),
+      steps.push({t:P("<a href=\"#words\">I'tidal</a> — stand up straight","<a href=\"#words\">I'tidal</a> — berdiri tegak",KO.walk.itidal),
+        d:P('Fully upright and still before going down again.','Tegak sepenuhnya dan tenang sejenak sebelum turun lagi.',KO.walk.itidalD),
         say:"Sami'allāhu liman ḥamidah — Rabbanā lakal-ḥamd…"});
     }
 
-    steps.push({t:P('<a href="#words">Sujud</a> — first prostration','<a href="#words">Sujud</a> — sujud pertama'),
-      d:P('Seven parts on the ground. The words three times.','Tujuh anggota menyentuh lantai. Bacaannya tiga kali.'),
+    steps.push({t:P('<a href="#words">Sujud</a> — first prostration','<a href="#words">Sujud</a> — sujud pertama',KO.walk.suj1),
+      d:P('Seven parts on the ground. The words three times.','Tujuh anggota menyentuh lantai. Bacaannya tiga kali.',KO.walk.suj1D),
       say:"Subḥāna rabbiyal-a'lā wa biḥamdih ×3"});
-    steps.push({t:P('<a href="#words">Sit between the two prostrations</a>','<a href="#words">Duduk di antara dua sujud</a>'),
-      d:P('Brief, but it holds eight requests. Do not rush it.','Singkat, tapi memuat delapan permohonan. Jangan diburu-buru.'),
+    steps.push({t:P('<a href="#words">Sit between the two prostrations</a>','<a href="#words">Duduk di antara dua sujud</a>',KO.walk.sit),
+      d:P('Brief, but it holds eight requests. Do not rush it.','Singkat, tapi memuat delapan permohonan. Jangan diburu-buru.',KO.walk.sitD),
       say:'Rabbighfir lī warḥamnī…'});
-    steps.push({t:P('<a href="#words">Sujud</a> — second prostration','<a href="#words">Sujud</a> — sujud kedua'),
-      d:P('Identical to the first. This completes the rakaat.','Sama persis dengan yang pertama. Ini menyempurnakan rakaat.'),
+    steps.push({t:P('<a href="#words">Sujud</a> — second prostration','<a href="#words">Sujud</a> — sujud kedua',KO.walk.suj2),
+      d:P('Identical to the first. This completes the rakaat.','Sama persis dengan yang pertama. Ini menyempurnakan rakaat.',KO.walk.suj2D),
       say:"Subḥāna rabbiyal-a'lā wa biḥamdih ×3"});
 
     if(r===2 && !last){
-      steps.push({t:P('Sit for the <b>middle tashahhud</b>','Duduk untuk <b>tasyahud awal</b>')+
+      steps.push({t:P('Sit for the <b>middle tashahhud</b>','Duduk untuk <b>tasyahud awal</b>',KO.walk.mid)+
           ' <span class="flag only">'+U('only34')+'</span>',
         d:P('Because this prayer has more than two rakaat, you sit here, recite the tashahhud and the short salawat, then stand again for rakaat 3.',
-            'Karena sholat ini lebih dari dua rakaat, kamu duduk di sini, membaca tasyahud dan sholawat pendek, lalu berdiri lagi untuk rakaat 3.'),
+            'Karena sholat ini lebih dari dua rakaat, kamu duduk di sini, membaca tasyahud dan sholawat pendek, lalu berdiri lagi untuk rakaat 3.',KO.walk.midD),
         say:"At-taḥiyyātul-mubārakāt… Allāhumma ṣalli 'alā Muḥammad"});
     }
     if(last){
-      steps.push({t:P('Sit for the <b>final tashahhud</b>','Duduk untuk <b>tasyahud akhir</b>'),
+      steps.push({t:P('Sit for the <b>final tashahhud</b>','Duduk untuk <b>tasyahud akhir</b>',KO.walk.fin),
         d:P('The full tashahhud, then the full salawat including Abraham. Personal supplication belongs here, before the salam.',
-            'Tasyahud lengkap, lalu sholawat lengkap termasuk Nabi Ibrahim. Doa pribadi tempatnya di sini, sebelum salam.'),
+            'Tasyahud lengkap, lalu sholawat lengkap termasuk Nabi Ibrahim. Doa pribadi tempatnya di sini, sebelum salam.',KO.walk.finD),
         say:"At-taḥiyyāt… Allāhumma ṣalli 'alā Muḥammad wa 'alā āli Muḥammad…"});
-      steps.push({t:P('<a href="#words">Salam</a> — right, then left','<a href="#words">Salam</a> — ke kanan, lalu ke kiri'),
-        d:P('Turn the head to the right, then the left. The prayer is finished.','Menoleh ke kanan, lalu ke kiri. Sholat selesai.'),
+      steps.push({t:P('<a href="#words">Salam</a> — right, then left','<a href="#words">Salam</a> — ke kanan, lalu ke kiri',KO.walk.salam),
+        d:P('Turn the head to the right, then the left. The prayer is finished.','Menoleh ke kanan, lalu ke kiri. Sholat selesai.',KO.walk.salamD),
         say:"As-salāmu 'alaikum wa raḥmatullāh ×2"});
     }
 
@@ -1900,7 +2261,7 @@ function renderConcepts(){
     var more = body.map(function(p){ return '<p>'+p+'</p>'; }).join('');
     var moreId = c.lid.map(function(p){ return '<p>'+p+'</p>'; }).join('');
     return '<div class="card srch"><div class="card-h"><h3>'+P(c.t, c.tid || c.t)+'</h3></div>'+
-      '<p class="en" style="margin-top:9px">'+P(c.s, c.sid)+'</p>'+ IDB(c.sid) +
+      '<p class="en" style="margin-top:9px">'+P(c.s, c.sid, c.sko)+'</p>'+ IDB(c.s) +
       '<details class="more"><summary>'+U('deeper')+'</summary><div class="more-body">'+more+
       (LANG==='both' ? '<div class="id-txt show" style="margin-top:4px"><span class="lbl">Bahasa Indonesia</span>'+moreId+'</div>' : '')+
       '</div></details></div>';
@@ -1910,9 +2271,9 @@ function renderConcepts(){
 function renderTable(){
   document.getElementById('prayerTable').innerHTML = PRAYERS.map(function(p){
     return '<tr class="srch"><td>'+p.name+
-      '<div style="font-size:12.5px;color:var(--muted);font-weight:400">'+P(p.time,p.timeid)+'</div></td>'+
-      '<td class="n">'+p.rak+'</td><td style="font-size:13.5px">'+P(p.aloud,p.aloudid)+'</td>'+
-      '<td style="font-size:13.5px;color:var(--ink2)">'+P(p.diff,p.diffid)+'</td></tr>';
+      '<div style="font-size:12.5px;color:var(--muted);font-weight:400">'+P(p.time,p.timeid,p.timeko)+'</div></td>'+
+      '<td class="n">'+p.rak+'</td><td style="font-size:13.5px">'+P(p.aloud,p.aloudid,p.aloudko)+'</td>'+
+      '<td style="font-size:13.5px;color:var(--ink2)">'+P(p.diff,p.diffid,p.diffko)+'</td></tr>';
   }).join('');
 }
 
@@ -1923,7 +2284,7 @@ function renderRakaatVisuals(){
 function renderCycle(){
   document.getElementById('cycle').innerHTML = CYCLE.map(function(c,i){
     return '<div class="cyc"><span class="n">'+(i+1)+'</span>'+poseSVG(c.k,88)+
-      '<b>'+P(c.t,c.tid)+'</b><i>'+P(c.d,c.did)+'</i></div>';
+      '<b>'+P(c.t,c.tid,c.tko)+'</b><i>'+P(c.d,c.did,c.dko)+'</i></div>';
   }).join('');
 }
 
@@ -1938,7 +2299,7 @@ function renderPicker(){
 function renderWalk(){
   var p = PRAYERS[curPrayer], w = buildWalk(p);
   var html = '<div class="callout green"><b>'+p.name+' — '+p.rak+' rakaat, '+
-    P(p.aloud,p.aloudid).toLowerCase()+'</b><span>'+P(p.diff,p.diffid)+'</span>'+IDB(p.diffid)+'</div>';
+    P(p.aloud,p.aloudid,p.aloudko).toLowerCase()+'</b><span>'+P(p.diff,p.diffid,p.diffko)+'</span>'+IDB(p.diff)+'</div>';
   html += w.map(function(rk){
     return '<div class="rk"><div class="rk-h">'+U('rakaat')+' '+rk.r+' <em>— '+rk.note+'</em></div><ol class="seq">'+
       rk.steps.map(function(s){
@@ -1955,8 +2316,8 @@ function renderParts(){
     var body='';
     if(p.ar) body += '<p class="ar">'+p.ar+'</p>';
     if(p.tl) body += '<p class="tl">'+p.tl+'</p>';
-    body += '<p class="en">'+P(p.en,p.id)+'</p>' + IDB(p.id);
-    body += '<div class="why"><span class="lbl">'+U('why')+'</span><p>'+P(p.why,p.whyid)+'</p>'+IDB(p.whyid);
+    body += '<p class="en">'+P(p.en,p.id,p.enko)+'</p>' + IDB(p.en);
+    body += '<div class="why"><span class="lbl">'+U('why')+'</span><p>'+P(p.why,p.whyid,p.whyko)+'</p>'+IDB(p.why);
     if(p.more && p.more.length){
       var mm = (LANG==='id' ? p.moreid : p.more).map(function(x){return '<p>'+x+'</p>';}).join('');
       body += '<details class="more"><summary>'+U('deeper')+'</summary><div class="more-body">'+mm+
@@ -1967,42 +2328,40 @@ function renderParts(){
     body += '</div>';
     var figure = p.fig ? '<div class="pose-box">'+poseSVG(p.fig,86)+'</div>' : '';
     return '<div class="card srch"><div class="card-top"><div class="card-txt">'+
-      '<p class="step-n">'+P(p.n,p.nid)+'</p><div class="card-h"><h3>'+P(p.t,p.tid)+
-      (p.times?'<span class="times">'+P(p.times,p.timesid)+'</span>':'')+'</h3><span class="pos">'+P(p.pos,p.posid)+'</span></div>'+
+      '<p class="step-n">'+P(p.n,p.nid,p.nko)+'</p><div class="card-h"><h3>'+P(p.t,p.tid,p.tko)+
+      (p.times?'<span class="times">'+P(p.times,p.timesid,p.timesko)+'</span>':'')+'</h3><span class="pos">'+P(p.pos,p.posid,p.posko)+'</span></div>'+
       '</div>'+figure+'</div>'+body+'</div>';
   }).join('');
 }
 
 function renderSurahs(){
-  document.getElementById('surahs').innerHTML = reciterSwitch() + SURAHS.map(function(s){
+  document.getElementById('surahs').innerHTML = SURAHS.map(function(s){
     var verses = s.v.map(function(v,i){
-      var id = 's'+s.no+'-'+(i+1);
       return '<div class="vrow">'+
-        '<div class="vhead">'+playBtn(id,[s.no+':'+(i+1)],true)+
-          '<span class="vno">'+(i+1)+'</span></div>'+
+        '<div class="vhead"><span class="vno">'+(i+1)+'</span></div>'+
         '<p class="ar">'+v.ar+'</p><p class="tl">'+v.tl+'</p>'+
-        '<p class="en">'+P(v.en,v.id)+'</p>'+ IDB(v.id) +'</div>';
+        '<p class="en">'+P(v.en,v.id,v.ko)+'</p>'+ IDB(v.en) +'</div>';
     }).join('');
     return '<div class="card srch"><div class="card-h"><h3>'+s.name+'</h3>'+
-      '<span class="pos">'+P(s.meta,s.metaid)+'</span></div>'+
-      '<p class="en" style="margin-top:7px">'+P(s.intro,s.introid)+'</p>'+ IDB(s.introid) +
-      '<div class="vhead-all">'+playBtn('surah'+s.no, s.v.map(function(v,i){return s.no+':'+(i+1);}))+
-      '<span>'+P('Play the whole surah','Putar seluruh surah')+'</span></div>' + verses +
-      '<div class="why"><span class="lbl">'+U('doing')+'</span><p>'+P(s.why,s.whyid)+'</p>'+IDB(s.whyid)+'</div></div>';
+      '<span class="pos">'+P(s.meta,s.metaid,s.metako)+'</span></div>'+
+      '<p class="en" style="margin-top:7px">'+P(s.intro,s.introid,s.introko)+'</p>'+ IDB(s.intro) +
+      verses +
+      '<div class="why"><span class="lbl">'+U('doing')+'</span><p>'+P(s.why,s.whyid,s.whyko)+'</p>'+IDB(s.why)+'</div></div>';
   }).join('');
 }
 
 function renderWudhu(){
   document.getElementById('wudhuList').innerHTML = wudhuDiagram() + WUDHU.map(function(w,i){
     return '<div class="card srch" style="padding:15px 18px"><div class="card-h"><h3 style="font-size:16.5px">'+
-      (i+1)+'. '+P(w.t, w.tid || w.t)+
+      (i+1)+'. '+P(w.t, w.tid, w.tko)+
       '<span class="times" style="background:'+(w.ob?'var(--accent-soft)':'var(--line)')+
       ';color:'+(w.ob?'var(--accent-deep)':'var(--ink2)')+'">'+(w.ob?U('oblig'):U('sunnah'))+'</span></h3></div>'+
-      '<p class="en" style="margin-top:6px">'+P(w.d,w.id)+'</p>'+IDB(w.id)+'</div>';
+      '<p class="en" style="margin-top:6px">'+P(w.d,w.id,w.dko)+'</p>'+IDB(w.d)+'</div>';
   }).join('');
 }
 
 function renderVocab(){
+  document.getElementById('vocabNote').innerHTML = untransBanner();
   document.getElementById('vocabList').innerHTML = VOCAB.map(function(v){
     return '<div class="word srch"><div class="w-ar">'+v.ar+'</div><div class="w-b">'+
       '<p class="w-tl">'+v.tl+'</p><p class="w-en">'+P(v.en,v.id)+'</p>'+
@@ -2012,7 +2371,7 @@ function renderVocab(){
 }
 
 function renderStories(){
-  document.getElementById('storyIndex').innerHTML = STORIES.map(function(s,i){
+  document.getElementById('storyIndex').innerHTML = untransBanner() + STORIES.map(function(s,i){
     return '<div class="story-row srch" data-i="'+i+'"><span class="mins">'+P(s.mins,s.minsid)+'</span>'+
       '<div class="st"><h4>'+P(s.t,s.tid)+'</h4><p>'+P(s.hook,s.hookid)+'</p>'+
       '<p class="ref">'+P(s.ref,s.refid)+'</p></div></div>';
@@ -2024,18 +2383,18 @@ function openStory(i){
   var s = STORIES[i];
   var src = (LANG==='id') ? s.pid : s.p;
   var prose = src.map(function(par,k){ return '<p'+(k===0?' class="lead"':'')+'>'+par+'</p>'; }).join('');
-  var proseId = s.pid.map(function(par){ return '<p>'+par+'</p>'; }).join('');
+  var proseEn = s.p.map(function(par){ return '<p>'+par+'</p>'; }).join('');
   var verses = s.v.map(function(v){
     return '<div class="anchor"><span class="lbl">'+U('quran')+'</span>'+
       '<p class="vref">'+v.ref+'</p>'+
       '<p class="ar">'+v.ar+'</p><p class="tl">'+v.tl+'</p>'+
-      '<p class="en">'+P(v.en,v.id)+'</p>'+ IDB(v.id) +'</div>';
+      '<p class="en">'+P(v.en,v.id)+'</p>'+ IDB(v.en) +'</div>';
   }).join('');
   var reader = document.getElementById('reader');
   reader.innerHTML = '<button class="back" type="button" id="backBtn">'+U('back')+'</button>'+
     '<div class="read"><h3>'+P(s.t,s.tid)+'</h3><p class="meta">'+P(s.mins,s.minsid)+' · '+P(s.ref,s.refid)+'</p>'+
-    '<div class="prose">'+prose+'</div>'+ IDB(proseId, true) + verses +
-    '<div class="why"><span class="lbl">'+U('howtold')+'</span><p>'+P(s.why,s.whyid)+'</p>'+IDB(s.whyid)+'</div>'+
+    '<div class="prose">'+prose+'</div>'+ IDB(proseEn, true) + verses +
+    '<div class="why"><span class="lbl">'+U('howtold')+'</span><p>'+P(s.why,s.whyid)+'</p>'+IDB(s.why)+'</div>'+
     '</div>';
   document.getElementById('storyIndex').classList.add('hidden');
   reader.classList.remove('hidden');
@@ -2080,42 +2439,48 @@ function renderToday(){
   var dateStr = new Date().toLocaleDateString(LANG==='id' ? 'id-ID' : 'en-GB',
     {weekday:'long', day:'numeric', month:'long'});
 
-  document.getElementById('todayPanel').innerHTML =
+  var koNote = (LANG === 'ko')
+    ? '<div class="konote"><b>'+KO.notice.t+'</b><span>'+KO.notice.b+'</span></div>' : '';
+  document.getElementById('todayPanel').innerHTML = koNote +
    '<div class="today srch">'+
      '<p class="date">'+dateStr+'</p>'+
-     '<p class="enc">'+P(enc[0],enc[1])+'</p>'+ IDB(enc[1]) +
+     '<p class="enc">'+P(enc[0],enc[1],enc[2])+'</p>'+ IDB(enc[0]) +
      '<div class="today-grid">'+
-       '<div class="tcell"><span class="k">'+P('Try this today','Coba hari ini')+'</span>'+
-         '<p>'+P(pr[0],pr[1])+'</p>'+IDB(pr[1])+'</div>'+
-       '<div class="tcell"><span class="k">'+P('A verse','Satu ayat')+'</span>'+
+       '<div class="tcell"><span class="k">'+P('Try this today','Coba hari ini',KO.today.try)+'</span>'+
+         '<p>'+P(pr[0],pr[1],pr[2])+'</p>'+IDB(pr[0])+'</div>'+
+       '<div class="tcell"><span class="k">'+P('A verse','Satu ayat',KO.today.verse)+'</span>'+
          '<p class="ar" style="text-align:right;direction:rtl">'+pick.v.ar+'</p>'+
          '<p class="tl" style="font-size:14px">'+pick.v.tl+'</p>'+
          '<p>'+P(pick.v.en,pick.v.id)+'</p>'+
          '<p style="font-size:12.5px;color:var(--muted);margin-top:4px">'+pick.s.name+'</p>'+
-         IDB(pick.v.id)+'</div>'+
-       '<div class="tcell"><span class="k">'+P('A word','Satu kata')+'</span>'+
+         IDB(pick.v.en)+'</div>'+
+       '<div class="tcell"><span class="k">'+P('A word','Satu kata',KO.today.word)+'</span>'+
          '<p class="ar" style="text-align:right;direction:rtl">'+word.ar+'</p>'+
          '<p class="lead-t">'+word.tl+' — '+P(word.en,word.id)+'</p>'+
-         '<p>'+P(word.noteen,word.note)+'</p>'+IDB(word.note)+'</div>'+
-       '<div class="tcell"><span class="k">'+P('A dua for today','Doa untuk hari ini')+'</span>'+
-         '<p class="lead-t">'+P(dua.t,dua.tid)+'</p>'+
+         '<p>'+P(word.noteen,word.note)+'</p>'+IDB(word.noteen)+'</div>'+
+       '<div class="tcell"><span class="k">'+P('A dua for today','Doa untuk hari ini',KO.today.dua)+'</span>'+
+         '<p class="lead-t">'+P(dua.t,dua.tid,dua.tko)+'</p>'+
          '<p class="tl" style="font-size:14px">'+dua.tl+'</p>'+
-         '<p>'+P(dua.en,dua.id)+'</p>'+IDB(dua.id)+'</div>'+
-       '<div class="tcell"><span class="k">'+P('If you have ten minutes','Kalau punya sepuluh menit')+'</span>'+
+         '<p>'+P(dua.en,dua.id,dua.enko)+'</p>'+IDB(dua.en)+'</div>'+
+       '<div class="tcell"><span class="k">'+P('If you have ten minutes','Kalau punya sepuluh menit',KO.today.story)+'</span>'+
          '<p class="lead-t">'+P(story.t,story.tid)+' · '+P(story.mins,story.minsid)+'</p>'+
-         '<p>'+P(story.hook,story.hookid)+'</p>'+IDB(story.hookid)+'</div>'+
+         '<p>'+P(story.hook,story.hookid)+'</p>'+IDB(story.hook)+'</div>'+
      '</div>'+
    '</div>';
 }
 
 /* ===================== ISLAM ===================== */
+function untransBanner(){
+  return untranslated()
+    ? '<div class="konote"><b>'+KO.untrans.t+'</b><span>'+KO.untrans.b+'</span></div>' : '';
+}
 function renderIslam(){
-  document.getElementById('islamList').innerHTML = ISLAM.map(function(c){
+  document.getElementById('islamList').innerHTML = untransBanner() + ISLAM.map(function(c){
     var body = (LANG==='id' ? c.lid : c.l).map(function(p){ return '<p>'+p+'</p>'; }).join('');
     var bodyId = c.lid.map(function(p){ return '<p>'+p+'</p>'; }).join('');
     return '<div class="card srch"><div class="card-h"><h3>'+P(c.t,c.tid)+'</h3></div>'+
       '<p class="isl-sub">'+P(c.sub,c.subid)+'</p>'+
-      '<p class="en" style="margin-top:11px">'+P(c.s,c.sid)+'</p>'+ IDB(c.sid) +
+      '<p class="en" style="margin-top:11px">'+P(c.s,c.sid)+'</p>'+ IDB(c.s) +
       '<details class="more"><summary>'+U('deeper')+'</summary><div class="more-body">'+body+
       (LANG==='both' ? '<div class="id-txt show" style="margin-top:4px"><span class="lbl">Bahasa Indonesia</span>'+bodyId+'</div>' : '')+
       '</div></details></div>';
@@ -2127,10 +2492,10 @@ function renderFaq(){
   var el=document.getElementById('faqList'); if(!el) return;
   var html='', lastG=null;
   FAQ.forEach(function(f,i){
-    if(f.g!==lastG){ html += '<p class="dua-g">'+P(f.g,f.gid)+'</p>'; lastG=f.g; }
-    html += '<details class="qa srch"><summary>'+P(f.q,f.qid)+'</summary><div class="qa-b">'+
-      '<p>'+P(f.a,f.aid)+'</p>'+IDB(f.aid)+
-      (f.d ? '<div class="disp"><b>'+P('Disputed','Diperselisihkan')+'</b><span>'+P(f.d,f.did)+'</span></div>'+IDB(f.did) : '')+
+    if(f.g!==lastG){ html += '<p class="dua-g">'+P(f.g,f.gid,f.gko)+'</p>'; lastG=f.g; }
+    html += '<details class="qa srch"><summary>'+P(f.q,f.qid,f.qko)+'</summary><div class="qa-b">'+
+      '<p>'+P(f.a,f.aid,f.ako)+'</p>'+IDB(f.a)+
+      ((f.d && (LANG!=='ko' || f.dko)) ? '<div class="disp"><b>'+P('Disputed','Diperselisihkan','견해 차이')+'</b><span>'+P(f.d,f.did,f.dko)+'</span></div>'+IDB(f.d) : '')+
       '</div></details>';
   });
   el.innerHTML = html;
@@ -2138,11 +2503,11 @@ function renderFaq(){
 function renderDuas(){
   var html='', lastG=null;
   DUAS.forEach(function(d){
-    if(d.g !== lastG){ html += '<p class="dua-g">'+P(d.g,d.gid)+'</p>'; lastG = d.g; }
-    html += '<div class="card srch"><div class="card-h"><h3>'+P(d.t,d.tid)+'</h3></div>'+
+    if(d.g !== lastG){ html += '<p class="dua-g">'+P(d.g,d.gid,d.gko)+'</p>'; lastG = d.g; }
+    html += '<div class="card srch"><div class="card-h"><h3>'+P(d.t,d.tid,d.tko)+'</h3></div>'+
       '<p class="ar">'+d.ar+'</p><p class="tl">'+d.tl+'</p>'+
-      '<p class="en">'+P(d.en,d.id)+'</p>'+ IDB(d.id) +
-      '<div class="why"><span class="lbl">'+U('why')+'</span><p>'+P(d.w,d.wid)+'</p>'+IDB(d.wid)+'</div></div>';
+      '<p class="en">'+P(d.en,d.id,d.enko)+'</p>'+ IDB(d.en) +
+      '<div class="why"><span class="lbl">'+U('why')+'</span><p>'+P(d.w,d.wid,d.wko)+'</p>'+IDB(d.w)+'</div></div>';
   });
   document.getElementById('duaList').innerHTML = html;
 }
@@ -2170,6 +2535,7 @@ function greatCircleKm(lat,lng){
 function compassPoint(deg){
   var pts = LANG==='id'
     ? ['utara','timur laut','timur','tenggara','selatan','barat daya','barat','barat laut']
+    : LANG==='ko' ? KO.qibla.pts
     : ['north','north-east','east','south-east','south','south-west','west','north-west'];
   return pts[Math.round(deg/45)%8];
 }
@@ -2192,7 +2558,7 @@ function qiblaDialSVG(){
     ring += '<line class="tick" x1="'+(120+r1*Math.sin(a)).toFixed(1)+'" y1="'+(120-r1*Math.cos(a)).toFixed(1)+
             '" x2="'+(120+r2*Math.sin(a)).toFixed(1)+'" y2="'+(120-r2*Math.cos(a)).toFixed(1)+'" opacity="'+(long?1:.45)+'"/>';
   }
-  var cards = LANG==='id' ? ['U','T','S','B'] : ['N','E','S','W'];
+  var cards = LANG==='id' ? ['U','T','S','B'] : (LANG==='ko' ? KO.qibla.north : ['N','E','S','W']);
   var cardEls = cards.map(function(c,i){
     var a=toRad(i*90), rr=72;
     return '<text class="card'+(i===0?' n':'')+'" x="'+(120+rr*Math.sin(a)).toFixed(1)+
@@ -2218,23 +2584,23 @@ function renderQibla(){
     body += '<p class="sub" style="margin-top:14px">'+
       (qState.err ? qState.err :
         P('Tap below and allow location. Nothing leaves your phone — the calculation happens here.',
-          'Ketuk di bawah dan izinkan lokasi. Tidak ada yang keluar dari ponselmu — perhitungannya terjadi di sini.'))+'</p>'+
-      '<button class="qbtn" id="qbtn">'+P('Find the qibla','Cari arah kiblat')+'</button>'+
-      '<p class="st" style="margin-top:14px">'+P('Or pick a city:','Atau pilih kota:')+' '+
+          'Ketuk di bawah dan izinkan lokasi. Tidak ada yang keluar dari ponselmu — perhitungannya terjadi di sini.',KO.qibla.ask))+'</p>'+
+      '<button class="qbtn" id="qbtn">'+P('Find the qibla','Cari arah kiblat',KO.qibla.find)+'</button>'+
+      '<p class="st" style="margin-top:14px">'+P('Or pick a city:','Atau pilih kota:',KO.qibla.cityAsk)+' '+
       QCITIES.map(function(c,i){ return '<a href="#" class="qcity" data-i="'+i+'">'+c.n+'</a>'; }).join(' · ')+'</p>';
   } else {
     body += '<p class="big" id="qBig">'+qState.bearing.toFixed(0)+'°</p>'+
-      '<p class="sub">'+P('from north — roughly ','dari utara — kira-kira ke arah ')+compassPoint(qState.bearing)+'. '+
-      P('Mecca is about ','Mekah berjarak sekitar ')+qState.dist.toLocaleString()+' km'+P(' away','')+'.'+
+      '<p class="sub">'+P('from north — roughly ','dari utara — kira-kira ke arah ',KO.qibla.fromN)+compassPoint(qState.bearing)+'. '+
+      P('Mecca is about ','Mekah berjarak sekitar ',KO.qibla.away)+qState.dist.toLocaleString()+' km'+P(' away','','')+'.'+
       (qState.place ? ' <span style="color:var(--muted)">('+qState.place+')</span>' : '')+'</p>'+
-      '<p class="qhint" id="qHint">'+P('Waiting for the compass…','Menunggu kompas…')+'</p>';
+      '<p class="qhint" id="qHint">'+P('Waiting for the compass…','Menunggu kompas…',KO.qibla.wait)+'</p>';
     if(qState.sensor !== 'live'){
-      body += '<button class="qbtn" id="qbtn">'+P('Turn on the compass','Nyalakan kompas')+'</button>';
+      body += '<button class="qbtn" id="qbtn">'+P('Turn on the compass','Nyalakan kompas',KO.qibla.on)+'</button>';
     }
   }
   body += '</div>'+
    '<div class="callout" style="margin-top:14px"><b>'+
-     P('Treat this as an aid, not an authority','Anggap ini alat bantu, bukan penentu')+'</b>'+
+     P('Treat this as an aid, not an authority','Anggap ini alat bantu, bukan penentu',KO.qibla.cautionT)+'</b>'+
    '<span>'+P('Phone compasses are thrown off by metal, cases, cars and poor calibration, and can be wrong by tens of degrees. If the needle drifts, move away from your laptop and wave the phone in a figure of eight to recalibrate. In a mosque, follow the rows. At home, being roughly right is accepted — scholars have long held that facing the general direction suffices when certainty is not available.',
               'Kompas ponsel mudah terganggu logam, casing, mobil, dan kalibrasi yang buruk, dan bisa meleset puluhan derajat. Kalau jarumnya bergeser-geser, menjauhlah dari laptop dan gerakkan ponsel membentuk angka delapan untuk mengkalibrasi ulang. Di masjid, ikuti saf. Di rumah, mendekati arah yang benar sudah diterima — para ulama sejak lama berpendapat menghadap ke arah umumnya mencukupi ketika kepastian tidak bisa diperoleh.')+'</span></div>';
   el.innerHTML = body;
@@ -2265,14 +2631,14 @@ function setLocation(lat,lng,label){
 function locateThenCompass(){
   if(!navigator.geolocation){
     qState.err = P('This browser has no location support — pick a city below.',
-                   'Peramban ini tidak mendukung lokasi — pilih kota di bawah.');
+                   'Peramban ini tidak mendukung lokasi — pilih kota di bawah.',KO.qibla.nosupport);
     renderQibla(); return;
   }
   navigator.geolocation.getCurrentPosition(
     function(pos){ setLocation(pos.coords.latitude, pos.coords.longitude, null); },
     function(){
       qState.err = P('Location was refused, so pick the nearest city instead.',
-                     'Izin lokasi ditolak, jadi pilih kota terdekat saja.');
+                     'Izin lokasi ditolak, jadi pilih kota terdekat saja.',KO.qibla.denied);
       renderQibla();
     },
     {enableHighAccuracy:false, timeout:10000, maximumAge:600000});
@@ -2314,11 +2680,14 @@ function qiblaUpdate(){
   }
   var delta = ((b - h + 540) % 360) - 180;      /* -180..180, + means turn right */
   if(Math.abs(delta) <= 5){
-    hint.textContent = P('Facing the qibla.','Sudah menghadap kiblat.');
+    hint.textContent = P('Facing the qibla.','Sudah menghadap kiblat.',KO.qibla.facing);
     hint.className = 'qhint ok';
   } else {
-    var dir = delta > 0 ? P('right','ke kanan') : P('left','ke kiri');
-    hint.textContent = P('Turn ','Putar ')+dir+' '+Math.round(Math.abs(delta))+'°';
+    var dir = delta > 0 ? P('right','ke kanan',KO.qibla.right) : P('left','ke kiri',KO.qibla.left);
+    var amt = Math.round(Math.abs(delta))+'°';
+    hint.textContent = (LANG === 'ko')
+      ? dir+' '+amt+' 돌리십시오'                       /* Korean puts the verb last */
+      : P('Turn ','Putar ',KO.qibla.turn)+dir+' '+amt;
     hint.className = 'qhint';
   }
 }
@@ -2371,10 +2740,15 @@ function applyChrome(){
   var els = document.querySelectorAll('[data-id]');
   Array.prototype.forEach.call(els, function(el){
     if(!el.hasAttribute('data-en')) el.setAttribute('data-en', el.innerHTML);
-    el.innerHTML = (LANG === 'id') ? el.getAttribute('data-id') : el.getAttribute('data-en');
+    var v = el.getAttribute('data-en');
+    if(LANG === 'id') v = el.getAttribute('data-id') || v;
+    else if(LANG === 'ko') v = el.getAttribute('data-ko') || v;
+    el.innerHTML = v;
   });
   var q = document.getElementById('q');
-  q.placeholder = (LANG === 'id') ? q.getAttribute('data-id-ph') : q.getAttribute('data-en-ph');
+  q.placeholder = (LANG === 'id') ? q.getAttribute('data-id-ph')
+                : (LANG === 'ko') ? (q.getAttribute('data-ko-ph') || q.getAttribute('data-en-ph'))
+                : q.getAttribute('data-en-ph');
 }
 
 function renderAll(){
@@ -2393,8 +2767,20 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 document.getElementById('seg').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
   LANG = b.dataset.l;
+  if(LANG === 'en') PAIR = false;
   Array.prototype.forEach.call(this.children, function(c){ c.classList.toggle('on', c===b); });
+  syncPairBtn();
   renderAll();
+});
+function syncPairBtn(){
+  var pb = document.getElementById('pairBtn');
+  if(!pb) return;
+  pb.classList.toggle('on', PAIR);
+  pb.setAttribute('aria-pressed', PAIR ? 'true' : 'false');
+  pb.classList.toggle('avail', LANG !== 'en');
+}
+document.getElementById('pairBtn').addEventListener('click', function(){
+  PAIR = !PAIR; syncPairBtn(); renderAll();
 });
 
 document.addEventListener('click', function(e){
@@ -2430,115 +2816,11 @@ function runSearch(){
   renderTabs(); renderSubnav();
   document.getElementById('results').innerHTML =
     '<div class="callout blue" style="margin-top:20px"><b>'+hits+' '+
-    (LANG==='id' ? 'hasil untuk' : 'match'+(hits===1?'':'es')+' for')+' \u201c'+esc(q.value)+'\u201d</b>'+
+    (LANG==='id' ? 'hasil untuk' : LANG==='ko' ? '개 결과 —' : 'match'+(hits===1?'':'es')+' for')+' \u201c'+esc(q.value)+'\u201d</b>'+
     '<span>'+P('Searching across every section. Clear the box to go back.',
-               'Mencari di seluruh bagian. Kosongkan kotaknya untuk kembali.')+'</span></div>';
+               'Mencari di seluruh bagian. Kosongkan kotaknya untuk kembali.',KO.ui.clear)+'</span></div>';
 }
 document.getElementById('q').addEventListener('input', runSearch);
-
-/* ===================== RECITATION AUDIO ===================== */
-var RECITERS = [
- {k:'husary', n:'Husary', sub:['teaching pace','tempo belajar'],
-  base:'https://mirrors.quranicaudio.com/everyayah/Husary_Muallim_128kbps/',
-  alt:'https://everyayah.com/data/Husary_Muallim_128kbps/'},
- {k:'afasy',  n:'Al-Afasy', sub:['natural pace','tempo biasa'],
-  base:'https://verses.quran.com/Alafasy/mp3/',
-  alt:'https://everyayah.com/data/Alafasy_128kbps/'}
-];
-var usingAlt = false;
-var reciter = 'husary';
-var player = null, playingId = null, queue = [], qi = 0;
-
-function pad3(n){ n=String(n); return n.length>=3 ? n : ('000'+n).slice(-3); }
-function ayahUrl(key, alt){
-  var parts = String(key).split(':');
-  var r = RECITERS.filter(function(x){return x.k===reciter;})[0];
-  return (alt || usingAlt ? r.alt : r.base) + pad3(parts[0]) + pad3(parts[1]) + '.mp3';
-}
-function ensurePlayer(){
-  if(player) return player;
-  player = new Audio();
-  player.addEventListener('ended', function(){
-    qi++;
-    if(qi < queue.length){ player.src = ayahUrl(queue[qi]); player.play().catch(stopAudio); }
-    else stopAudio();
-  });
-  player.addEventListener('error', function(){
-    /* one silent retry on the mirror before giving up */
-    if(!usingAlt && queue.length){
-      usingAlt = true;
-      player.src = ayahUrl(queue[qi]);
-      player.play().catch(function(){ stopAudio(true); });
-      return;
-    }
-    stopAudio(true);
-  });
-  return player;
-}
-function stopAudio(failed){
-  if(player){ try{ player.pause(); }catch(e){} }
-  var prev = playingId;
-  playingId = null; queue = []; qi = 0;
-  markButtons();
-  if(failed && prev){
-    var el = document.querySelector('[data-audio-id="'+prev+'"]');
-    if(el){
-      el.setAttribute('data-failed','1');
-      var note = document.getElementById('audioErr');
-      if(!note){
-        note = document.createElement('div');
-        note.id = 'audioErr'; note.className = 'auderr';
-        (document.querySelector('.recsw') || el.parentNode).appendChild(note);
-      }
-      note.textContent = P('Could not load that recitation — check your connection, then try again.',
-                           'Tidak bisa memuat bacaan itu — periksa koneksimu, lalu coba lagi.');
-    }
-  }
-}
-function markButtons(){
-  Array.prototype.forEach.call(document.querySelectorAll('.playb'), function(b){
-    b.classList.toggle('on', b.dataset.audioId === playingId);
-    b.setAttribute('aria-label', b.classList.contains('on')
-      ? P('Stop','Hentikan') : P('Play recitation','Putar bacaan'));
-  });
-}
-function playKeys(id, keys){
-  if(playingId === id){ stopAudio(); return; }
-  stopAudio();
-  playingId = id; queue = keys.slice(); qi = 0;
-  var a = ensurePlayer();
-  a.src = ayahUrl(queue[0]);
-  a.play().catch(function(){ stopAudio(true); });
-  markButtons();
-}
-/* keys is an array like ['112:1'] or ['105:1','105:2'] */
-function playBtn(id, keys, small){
-  if(!keys || !keys.length) return '';
-  return '<button class="playb'+(small?' sm':'')+'" type="button" data-audio-id="'+id+
-    '" data-keys="'+keys.join(',')+'" aria-label="'+P('Play recitation','Putar bacaan')+'">'+
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon class="ply" points="8,5 19,12 8,19"/>'+
-    '<rect class="stp" x="7" y="6" width="4" height="12" rx="1"/>'+
-    '<rect class="stp" x="13" y="6" width="4" height="12" rx="1"/></svg></button>';
-}
-function reciterSwitch(){
-  return '<div class="recsw"><span class="k">'+P('Reciter','Qari')+'</span>'+
-    RECITERS.map(function(r){
-      return '<button type="button" class="rec'+(r.k===reciter?' on':'')+'" data-rec="'+r.k+'">'+
-        r.n+'<i>'+(LANG==='id'?r.sub[1]:r.sub[0])+'</i></button>';
-    }).join('')+
-    '<p class="recn">'+P('Streams the first time, then plays offline. Audio appears only here, where each line on screen is a complete verse and what you hear matches what you read. The duas and the verses quoted inside the stories are excerpts of longer verses, so a recording would play words that are not in front of you — those stay silent, as do the prayer formulas and the vocabulary, which have no verified recording.',
-                         'Distreaming saat pertama kali, lalu bisa diputar offline. Audio hanya ada di sini, karena tiap baris di layar adalah ayat utuh dan yang kamu dengar sama dengan yang kamu baca. Doa-doa dan ayat yang dikutip di dalam kisah hanyalah penggalan dari ayat yang lebih panjang, sehingga rekamannya akan memperdengarkan kata-kata yang tidak ada di hadapanmu — bagian itu dibiarkan tanpa suara, begitu pula bacaan sholat dan kosakata yang memang tidak punya rekaman terverifikasi.')+'</p></div>';
-}
-document.addEventListener('click', function(e){
-  var b = e.target.closest('.playb');
-  if(b){ playKeys(b.dataset.audioId, b.dataset.keys.split(',')); return; }
-  var r = e.target.closest('.rec');
-  if(r){
-    reciter = r.dataset.rec;
-    stopAudio();
-    renderAll();
-  }
-});
 
 /* ===================== ICONS ===================== */
 var ICONS = {
@@ -2563,21 +2845,21 @@ function rakaatMap(){
     for(var r=1;r<=4;r++){
       if(r>p.rak){ cells += '<span class="rc empty"></span>'; continue; }
       var aloud = (p.aloud!=='Silent') && r<=2;
-      var chips = '<b class="chip f">'+P('Fatihah','Fatihah')+'</b>';
-      if(r<=2) chips += '<b class="chip s">'+P('+ surah','+ surah')+'</b>';
-      if(p.id==='subuh' && r===2) chips += '<b class="chip q">'+P('qunut','qunut')+'</b>';
+      var chips = '<b class="chip f">'+P('Fatihah','Fatihah',KO.visuals.fat)+'</b>';
+      if(r<=2) chips += '<b class="chip s">'+P('+ surah','+ surah',KO.visuals.plusSur)+'</b>';
+      if(p.id==='subuh' && r===2) chips += '<b class="chip q">'+P('qunut','qunut',KO.visuals.qunut)+'</b>';
       var sit = '';
-      if(r===2 && p.rak>2) sit = '<b class="chip sit">'+P('sit','duduk')+'</b>';
-      if(r===p.rak)        sit = '<b class="chip sit end">'+P('sit + salam','duduk + salam')+'</b>';
+      if(r===2 && p.rak>2) sit = '<b class="chip sit">'+P('sit','duduk',KO.visuals.sit)+'</b>';
+      if(r===p.rak)        sit = '<b class="chip sit end">'+P('sit + salam','duduk + salam',KO.visuals.sitEnd)+'</b>';
       cells += '<span class="rc'+(aloud?' aloud':'')+'">'+chips+sit+'</span>';
     }
     return '<div class="rmap-row"><span class="rn">'+p.name+
       '<i>'+p.rak+' rakaat · '+P(p.aloud,p.aloudid).toLowerCase()+'</i></span>'+cells+'</div>';
   }).join('');
   var key = '<div class="rmap-key">'+
-    '<span><i class="sw aloud"></i>'+P('recited aloud','dibaca keras')+'</span>'+
-    '<span><i class="sw"></i>'+P('recited silently','dibaca pelan')+'</span>'+
-    '<span><b class="chip s" style="margin:0"></b>'+P('extra surah — first two rakaat only','surah tambahan — hanya dua rakaat pertama')+'</span>'+
+    '<span><i class="sw aloud"></i>'+P('recited aloud','dibaca keras',KO.visuals.aloud)+'</span>'+
+    '<span><i class="sw"></i>'+P('recited silently','dibaca pelan',KO.visuals.silent)+'</span>'+
+    '<span><b class="chip s" style="margin:0"></b>'+P('extra surah — first two rakaat only','surah tambahan — hanya dua rakaat pertama',KO.visuals.extra)+'</span>'+
     '</div>';
   return '<div class="rmap srch">'+head+rows+key+'</div>';
 }
@@ -2612,7 +2894,7 @@ function dayArc(){
     '</svg>'+
     '<div class="dlwrap">'+labels+'</div>'+
     '<p class="arcnote">'+P('The two in the middle fall inside the working day. That is why they are the ones people miss, and why the plan adds them last.',
-                            'Dua yang di tengah jatuh di dalam jam kerja. Itulah sebabnya keduanya paling sering terlewat, dan sebabnya rencana ini menambahkannya paling akhir.')+'</p>'+
+                            'Dua yang di tengah jatuh di dalam jam kerja. Itulah sebabnya keduanya paling sering terlewat, dan sebabnya rencana ini menambahkannya paling akhir.',KO.visuals.arcNote)+'</p>'+
     '</div>';
 }
 
@@ -2647,46 +2929,35 @@ function wudhuDiagram(){
       '<text class="wt'+(m.ob?' ob':'')+'" x="'+m.mx+'" y="'+(m.my+4)+'" text-anchor="middle">'+m.n+'</text></g>';
   }).join('');
   var legend = marks.slice().sort(function(a,b){return a.n-b.n;}).map(function(m){
-    return '<span class="wleg'+(m.ob?' ob':'')+'"><b>'+m.n+'</b>'+P(m.l[0],m.l[1])+'</span>';
+    return '<span class="wleg'+(m.ob?' ob':'')+'"><b>'+m.n+'</b>'+P(m.l[0],m.l[1],KO.visuals.wudhuLabels[m.n-1])+'</span>';
   }).join('');
   return '<div class="wdiag srch">'+
     '<svg viewBox="0 0 200 252" class="wsvg" aria-hidden="true">'+leaders+fig+dots+'</svg>'+
     '<div class="wlegend">'+legend+'</div>'+
     '<p class="arcnote">'+P('Filled numbers are obligatory; outlined ones are sunnah. The order matters — it is itself one of the obligations.',
-                            'Nomor yang terisi penuh adalah wajib; yang bergaris saja sunnah. Urutannya penting — ia sendiri termasuk rukun.')+'</p>'+
+                            'Nomor yang terisi penuh adalah wajib; yang bergaris saja sunnah. Urutannya penting — ia sendiri termasuk rukun.',KO.visuals.wudhuNote)+'</p>'+
     '</div>';
 }
 
-/* ===================== SURAH AUDIO ===================== */
-var SURAH_NO = {'Al-Fatihah':1, 'Al-Ikhlas':112, 'Al-Falaq':113, 'An-Nas':114, "Al-'Asr":103};
-function surahAudio(name){
-  var n = SURAH_NO[name];
-  if(!n) return '';
-  return '<div class="aud">'+
-    '<audio controls preload="none" src="https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/'+n+'.mp3"></audio>'+
-    '<p class="audn">'+P('Recited by Mishary Al-Afasy. Needs a connection the first time; after that it plays offline.',
-                         'Dibacakan oleh Mishary Al-Afasy. Perlu koneksi saat pertama kali; setelah itu bisa diputar offline.')+'</p>'+
-    '</div>';
-}
 
 /* ===================== VIEW ROUTER ===================== */
 var VIEWS = [
- {v:'today',  en:'Today',  idn:'Hari ini', secs:['today']},
- {v:'prayer', en:'Prayer', idn:'Sholat',   secs:['rakaat','words','wudhu']},
- {v:'qibla',  en:'Qibla',  idn:'Kiblat',   secs:['qibla']},
- {v:'duas',   en:'Duas',   idn:'Doa',      secs:['duas']},
- {v:'ask',    en:'Questions', idn:'Tanya', secs:['ask']},
- {v:'read',   en:'Read',   idn:'Bacaan',   secs:['why','islam','stories','surah','kata']}
+ {v:'today',  en:'Today',  idn:'Hari ini', ko:'오늘',   secs:['today']},
+ {v:'prayer', en:'Prayer', idn:'Sholat',   ko:'예배',   secs:['rakaat','words','wudhu']},
+ {v:'qibla',  en:'Qibla',  idn:'Kiblat',   ko:'키블라', secs:['qibla']},
+ {v:'duas',   en:'Duas',   idn:'Doa',      ko:'두아',   secs:['duas']},
+ {v:'ask',    en:'Questions', idn:'Tanya', ko:'질문',  secs:['ask']},
+ {v:'read',   en:'Read',   idn:'Bacaan',   ko:'읽기',   secs:['why','islam','stories','surah','kata']}
 ];
 var SECNAMES = {
-  today:['Today','Hari ini'], why:['Start here','Mulai'], islam:['Islam','Islam'],
-  stories:['Stories','Kisah'], rakaat:['Rakaat','Rakaat'], words:['In the prayer','Dalam sholat'],
-  duas:['Duas','Doa'], surah:['Surahs','Surah'], wudhu:['Wudhu','Wudhu'],
-  qibla:['Qibla','Kiblat'], ask:['Questions','Tanya'], kata:['Vocabulary','Kosakata']
+  today:['Today','Hari ini','오늘'], why:['Start here','Mulai','시작하기'], islam:['Islam','Islam','이슬람'],
+  stories:['Stories','Kisah','이야기'], rakaat:['Rakaat','Rakaat','라카아'], words:['In the prayer','Dalam sholat','예배 안에서'],
+  duas:['Duas','Doa','두아'], surah:['Surahs','Surah','수라'], wudhu:['Wudhu','Wudhu','우두'],
+  qibla:['Qibla','Kiblat','키블라'], ask:['Questions','Tanya','질문'], kata:['Vocabulary','Kosakata','어휘']
 };
 var curView = 'today', searchMode = false;
 
-function secName(id){ var n=SECNAMES[id]; return LANG==='id' ? n[1] : n[0]; }
+function secName(id){ var n=SECNAMES[id]; return LANG==='id' ? n[1] : (LANG==='ko' ? (n[2]||n[0]) : n[0]); }
 function viewOf(secId){
   for(var i=0;i<VIEWS.length;i++) if(VIEWS[i].secs.indexOf(secId)>-1) return VIEWS[i].v;
   return 'read';
@@ -2694,7 +2965,7 @@ function viewOf(secId){
 function renderTabs(){
   document.getElementById('tabs').innerHTML = VIEWS.map(function(V){
     return '<a href="#/'+V.v+'" data-v="'+V.v+'"'+(V.v===curView && !searchMode ? ' class="on"':'')+'>'+
-      icon(V.v)+(LANG==='id'?V.idn:V.en)+'</a>';
+      icon(V.v)+(LANG==='id'?V.idn:(LANG==='ko'?(V.ko||V.en):V.en))+'</a>';
   }).join('');
 }
 function renderSubnav(){
@@ -2757,6 +3028,8 @@ document.addEventListener('click', function(e){
 window.addEventListener('hashchange', function(){ routeFromHash(); });
 
 
+mergeKO();
+syncPairBtn();
 renderAll();
 routeFromHash(true);
 
