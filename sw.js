@@ -5,7 +5,7 @@
        offline fallback.
      - icons and the manifest are CACHE-FIRST, since they rarely change.
    Bump CACHE whenever index.html changes. */
-var CACHE = 'faham-v15';
+var CACHE = 'faham-v16';
 var ASSETS = [
   './',
   './index.html',
