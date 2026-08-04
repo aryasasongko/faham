@@ -229,25 +229,75 @@ function registerServiceWorker() {
   /* Never reload out from under the reader. A new worker taking control in the
      middle of a walkthrough, a recitation or a dua would lose their place for
      no reason they can see. The new version waits; we offer it, and the reload
-     happens when they say so. */
+     happens when they say so.
+
+     The offer must be able to FAIL SAFELY, which the first version of this did
+     not. Three things go wrong in the wild:
+       * `controllerchange` is unreliable on iOS, so a reload that waits only
+         for that event may never happen — leaving a dead button under a bar
+         that never goes away;
+       * with two tabs open, accepting in one makes the other tab's waiting
+         worker redundant, so its button would post a message to nothing;
+       * an update can activate on its own, leaving the bar advertising an
+         update that has already been applied.
+     So: the reload is driven by a timer as well as the event, the button is
+     never left permanently disabled, and the bar re-syncs with the real
+     registration state on every load and every time the tab is shown. */
   let userAskedToReload = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
+  let pending = null;              // the worker currently being offered
+
+  function hideUpdate() {
+    const bar = $('updateBar');
+    if (!bar) return;
+    bar.hidden = true;
+    const button = bar.querySelector('button');
+    if (button) button.disabled = false;
+    pending = null;
+  }
+
+  function doReload() {
     if (!userAskedToReload) return;
+    userAskedToReload = false;
     window.location.reload();
-  });
+  }
+
+  navigator.serviceWorker.addEventListener('controllerchange', doReload);
 
   function offerUpdate(worker) {
     const bar = $('updateBar');
-    if (!bar) return;
+    if (!bar || !worker) { hideUpdate(); return; }
+    /* Already gone, or already in charge: there is nothing to offer. */
+    if (worker.state === 'redundant' || worker === navigator.serviceWorker.controller) {
+      hideUpdate();
+      return;
+    }
+    pending = worker;
     bar.hidden = false;
     bar.querySelector('.upd-t').textContent = t('upd_ready');
     const button = bar.querySelector('button');
     button.textContent = t('upd_reload');
+    button.disabled = false;
     button.onclick = () => {
       userAskedToReload = true;
       button.disabled = true;
-      worker.postMessage('skipWaiting');
+      try { worker.postMessage('skipWaiting'); } catch (e) { /* already gone */ }
+      /* Belt and braces: reload even if controllerchange never arrives. */
+      window.setTimeout(doReload, 1500);
     };
+    worker.addEventListener('statechange', () => {
+      if (worker.state === 'activated') { doReload(); hideUpdate(); }
+      else if (worker.state === 'redundant') {
+        /* Another tab accepted it, or the install was superseded. */
+        if (userAskedToReload) doReload(); else hideUpdate();
+      }
+    });
+  }
+
+  /* The bar is a claim about the registration, so the registration decides. */
+  function syncUpdateBar(reg) {
+    if (!reg) { hideUpdate(); return; }
+    if (reg.waiting) offerUpdate(reg.waiting);
+    else if (!reg.installing) hideUpdate();
   }
 
   window.addEventListener('load', () => {
@@ -255,7 +305,7 @@ function registerServiceWorker() {
       .then((reg) => {
         reg.update();
         window.setInterval(() => reg.update(), 60 * 60 * 1000);
-        if (reg.waiting) offerUpdate(reg.waiting);
+        syncUpdateBar(reg);
         reg.addEventListener('updatefound', () => {
           const next = reg.installing;
           if (!next) return;
@@ -263,7 +313,13 @@ function registerServiceWorker() {
             /* An install with no existing controller is the FIRST install:
                nothing to offer, the page is already running the new code. */
             if (next.state === 'installed' && navigator.serviceWorker.controller) offerUpdate(next);
+            else if (next.state === 'installed') hideUpdate();
           });
+        });
+        /* Coming back to a backgrounded tab: the world may have moved on. */
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState !== 'visible') return;
+          reg.update().then(() => syncUpdateBar(reg)).catch(() => syncUpdateBar(reg));
         });
       })
       .catch(() => { /* the app works uncached */ });
