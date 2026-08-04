@@ -965,6 +965,11 @@ main:focus{outline:none}
 
 /* An update is offered, never imposed: the reader chooses when to reload so a
    walkthrough or a recitation is not interrupted. */
+/* `[hidden]` is an attribute selector, so the browser's own `[hidden]{display:none}`
+   has exactly the same specificity as a class rule — and author styles win ties.
+   A class that sets `display` therefore silently defeats the hidden attribute.
+   This rule puts it back, and must stay next to any `display` declared here. */
+.updbar[hidden]{display:none}
 .updbar{
   position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:12px;
   padding:10px 16px;background:var(--accent-fill);color:#fff;font-size:13.5px;
@@ -1005,3 +1010,7 @@ nav{
   scroll-snap-type:x proximity;
 }
 nav a{scroll-snap-align:start}
+
+/* Belt and braces for every element the app toggles with `hidden`: if a class
+   on one of these ever gains a `display`, the attribute still wins. */
+.offline-state[hidden],.qqual[hidden],.qcal[hidden]{display:none}
