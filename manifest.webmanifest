@@ -1,18 +1,59 @@
 {
   "name": "Faham — understand what you pray",
   "short_name": "Faham",
-  "description": "Bilingual meaning-first companion for salah and the Quran.",
+  "description": "A meaning-first prayer companion in English, Bahasa Indonesia and Korean: step-by-step salah for four schools of jurisprudence, prayer times, qibla and a private prayer log.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#f9f9f7",
   "theme_color": "#fcfcfb",
   "lang": "en",
   "dir": "ltr",
+  "categories": [
+    "education",
+    "lifestyle",
+    "books"
+  ],
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Prayer log",
+      "short_name": "Log",
+      "url": "./#/today"
+    },
+    {
+      "name": "Prayer times",
+      "short_name": "Times",
+      "url": "./#/qibla"
+    },
+    {
+      "name": "Walk me through a prayer",
+      "short_name": "Prayer",
+      "url": "./#/prayer"
+    }
   ]
 }
