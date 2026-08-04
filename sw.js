@@ -24,7 +24,7 @@
    BUMP `VERSION` on every deploy that changes any shell file.
    ========================================================================== */
 
-var VERSION = 'v23';
+var VERSION = 'v24';
 var SHELL_CACHE = 'faham-shell-' + VERSION;
 var AUDIO_CACHE = 'faham-audio-v1';
 
@@ -98,15 +98,31 @@ self.addEventListener('install', function (e) {
 
      No skipWaiting here: the new worker waits until the reader accepts the
      update, so a walkthrough in progress is never interrupted. */
+  /* Every fetch carries ?v=VERSION and is stored under the CLEAN url.
+
+     The query defeats CDN caching, which `cache:'reload'` does not: reload
+     bypasses the BROWSER'S cache, but GitHub Pages' CDN serves a committed
+     file stale for ~10 minutes, and an install inside that window would bake
+     the previous deploy's files into the new version's cache — permanently,
+     because the version then reports itself up to date. A query string is a
+     URL the CDN has never seen, so it always goes to the origin. */
+  function fresh(url) {
+    return fetch(new Request(url + (url.indexOf('?') > -1 ? '&' : '?') + 'v=' + VERSION,
+      { cache: 'reload' }));
+  }
   e.waitUntil(
     caches.open(SHELL_CACHE)
       .then(function (cache) {
-        return cache.addAll(CRITICAL.map(function (url) {
-          return new Request(url, { cache: 'reload' });
+        return Promise.all(CRITICAL.map(function (url) {
+          return fresh(url).then(function (res) {
+            if (!res.ok) throw new Error(url + ' → ' + res.status);
+            return cache.put(url, res);
+          });
         })).then(function () {
           return Promise.all(OPTIONAL.map(function (url) {
-            return cache.add(new Request(url, { cache: 'reload' }))
-              .catch(function () { /* optional: absence is acceptable */ });
+            return fresh(url).then(function (res) {
+              if (res.ok) return cache.put(url, res);
+            }).catch(function () { /* optional: absence is acceptable */ });
           }));
         });
       })
